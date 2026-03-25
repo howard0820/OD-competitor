@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OWNDAYS 競爭對手追蹤</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:#0f0f14;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container{max-width:600px;padding:40px;text-align:center}
+h1{font-size:28px;font-weight:900;margin-bottom:8px;letter-spacing:-0.02em}
+.sub{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:40px}
+.links{display:flex;flex-direction:column;gap:16px}
+a.card{display:block;padding:24px 28px;border-radius:14px;text-decoration:none;color:#fff;font-size:18px;font-weight:700;transition:transform 0.2s,box-shadow 0.2s;text-align:left}
+a.card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,0.4)}
+a.card .desc{font-size:13px;font-weight:400;opacity:0.7;margin-top:6px}
+.c1{background:linear-gradient(135deg,#1a237e,#4285F4)}
+.c2{background:linear-gradient(135deg,#1b5e20,#43a047)}
+.c3{background:linear-gradient(135deg,#4a148c,#9C27B0)}
+.footer{margin-top:48px;font-size:11px;color:rgba(255,255,255,0.2)}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>OWNDAYS 競爭對手追蹤</h1>
+  <div class="sub">Weekly Competitive Intelligence Dashboard</div>
+  <div class="links">
+    <a class="card c1" href="競爭對手週報_template.html">
+      📊 競爭對手週報簡報
+      <div class="desc">促銷活動、門市異動、特殊行銷事件、建議行動</div>
+    </a>
+    <a class="card c2" href="門市分布地圖.html">
+      🗺️ 全台門市分布地圖
+      <div class="desc">互動式台灣地圖 — 四品牌門市按縣市分布，每點 = 一間店</div>
+    </a>
+    <a class="card c3" href="競爭對手追蹤模板.xlsx">
+      📋 競爭對手追蹤 Excel
+      <div class="desc">結構化數據庫 — 促銷、新品、門市異動、每週摘要</div>
+    </a>
+  </div>
+  <div class="footer">OWNDAYS TAIWAN · OPS · 每週一自動更新</div>
+</div>
+</body>
+</html>
