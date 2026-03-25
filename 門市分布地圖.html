@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>全台門市分布地圖 — OWNDAYS vs 競爭對手</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e8ec;display:flex;min-height:100vh;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:380px;padding:32px 26px 20px;background:linear-gradient(180deg,#141420 0%,#0f0f18 100%);overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+
+.brand-header{margin-bottom:6px}
+.brand-header h1{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff}
+.brand-header .sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:0.02em}
+
+/* Brand totals */
+.totals-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
+.total-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;transition:background 0.2s;cursor:pointer}
+.total-card:hover{background:rgba(255,255,255,0.06)}
+.total-card.dimmed{opacity:0.2}
+.total-card .tc-stripe{position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
+.total-card .tc-num{font-size:28px;font-weight:900;letter-spacing:-0.03em;line-height:1}
+.total-card .tc-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;font-weight:500}
+.total-card .tc-badge{position:absolute;top:12px;right:12px;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;opacity:0.7}
+
+/* Legend note */
+.legend-note{font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:14px;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px dashed rgba(255,255,255,0.06);text-align:center}
+
+/* City table */
+.table-wrap{flex:1;overflow-y:auto}
+.city-table{width:100%;border-collapse:collapse;font-size:12px}
+.city-table thead{position:sticky;top:0;background:#141420;z-index:1}
+.city-table th{text-align:center;padding:7px 4px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);font-weight:600}
+.city-table th:first-child{text-align:left}
+.city-table td{padding:6px 4px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:center;font-variant-numeric:tabular-nums;font-size:12px}
+.city-table td:first-child{text-align:left}
+.city-table .city-name{color:#E8A87C;font-weight:600;font-size:11px}
+.city-table .total-row td{border-top:1px solid rgba(255,255,255,0.12);font-weight:700;padding-top:10px}
+.city-table .zero{opacity:0.15}
+.city-table tr:hover td{background:rgba(255,255,255,0.02)}
+.city-table tr.highlight td{background:rgba(255,255,255,0.06)}
+
+/* ── Map area ── */
+.map-area{flex:1;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at 55% 45%,#1a1a2e 0%,#0f0f14 70%)}
+
+/* County paths */
+.county{fill:rgba(255,255,255,0.025);stroke:rgba(255,255,255,0.15);stroke-width:0.5;transition:fill 0.2s}
+.county:hover{fill:rgba(255,255,255,0.08);stroke:rgba(255,255,255,0.3)}
+.county.highlighted{fill:rgba(255,255,255,0.1);stroke:rgba(255,255,255,0.4);stroke-width:1}
+
+/* Store dots */
+.store-dot{transition:opacity 0.3s;cursor:pointer}
+.store-dot:hover{filter:brightness(1.4)}
+.store-dot.dimmed{opacity:0.03!important}
+
+/* County label */
+.county-label{fill:rgba(255,255,255,0.22);font-size:9px;font-family:'Noto Sans TC',sans-serif;font-weight:400;pointer-events:none;text-anchor:middle}
+
+/* Tooltip */
+.tooltip{position:fixed;background:rgba(20,20,32,0.96);backdrop-filter:blur(12px);color:#fff;padding:14px 18px;border-radius:12px;font-size:12px;pointer-events:none;display:none;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);min-width:170px;max-width:260px}
+.tooltip .tt-city{font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
+.tooltip .tt-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:12px}
+.tooltip .tt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tooltip .tt-count{font-weight:700;margin-left:auto;font-variant-numeric:tabular-nums}
+.tooltip .tt-total{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.4);font-weight:600}
+.tooltip .tt-dots-preview{display:flex;gap:2px;flex-wrap:wrap;margin-top:6px}
+.tooltip .tt-mini{width:6px;height:6px;border-radius:50%;opacity:0.9}
+
+/* Loading */
+.loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.3);font-size:14px}
+
+/* Watermark */
+.watermark{position:absolute;bottom:16px;right:24px;font-size:9px;color:rgba(255,255,255,0.1);letter-spacing:0.1em;font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="brand-header">
+    <h1>全台眼鏡品牌門市分布</h1>
+    <div class="sub">更新日：2026/03/25 — 點擊品牌卡片可切換顯示</div>
+  </div>
+
+  <div class="totals-grid">
+    <div class="total-card" data-brand="od" onclick="toggleBrand('od')">
+      <div class="tc-stripe" style="background:#4285F4"></div>
+      <div class="tc-num" style="color:#4285F4">78</div>
+      <div class="tc-label">OWNDAYS</div>
+      <div class="tc-badge" style="background:rgba(66,133,244,0.15);color:#4285F4">34.7%</div>
+    </div>
+    <div class="total-card" data-brand="jins" onclick="toggleBrand('jins')">
+      <div class="tc-stripe" style="background:#E53935"></div>
+      <div class="tc-num" style="color:#E53935">94</div>
+      <div class="tc-label">Jins</div>
+      <div class="tc-badge" style="background:rgba(229,57,53,0.15);color:#E53935">41.8%</div>
+    </div>
+    <div class="total-card" data-brand="megane" onclick="toggleBrand('megane')">
+      <div class="tc-stripe" style="background:#F4A623"></div>
+      <div class="tc-num" style="color:#F4A623">35</div>
+      <div class="tc-label">眼鏡市場</div>
+      <div class="tc-badge" style="background:rgba(244,166,35,0.15);color:#F4A623">15.6%</div>
+    </div>
+    <div class="total-card" data-brand="klassic" onclick="toggleBrand('klassic')">
+      <div class="tc-stripe" style="background:#AB47BC"></div>
+      <div class="tc-num" style="color:#AB47BC">18</div>
+      <div class="tc-label">Klassic</div>
+      <div class="tc-badge" style="background:rgba(171,71,188,0.15);color:#AB47BC">8.0%</div>
+    </div>
+  </div>
+
+  <div class="legend-note">● 每一個點 = 一間門市</div>
+
+  <div class="table-wrap">
+    <table class="city-table">
+      <thead>
+        <tr><th style="text-align:left">縣市</th><th style="color:#4285F4">OD</th><th style="color:#E53935">Jins</th><th style="color:#F4A623">眼鏡</th><th style="color:#AB47BC">KC</th><th>合計</th></tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="map-area">
+  <div class="loading" id="loading">載入地圖中…</div>
+  <svg id="mapSvg"></svg>
+  <div class="tooltip" id="tooltip"></div>
+  <div class="watermark">OWNDAYS TAIWAN · COMPETITIVE INTELLIGENCE</div>
+</div>
+
+<script>
+// ── Brand config ──
+const BRANDS = {
+  od:      { color: '#4285F4', label: 'OWNDAYS' },
+  jins:    { color: '#E53935', label: 'Jins' },
+  megane:  { color: '#F4A623', label: '眼鏡市場' },
+  klassic: { color: '#AB47BC', label: 'Klassic' }
+};
+
+// ── Store data per county (COUNTYNAME → counts) ──
+// Keys must match the TopoJSON COUNTYNAME property
+const STORE_DATA = {
+  '臺北市':   { od: 19, jins: 24, megane: 6,  klassic: 8 },
+  '新北市':   { od: 17, jins: 19, megane: 5,  klassic: 0 },
+  '基隆市':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '桃園市':   { od: 9,  jins: 8,  megane: 4,  klassic: 1 },
+  '新竹市':   { od: 2,  jins: 2,  megane: 2,  klassic: 1 },
+  '新竹縣':   { od: 2,  jins: 2,  megane: 1,  klassic: 0 },
+  '苗栗縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '臺中市':   { od: 7,  jins: 14, megane: 7,  klassic: 2 },
+  '彰化縣':   { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
+  '南投縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
+  '雲林縣':   { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
+  '嘉義市':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '嘉義縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '臺南市':   { od: 3,  jins: 7,  megane: 3,  klassic: 3 },
+  '高雄市':   { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
+  '屏東縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '宜蘭縣':   { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
+  '花蓮縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '臺東縣':   { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
+  '澎湖縣':   { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
+  '金門縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
+  '連江縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
+};
+
+// Display name mapping (shorter names for sidebar)
+const SHORT_NAME = {
+  '臺北市':'台北市','新北市':'新北市','基隆市':'基隆','桃園市':'桃園',
+  '新竹市':'新竹市','新竹縣':'新竹縣','苗栗縣':'苗栗','臺中市':'台中',
+  '彰化縣':'彰化','南投縣':'南投','雲林縣':'雲林','嘉義市':'嘉義市',
+  '嘉義縣':'嘉義縣','臺南市':'台南','高雄市':'高雄','屏東縣':'屏東',
+  '宜蘭縣':'宜蘭','花蓮縣':'花蓮','臺東縣':'台東','澎湖縣':'澎湖',
+  '金門縣':'金門','連江縣':'連江'
+};
+
+const activeFilter = { od: true, jins: true, megane: true, klassic: true };
+const DOT_R = 2.8;
+
+// ── Toggle brand ──
+function toggleBrand(brand) {
+  activeFilter[brand] = !activeFilter[brand];
+  document.querySelector(`.total-card[data-brand="${brand}"]`).classList.toggle('dimmed');
+  document.querySelectorAll(`.store-dot[data-brand="${brand}"]`).forEach(d => {
+    d.classList.toggle('dimmed');
+    d.setAttribute('opacity', activeFilter[brand] ? '0.88' : '0.03');
+  });
+}
+
+// ── Sunflower spiral for individual dots ──
+function spiralPositions(cx, cy, count, spacing) {
+  const pts = [];
+  const golden = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < count; i++) {
+    const r = spacing * Math.sqrt(i + 0.5);
+    const theta = i * golden + Math.PI * 0.25; // slight rotation
+    pts.push([cx + r * Math.cos(theta), cy + r * Math.sin(theta)]);
+  }
+  return pts;
+}
+
+// ── Build map ──
+const mapArea = document.querySelector('.map-area');
+const W = mapArea.clientWidth;
+const H = mapArea.clientHeight;
+
+const svg = d3.select('#mapSvg')
+  .attr('width', W)
+  .attr('height', H);
+
+// Load TopoJSON from CDN — tries multiple sources
+const TOPO_URLS = [
+  'https://cdn.jsdelivr.net/npm/taiwan-atlas/counties-10t.json',
+  'https://unpkg.com/taiwan-atlas/counties-10t.json',
+  'https://cdn.jsdelivr.net/gh/dkaoster/taiwan-atlas@master/counties-10t.json'
+];
+
+async function loadTopo() {
+  for (const url of TOPO_URLS) {
+    try {
+      const resp = await fetch(url);
+      if (resp.ok) return await resp.json();
+    } catch(e) { continue; }
+  }
+  throw new Error('無法載入地圖資料');
+}
+
+loadTopo().then(topo => {
+  document.getElementById('loading').style.display = 'none';
+
+  // Extract counties GeoJSON — exclude 金門/連江 to focus on main island + 澎湖
+  const allCounties = topojson.feature(topo, topo.objects.counties);
+  const skip = new Set(['金門縣','連江縣']);
+  const counties = {type:'FeatureCollection', features: allCounties.features.filter(f => !skip.has(f.properties.COUNTYNAME))};
+
+  // Projection: fit Taiwan main island into the map area
+  const padding = 30;
+  const projection = d3.geoMercator()
+    .fitExtent([[padding, padding], [W - padding, H - padding]], counties);
+  const path = d3.geoPath(projection);
+
+  // Layer groups
+  const gCounties = svg.append('g').attr('class', 'counties-layer');
+  const gLabels = svg.append('g').attr('class', 'labels-layer');
+  const gDots = svg.append('g').attr('class', 'dots-layer');
+
+  // Draw county boundaries
+  gCounties.selectAll('path')
+    .data(counties.features)
+    .join('path')
+    .attr('d', path)
+    .attr('class', 'county')
+    .attr('data-name', d => d.properties.COUNTYNAME)
+    .on('mouseenter', function(event, d) {
+      d3.select(this).classed('highlighted', true);
+      showTooltip(event, d.properties.COUNTYNAME);
+      // Highlight table row
+      document.querySelectorAll('.city-table tr').forEach(tr => {
+        if (tr.dataset.county === d.properties.COUNTYNAME) tr.classList.add('highlight');
+      });
+    })
+    .on('mouseleave', function(event, d) {
+      d3.select(this).classed('highlighted', false);
+      hideTooltip();
+      document.querySelectorAll('.city-table tr.highlight').forEach(tr => tr.classList.remove('highlight'));
+    });
+
+  // County labels
+  counties.features.forEach(f => {
+    const name = f.properties.COUNTYNAME;
+    const centroid = path.centroid(f);
+    if (centroid[0] && centroid[1]) {
+      // Skip label for very small counties or adjust position
+      gLabels.append('text')
+        .attr('class', 'county-label')
+        .attr('x', centroid[0])
+        .attr('y', centroid[1])
+        .text(SHORT_NAME[name] || name);
+    }
+  });
+
+  // Place store dots per county
+  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
+  const quadAngles = [-Math.PI*0.75, -Math.PI*0.25, Math.PI*0.75, Math.PI*0.25];
+
+  counties.features.forEach(f => {
+    const name = f.properties.COUNTYNAME;
+    const data = STORE_DATA[name];
+    if (!data) return;
+
+    const centroid = path.centroid(f);
+    if (!centroid[0] || !centroid[1]) return;
+
+    const totalAll = brandKeys.reduce((s, b) => s + data[b], 0);
+    if (totalAll === 0) return;
+
+    // Spacing and shift based on density
+    const dotSpacing = totalAll > 20 ? 7.5 : totalAll > 8 ? 8.5 : 9.5;
+    const shiftDist = totalAll > 20 ? 16 : totalAll > 8 ? 12 : 8;
+
+    brandKeys.forEach((brand, bi) => {
+      const count = data[brand];
+      if (count === 0) return;
+
+      const qx = centroid[0] + Math.cos(quadAngles[bi]) * shiftDist;
+      const qy = centroid[1] + Math.sin(quadAngles[bi]) * shiftDist;
+      const positions = spiralPositions(qx, qy, count, dotSpacing);
+
+      positions.forEach(([x, y]) => {
+        const color = BRANDS[brand].color;
+        const s = DOT_R;
+        let el;
+        if (brand === 'od') {
+          el = gDots.append('circle').attr('cx',x).attr('cy',y).attr('r',s).attr('fill',color);
+        } else if (brand === 'jins') {
+          el = gDots.append('rect').attr('x',x-s).attr('y',y-s).attr('width',s*2).attr('height',s*2).attr('rx',s*0.3).attr('fill',color);
+        } else if (brand === 'megane') {
+          const h = s*1.15;
+          el = gDots.append('polygon').attr('points',`${x},${y-h} ${x+s},${y+s*0.7} ${x-s},${y+s*0.7}`).attr('fill',color);
+        } else {
+          // Klassic: star
+          const pts=[];for(let i=0;i<10;i++){const r=i%2===0?s*1.1:s*0.45;const a=Math.PI/2+i*Math.PI/5;pts.push(`${x-r*Math.cos(a)},${y-r*Math.sin(a)}`);}
+          el = gDots.append('polygon').attr('points',pts.join(' ')).attr('fill',color);
+        }
+        el.attr('class','store-dot').attr('data-brand',brand).attr('data-county',name).attr('opacity',0.88)
+          .on('mouseenter',(event)=>showTooltip(event,name)).on('mouseleave',hideTooltip);
+      });
+    });
+  });
+
+}).catch(err => {
+  document.getElementById('loading').textContent = '地圖載入失敗：' + err.message + '。請確認網路連線。';
+  console.error(err);
+});
+
+// ── Tooltip ──
+function showTooltip(event, countyName) {
+  const tt = document.getElementById('tooltip');
+  const data = STORE_DATA[countyName];
+  if (!data) return;
+
+  const displayName = SHORT_NAME[countyName] || countyName;
+  let html = `<div class="tt-city">${displayName}</div>`;
+  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
+  let total = 0;
+
+  brandKeys.forEach(b => {
+    total += data[b];
+    if (data[b] > 0) {
+      html += `<div class="tt-row">
+        <div class="tt-dot" style="background:${BRANDS[b].color}"></div>
+        <span>${BRANDS[b].label}</span>
+        <span class="tt-count">${data[b]} 間</span>
+      </div>`;
+    }
+  });
+
+  if (total > 0) {
+    html += `<div class="tt-total">合計 ${total} 間門市</div>`;
+    // Mini dot preview
+    html += `<div class="tt-dots-preview">`;
+    brandKeys.forEach(b => {
+      for (let i = 0; i < data[b]; i++) {
+        html += `<div class="tt-mini" style="background:${BRANDS[b].color}"></div>`;
+      }
+    });
+    html += `</div>`;
+  } else {
+    html += `<div class="tt-total" style="opacity:0.3">尚無門市進駐</div>`;
+  }
+
+  tt.innerHTML = html;
+  tt.style.display = 'block';
+  positionTooltip(event);
+}
+
+function positionTooltip(event) {
+  const tt = document.getElementById('tooltip');
+  let x = event.clientX + 18;
+  let y = event.clientY - 14;
+  // Keep tooltip in viewport
+  const rect = tt.getBoundingClientRect();
+  if (x + 260 > window.innerWidth) x = event.clientX - 270;
+  if (y + 200 > window.innerHeight) y = event.clientY - 200;
+  tt.style.left = x + 'px';
+  tt.style.top = y + 'px';
+}
+
+function hideTooltip() {
+  document.getElementById('tooltip').style.display = 'none';
+}
+
+document.addEventListener('mousemove', (e) => {
+  const tt = document.getElementById('tooltip');
+  if (tt.style.display === 'block') positionTooltip(e);
+});
+
+// ── City table (sidebar) ──
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
+  const brandColors = { od:'#4285F4', jins:'#E53935', megane:'#F4A623', klassic:'#AB47BC' };
+
+  // Merge 新竹市+新竹縣, 嘉義市+嘉義縣 for display
+  const merged = {};
+  const mergeMap = { '新竹市':'新竹', '新竹縣':'新竹', '嘉義市':'嘉義', '嘉義縣':'嘉義' };
+
+  Object.entries(STORE_DATA).forEach(([county, data]) => {
+    const key = mergeMap[county] || (SHORT_NAME[county] || county);
+    if (!merged[key]) merged[key] = { od:0, jins:0, megane:0, klassic:0 };
+    brandKeys.forEach(b => merged[key][b] += data[b]);
+  });
+
+  // Sort by total descending
+  const sorted = Object.entries(merged)
+    .map(([name, data]) => ({ name, ...data, total: data.od + data.jins + data.megane + data.klassic }))
+    .filter(r => r.total > 0)
+    .sort((a, b) => b.total - a.total);
+
+  let html = '';
+  let totals = { od:0, jins:0, megane:0, klassic:0 };
+
+  sorted.forEach(row => {
+    const fmt = (n, color) => n === 0
+      ? '<span class="zero">—</span>'
+      : `<span style="color:${color};font-weight:600">${n}</span>`;
+    html += `<tr data-county="${row.name}">
+      <td class="city-name">${row.name}</td>
+      <td>${fmt(row.od, brandColors.od)}</td>
+      <td>${fmt(row.jins, brandColors.jins)}</td>
+      <td>${fmt(row.megane, brandColors.megane)}</td>
+      <td>${fmt(row.klassic, brandColors.klassic)}</td>
+      <td style="font-weight:700;color:rgba(255,255,255,0.6)">${row.total}</td>
+    </tr>`;
+    brandKeys.forEach(b => totals[b] += row[b]);
+  });
+
+  const grandTotal = brandKeys.reduce((s, b) => s + totals[b], 0);
+  html += `<tr class="total-row">
+    <td style="color:rgba(255,255,255,0.5)">合計</td>
+    <td style="color:${brandColors.od};font-weight:800">${totals.od}</td>
+    <td style="color:${brandColors.jins};font-weight:800">${totals.jins}</td>
+    <td style="color:${brandColors.megane};font-weight:800">${totals.megane}</td>
+    <td style="color:${brandColors.klassic};font-weight:800">${totals.klassic}</td>
+    <td style="color:#fff;font-weight:800">${grandTotal}</td>
+  </tr>`;
+  tbody.innerHTML = html;
+}
+
+renderTable();
+
+// ── Responsive resize ──
+window.addEventListener('resize', () => {
+  // Reload to re-fit projection
+  location.reload();
+});
+</script>
+</body>
+</html>
