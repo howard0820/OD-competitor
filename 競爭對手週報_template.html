@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<title>競爭對手資訊週報 — Template</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'PingFang TC','Microsoft JhengHei','Noto Sans TC',sans-serif;
+     background:#0d0d0d;overflow:hidden;height:100vh}
+.deck{width:100vw;height:100vh;position:relative}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;
+       padding:60px 80px;justify-content:center}
+.slide.active{display:flex}
+.slide.dark{background:#0d0d0d;color:#fff}
+.slide.light{background:#F5F4EF;color:#1a1a2e}
+.slide.white{background:#fff;color:#1a1a2e}
+.top-bar{position:absolute;top:0;left:0;right:0;height:5px;
+         background:linear-gradient(90deg,#D6C8B4,#E8DFD0)}
+.top-bar-fill{position:absolute;top:0;left:0;height:5px;
+              background:#4285F4;transition:width 0.3s}
+.logo{position:absolute;top:24px;left:32px;font-size:15px;
+      font-weight:700;letter-spacing:0.12em;opacity:0.4}
+/* ===== PRESENTATION-READY TYPOGRAPHY ===== */
+.eyebrow{font-size:18px;letter-spacing:0.14em;text-transform:uppercase;
+         opacity:0.45;margin-bottom:18px}
+h1{font-size:72px;font-weight:700;line-height:1.1;margin-bottom:24px}
+h2{font-size:52px;font-weight:700;line-height:1.15;margin-bottom:20px}
+h3{font-size:34px;font-weight:600;margin-bottom:14px}
+.subtitle{font-size:24px;opacity:0.55;margin-top:8px}
+.accent{width:56px;height:5px;background:#E85D00;border-radius:2px;margin-bottom:26px}
+.section-pill{display:inline-block;background:#4285F4;color:#fff;
+              font-size:20px;font-weight:700;padding:8px 20px;
+              border-radius:5px;margin-bottom:20px}
+.badge{display:inline-flex;align-items:center;justify-content:center;
+       width:36px;height:36px;background:#4285F4;color:#fff;
+       font-size:18px;font-weight:700;border-radius:5px;flex-shrink:0}
+/* KPI cards */
+.kpi-row{display:flex;gap:28px;margin:32px 0}
+.kpi{flex:1;padding:36px 40px;border-radius:14px}
+.kpi.light-card{background:#fff;border:1px solid #E8E4DE}
+.kpi .k-label{font-size:20px;opacity:0.55;margin-bottom:14px;letter-spacing:0.04em}
+.kpi .k-val{font-size:72px;font-weight:800;line-height:1}
+.kpi .k-delta{font-size:20px;margin-top:12px;font-weight:500}
+.pos{color:#22a36b}.neg{color:#C0392B}.neu{color:#888}
+/* insight cards */
+.info-card{padding:24px 28px;border-radius:10px;margin-bottom:18px;
+           border-left:5px solid #4285F4;background:#EEF4FF}
+.warn-card{border-left:5px solid #C0392B;background:#FDECEA;
+           padding:24px 28px;border-radius:10px;margin-bottom:18px}
+.ok-card{border-left:5px solid #22a36b;background:#E8F5E9;
+         padding:24px 28px;border-radius:10px;margin-bottom:18px}
+.gold-card{border-left:5px solid #E85D00;background:#FFF3E8;
+           padding:24px 28px;border-radius:10px;margin-bottom:18px}
+.info-card h4,.warn-card h4,.ok-card h4,.gold-card h4{
+  font-size:24px;font-weight:700;margin-bottom:8px}
+.info-card p,.warn-card p,.ok-card p,.gold-card p{font-size:20px;opacity:0.8;line-height:1.5}
+/* layouts */
+.split{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start}
+.split-equal{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+/* table */
+table{width:100%;border-collapse:collapse;font-size:20px}
+.tbl-header{background:#4285F4;color:#fff}
+.tbl-header th{padding:14px 20px;font-weight:700;font-size:20px;text-align:left}
+.tbl-header.dark-header{background:#434343}
+.tbl-header.orange-header{background:#E85D00}
+tr.total-row td{background:#CFE2F3;font-weight:700}
+td{padding:14px 20px;border-bottom:1px solid rgba(0,0,0,0.06)}
+tr:last-child td{border-bottom:none}
+.hl-blue{color:#4285F4;font-weight:700}
+.hl-red{color:#C0392B;font-weight:700}
+.hl-orange{color:#E85D00;font-weight:700}
+/* screenshot placeholder */
+.screenshot-box{border:2px dashed #ccc;border-radius:12px;padding:28px;
+                text-align:center;color:#999;font-size:18px;
+                min-height:220px;display:flex;flex-direction:column;
+                align-items:center;justify-content:center;
+                background:#fafafa;margin-bottom:16px;overflow:hidden}
+.screenshot-box img{max-width:100%;max-height:360px;border-radius:8px;object-fit:contain}
+.screenshot-box .placeholder{opacity:0.5}
+.screenshot-label{font-size:16px;color:#999;margin-top:10px;text-align:center}
+/* competitor cards */
+.comp-card{background:#fff;border-radius:12px;padding:28px;border:1px solid #E8E4DE;margin-bottom:20px}
+.comp-card .brand{font-size:28px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.comp-card .brand .tag{font-size:16px;background:#4285F4;color:#fff;padding:4px 12px;border-radius:4px}
+.comp-card .brand .tag.warn{background:#C0392B}
+.comp-card .brand .tag.ok{background:#22a36b}
+.comp-card .detail{font-size:20px;color:#555;line-height:1.6}
+.vs-row{display:flex;gap:16px;margin-top:14px}
+.vs-item{flex:1;background:#F5F4EF;border-radius:8px;padding:16px 20px;font-size:18px}
+.vs-item .vs-label{opacity:0.5;margin-bottom:6px}
+.vs-item .vs-val{font-size:24px;font-weight:700}
+/* store count bar */
+.store-bar{display:flex;gap:24px;margin:28px 0}
+.store-count{flex:1;text-align:center;padding:28px 20px;border-radius:12px;
+             background:#fff;border:1px solid #E8E4DE}
+.store-count .sc-brand{font-size:22px;font-weight:700;margin-bottom:8px}
+.store-count .sc-num{font-size:56px;font-weight:800;line-height:1}
+.store-count .sc-delta{font-size:18px;margin-top:8px;font-weight:500}
+/* event card for special activities */
+.event-card{background:#fff;border-radius:12px;padding:28px 32px;
+            border:1px solid #E8E4DE;margin-bottom:18px;
+            display:flex;gap:24px;align-items:start}
+.event-card .ev-tag{display:inline-block;font-size:14px;font-weight:700;
+                    padding:4px 12px;border-radius:4px;color:#fff;
+                    background:#9B59B6;white-space:nowrap;margin-top:4px}
+.event-card .ev-tag.collab{background:#E85D00}
+.event-card .ev-tag.pr{background:#4285F4}
+.event-card .ev-tag.social{background:#22a36b}
+.event-card .ev-body{flex:1}
+.event-card .ev-title{font-size:24px;font-weight:700;margin-bottom:6px}
+.event-card .ev-desc{font-size:18px;color:#555;line-height:1.5}
+.event-card .ev-date{font-size:16px;color:#999;margin-top:6px}
+/* nav */
+.nav{position:fixed;bottom:28px;right:44px;display:flex;align-items:center;
+     gap:14px;z-index:100}
+.nav button{background:rgba(128,128,128,0.18);border:none;color:inherit;
+            width:42px;height:42px;border-radius:50%;cursor:pointer;
+            font-size:18px;display:flex;align-items:center;justify-content:center;
+            transition:background 0.2s}
+.nav button:hover{background:rgba(128,128,128,0.35)}
+.slide-counter{font-size:16px;opacity:0.35;min-width:50px;text-align:center}
+.progress-bar{position:fixed;bottom:0;left:0;height:3px;
+              background:#E85D00;transition:width 0.3s}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- ============================================================ -->
+<!-- INSERT_NEW_WEEK_ABOVE — 排程任務每週在此標記上方插入新的 section -->
+<!-- ============================================================ -->
+
+<!-- ===== SECTION: W13 2026-03-25 ===== -->
+<div class="slide dark active" data-section="2026-03-25">
+  <div class="top-bar"></div>
+  <div class="logo">OWNDAYS</div>
+  <div style="text-align:center">
+    <p class="eyebrow">WEEKLY UPDATE</p>
+    <h1>競爭對手週報</h1>
+    <p class="subtitle">更新日期：2026/03/25（週三）· W13</p>
+    <div class="accent" style="margin:24px auto 0"></div>
+    <p style="opacity:0.35;margin-top:16px;font-size:20px">Jins · 眼鏡市場 · Klassic</p>
+  </div>
+</div>
+
+<!-- ===== W13 SLIDE 2: 本週重點 KPI ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:20%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <h2>本週競爭動態總覽</h2>
+  <p class="subtitle" style="margin-bottom:20px">2026/03/25 實際抓取</p>
+  <div class="kpi-row">
+    <div class="kpi light-card">
+      <div class="k-label">進行中促銷活動</div>
+      <div class="k-val hl-blue">7</div>
+      <div class="k-delta neg">Jins 2 / 眼鏡市場 3 / Klassic 2</div>
+    </div>
+    <div class="kpi light-card">
+      <div class="k-label">門市異動</div>
+      <div class="k-val hl-orange">2</div>
+      <div class="k-delta neg">眼鏡市場南紡今日開幕 + Klassic -1</div>
+    </div>
+    <div class="kpi light-card">
+      <div class="k-label">全台門市總數</div>
+      <div class="k-val hl-blue">224</div>
+      <div class="k-delta neu">OD 78 + Jins 94 + 眼鏡 35 + Klassic 17</div>
+    </div>
+    <div class="kpi light-card">
+      <div class="k-label">特殊活動/事件</div>
+      <div class="k-val hl-orange">2</div>
+      <div class="k-delta">Uni-Girls一日店長 + 廢鏡回收</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: Jins 促銷活動 ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:30%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <div class="split">
+    <div>
+      <div class="section-pill">Jins</div>
+      <h2 style="font-size:42px">本週活動</h2>
+      <p class="subtitle" style="margin-bottom:16px">全台 94 間門市（含 RIM）</p>
+      <div style="background:linear-gradient(135deg,#C0392B 0%,#E74C3C 100%);border-radius:12px;padding:24px 28px;color:#fff;margin-bottom:12px">
+        <div style="font-size:14px;opacity:0.7;margin-bottom:8px">SOURCE · jins.com/tw/news</div>
+        <a href="https://www.jins.com/tw/news/news-69bbd0d86594a" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">① 第2支75折 (3/20-3/29) ↗</a>
+        <a href="https://www.jins.com/tw/news/news-69b79ee18887f" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">② EC春季新品賞 (3/16-3/31) ↗</a>
+        <a href="https://www.jins.com/tw/news/news-69b125db355d0" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">③ 廢鏡新思回收 (3/1-5/31) ↗</a>
+        <div style="font-size:14px;opacity:0.6;margin-top:10px">2026/03/25 抓取</div>
+      </div>
+    </div>
+    <div>
+      <div class="warn-card">
+        <h4>🔥 第2支75折（週末限定）</h4>
+        <p>3/20-3/29 五六日限定，買眼鏡或墨鏡第2支75折。門市限定。</p>
+      </div>
+      <div class="info-card">
+        <h4>EC春季新品賞（線上限定）</h4>
+        <p>3/16-3/31：指定熱銷品88折、春季新品9折、配鏡滿$3,800折$200、指定鏡片9折起</p>
+      </div>
+      <div class="gold-card">
+        <h4>廢鏡新思計畫（ESG+獲客）</h4>
+        <p>3/1-5/31 回收任何品牌眼鏡+追蹤IG，送$300折價券。回收競品眼鏡轉換客戶的策略值得關注。</p>
+      </div>
+      <div class="ok-card">
+        <h4>OWNDAYS 對應</h4>
+        <p>Jins鏡片折扣力道強，但OD套餐組合整體CP值仍優。廢鏡回收是新型獲客手法，可評估跟進。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: 眼鏡市場（獨立） ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:40%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <div class="split">
+    <div>
+      <div class="section-pill" style="background:#E85D00">眼鏡市場</div>
+      <h2 style="font-size:42px">本週活動</h2>
+      <p class="subtitle" style="margin-bottom:16px">全台 35 間門市</p>
+      <div style="background:linear-gradient(135deg,#E85D00 0%,#F39C12 100%);border-radius:12px;padding:24px 28px;color:#fff;margin-bottom:12px">
+        <div style="font-size:14px;opacity:0.7;margin-bottom:8px">SOURCE · meganeichiba.com.tw/news</div>
+        <a href="https://meganeichiba.com.tw/news/173" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">① 南紡購物中心店 3/25 開幕 ↗</a>
+        <a href="https://meganeichiba.com.tw/news/171" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">② 廣三SOGO/南港 一週年祭 ↗</a>
+        <a href="https://meganeichiba.com.tw/news/170" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">③ 6周年慶 滿6000折666 ↗</a>
+        <div style="font-size:14px;opacity:0.6;margin-top:10px">2026/03/25 抓取</div>
+      </div>
+    </div>
+    <div>
+      <div class="warn-card">
+        <h4>🔥 南紡購物中心店 — 今日開幕！</h4>
+        <p>3/25 台南南紡 GRAND OPENING！滿$3,000折$300、滿$5,000折$500</p>
+      </div>
+      <div class="info-card">
+        <h4>廣三SOGO / Lalaport南港 一週年祭</h4>
+        <p>滿$3,000折$400、滿$6,000折$800。折扣力道比6周年慶更大。</p>
+      </div>
+      <div class="info-card">
+        <h4>6周年慶（全館）</h4>
+        <p>滿$6,000折$666（~11% off），3/2-3/29 即將結束</p>
+      </div>
+      <div class="ok-card">
+        <h4>OWNDAYS 對應</h4>
+        <p>眼鏡市場門檻偏高（$6K），OD低門檻策略更有優勢。南部同期展店需關注台南業績變化。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 5: Klassic（獨立） ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:50%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <div class="split">
+    <div>
+      <div class="section-pill" style="background:#6D2E46">Klassic</div>
+      <h2 style="font-size:42px">本週動態</h2>
+      <p class="subtitle" style="margin-bottom:16px">全台 17 間門市（含 SON&SUN, Room 41-21）</p>
+      <div style="background:linear-gradient(135deg,#6D2E46 0%,#9B59B6 100%);border-radius:12px;padding:24px 28px;color:#fff;margin-bottom:12px">
+        <div style="font-size:14px;opacity:0.7;margin-bottom:8px">SOURCE · klassicglobal.com</div>
+        <a href="https://www.klassicglobal.com/pages/stores" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">① 滿$5,500現折$500 (~3/31) ↗</a>
+        <a href="https://www.klassicglobal.com/pages/stores" target="_blank" style="color:#fff;text-decoration:none;display:block;font-size:20px;font-weight:700;margin-bottom:6px">② niceynook 單件9折 ↗</a>
+        <div style="font-size:20px;font-weight:700;margin-bottom:6px">③ 全台17間門市（-1待確認）</div>
+        <div style="font-size:14px;opacity:0.6;margin-top:10px">2026/03/25 抓取</div>
+      </div>
+    </div>
+    <div>
+      <div class="info-card">
+        <h4>滿 $5,500 現折 $500（即日起~3/31）</h4>
+        <p>單筆消費滿$5,500現折$500，Klassic全門市適用</p>
+      </div>
+      <div class="info-card">
+        <h4>niceynook 單件 9 折</h4>
+        <p>副牌 niceynook 指定門市單件9折，至3/31</p>
+      </div>
+      <div class="warn-card">
+        <h4>門市數：17 間（-1）</h4>
+        <p>較前次統計減少1間，待確認是否有門市關閉。北部8間｜中部2間｜南部7間</p>
+      </div>
+      <div class="gold-card">
+        <h4>觀察重點</h4>
+        <p>Klassic定位中高價位設計師品牌，與OD客群重疊度較低。門市異動值得持續追蹤。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: 門市數量總覽 + 異動 ===== -->
+<div class="slide white">
+  <div class="top-bar"><div class="top-bar-fill" style="width:60%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <h2 style="text-align:center;margin-bottom:8px">全台門市數量追蹤</h2>
+  <p class="subtitle" style="text-align:center;margin-bottom:24px">截至 2026/03/25</p>
+
+  <!-- 門市數量 dashboard -->
+  <div class="store-bar">
+    <div class="store-count" style="border-top:4px solid #4285F4">
+      <div class="sc-brand">OWNDAYS</div>
+      <div class="sc-num hl-blue">78</div>
+      <div class="sc-delta neu">本週 ±0</div>
+    </div>
+    <div class="store-count" style="border-top:4px solid #C0392B">
+      <div class="sc-brand">Jins</div>
+      <div class="sc-num hl-red">94</div>
+      <div class="sc-delta neg">含 RIM 3間｜+3 vs 上次</div>
+    </div>
+    <div class="store-count" style="border-top:4px solid #E85D00">
+      <div class="sc-brand">眼鏡市場</div>
+      <div class="sc-num hl-orange">35</div>
+      <div class="sc-delta neg">本週 +1 (台南南紡)</div>
+    </div>
+    <div class="store-count" style="border-top:4px solid #6D2E46">
+      <div class="sc-brand">Klassic</div>
+      <div class="sc-num" style="color:#6D2E46">17</div>
+      <div class="sc-delta neg">-1 vs 上次（待確認）</div>
+    </div>
+  </div>
+
+  <!-- 本週異動 -->
+  <table style="max-width:1000px;margin:0 auto">
+    <thead class="tbl-header">
+      <tr><th>品牌</th><th>異動</th><th>門市名稱</th><th>地點</th><th>日期</th><th>來源</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight:700">Jins</td>
+        <td><span style="background:#E85D00;color:#fff;padding:4px 14px;border-radius:4px;font-size:18px;font-weight:700">新開</span></td>
+        <td>MITSUI OUTLET PARK 台南店</td>
+        <td>台南</td>
+        <td>2026/03/17</td>
+        <td><a href="https://www.jins.com/tw/news/news-69b124cc4fbd9" target="_blank" style="color:#4285F4;text-decoration:underline">連結</a></td>
+      </tr>
+      <tr>
+        <td style="font-weight:700">眼鏡市場</td>
+        <td><span style="background:#E85D00;color:#fff;padding:4px 14px;border-radius:4px;font-size:18px;font-weight:700">新開</span></td>
+        <td>南紡購物中心店</td>
+        <td>台南</td>
+        <td>2026/03/25</td>
+        <td><a href="https://meganeichiba.com.tw/news/173" target="_blank" style="color:#4285F4;text-decoration:underline">連結</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SLIDE 7: 門市分布地圖（按縣市）===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<div class="slide white" style="padding:0">
+  <div class="top-bar"><div class="top-bar-fill" style="width:65%"></div></div>
+  <div class="logo">OWNDAYS</div>
+
+  <!-- Left panel: table (larger, brand-colored) -->
+  <div style="position:absolute;left:40px;top:24px;bottom:24px;width:40%;overflow-y:auto;display:flex;flex-direction:column;justify-content:center">
+    <h2 style="font-size:38px;margin-bottom:4px">全台門市分布</h2>
+    <p class="subtitle" style="margin-bottom:16px;font-size:17px">截至 2026/03/25</p>
+    <table style="font-size:20px;border-collapse:separate;border-spacing:0">
+      <thead>
+        <tr style="font-size:18px;font-weight:800">
+          <th style="padding:14px 16px;text-align:left;background:#f5f4ef;border-bottom:2px solid #ddd">縣市</th>
+          <th style="padding:14px 12px;text-align:center;background:#4285F4;color:#fff;border-radius:6px 0 0 0">
+            <svg width="14" height="14" style="vertical-align:-2px;margin-right:2px"><circle cx="7" cy="7" r="6" fill="#fff"/></svg>OD</th>
+          <th style="padding:14px 12px;text-align:center;background:#C0392B;color:#fff">
+            <svg width="14" height="14" style="vertical-align:-2px;margin-right:2px"><rect x="1" y="1" width="12" height="12" rx="2" fill="#fff"/></svg>Jins</th>
+          <th style="padding:14px 12px;text-align:center;background:#E85D00;color:#fff">
+            <svg width="14" height="14" style="vertical-align:-2px;margin-right:2px"><polygon points="7,1 13,13 1,13" fill="#fff"/></svg>眼鏡</th>
+          <th style="padding:14px 12px;text-align:center;background:#9B59B6;color:#fff;border-radius:0 6px 0 0">
+            <svg width="14" height="14" style="vertical-align:-2px;margin-right:2px"><polygon points="7,0 8.8,5 14,5.5 10,9 11.5,14 7,11 2.5,14 4,9 0,5.5 5.2,5" fill="#fff"/></svg>KC</th>
+          <th style="padding:14px 12px;text-align:center;background:#f5f4ef;border-bottom:2px solid #ddd;font-weight:800">合計</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">台北市</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">19</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">24</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">6</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">8</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">57</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">新北市</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">17</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">19</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">5</td><td style="text-align:center;padding:12px;color:#aaa;border-bottom:1px solid #eee">-</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">41</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">台中</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">7</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">14</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">7</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">2</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">30</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">高雄</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">9</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">9</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">5</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">3</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">26</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">桃園</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">9</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">8</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">4</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">1</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">22</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">台南</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">3</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">7</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">3</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">3</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">16</td></tr>
+        <tr><td style="padding:12px 16px;color:#333;font-weight:700;border-bottom:1px solid #eee">新竹</td><td style="text-align:center;padding:12px;color:#4285F4;font-weight:700;border-bottom:1px solid #eee">4</td><td style="text-align:center;padding:12px;color:#C0392B;font-weight:700;border-bottom:1px solid #eee">4</td><td style="text-align:center;padding:12px;color:#E85D00;font-weight:700;border-bottom:1px solid #eee">3</td><td style="text-align:center;padding:12px;color:#9B59B6;font-weight:700;border-bottom:1px solid #eee">1</td><td style="text-align:center;padding:12px;font-weight:800;border-bottom:1px solid #eee">12</td></tr>
+        <tr style="opacity:0.5"><td style="padding:10px 16px;border-bottom:1px solid #eee">其他 10 縣市</td><td style="text-align:center;padding:10px;border-bottom:1px solid #eee">10</td><td style="text-align:center;padding:10px;border-bottom:1px solid #eee">9</td><td style="text-align:center;padding:10px;border-bottom:1px solid #eee">2</td><td style="text-align:center;padding:10px;border-bottom:1px solid #eee">0</td><td style="text-align:center;padding:10px;font-weight:700;border-bottom:1px solid #eee">21</td></tr>
+        <tr><td style="padding:14px 16px;font-weight:800;background:#f5f4ef;border-top:2px solid #ccc">合計</td><td style="text-align:center;padding:14px;color:#4285F4;font-weight:900;font-size:22px;background:#f5f4ef;border-top:2px solid #ccc">78</td><td style="text-align:center;padding:14px;color:#C0392B;font-weight:900;font-size:22px;background:#f5f4ef;border-top:2px solid #ccc">94</td><td style="text-align:center;padding:14px;color:#E85D00;font-weight:900;font-size:22px;background:#f5f4ef;border-top:2px solid #ccc">35</td><td style="text-align:center;padding:14px;color:#9B59B6;font-weight:900;font-size:22px;background:#f5f4ef;border-top:2px solid #ccc">18</td><td style="text-align:center;padding:14px;font-weight:900;font-size:22px;background:#f5f4ef;border-top:2px solid #ccc">225</td></tr>
+      </tbody>
+    </table>
+    <!-- Shape legend -->
+    <div style="display:flex;gap:18px;margin-top:16px;flex-wrap:wrap;font-size:15px;font-weight:600">
+      <span style="display:flex;align-items:center;gap:6px;color:#4285F4"><svg width="16" height="16"><circle cx="8" cy="8" r="6" fill="#4285F4"/></svg>OWNDAYS</span>
+      <span style="display:flex;align-items:center;gap:6px;color:#C0392B"><svg width="16" height="16"><rect x="2" y="2" width="12" height="12" rx="2" fill="#C0392B"/></svg>Jins</span>
+      <span style="display:flex;align-items:center;gap:6px;color:#E85D00"><svg width="16" height="16"><polygon points="8,1 15,15 1,15" fill="#E85D00"/></svg>眼鏡市場</span>
+      <span style="display:flex;align-items:center;gap:6px;color:#9B59B6"><svg width="16" height="16"><polygon points="8,0 9.8,5.5 15.5,6 11,9.5 12.5,15.5 8,12 3.5,15.5 5,9.5 0.5,6 6.2,5.5" fill="#9B59B6"/></svg>Klassic</span>
+    </div>
+  </div>
+
+  <!-- Right panel: D3 map with real boundaries + distinct shapes -->
+  <div style="position:absolute;right:20px;top:10px;bottom:10px;width:54%;display:flex;align-items:center;justify-content:center">
+    <svg id="slide7map" width="100%" height="100%" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+</div>
+<script>
+(function(){
+  const SD = {
+    '臺北市':{od:19,jins:24,megane:6,klassic:8},'新北市':{od:17,jins:19,megane:5,klassic:0},
+    '基隆市':{od:1,jins:1,megane:0,klassic:0},'桃園市':{od:9,jins:8,megane:4,klassic:1},
+    '新竹市':{od:2,jins:2,megane:2,klassic:1},'新竹縣':{od:2,jins:2,megane:1,klassic:0},
+    '苗栗縣':{od:1,jins:1,megane:0,klassic:0},'臺中市':{od:7,jins:14,megane:7,klassic:2},
+    '彰化縣':{od:1,jins:0,megane:1,klassic:0},'雲林縣':{od:0,jins:2,megane:0,klassic:0},
+    '嘉義市':{od:1,jins:1,megane:0,klassic:0},'嘉義縣':{od:1,jins:1,megane:0,klassic:0},
+    '臺南市':{od:3,jins:7,megane:3,klassic:3},'高雄市':{od:9,jins:9,megane:5,klassic:3},
+    '屏東縣':{od:1,jins:1,megane:0,klassic:0},'宜蘭縣':{od:1,jins:1,megane:1,klassic:0},
+    '花蓮縣':{od:1,jins:1,megane:0,klassic:0},'臺東縣':{od:1,jins:0,megane:0,klassic:0},
+    '澎湖縣':{od:1,jins:0,megane:0,klassic:0}
+  };
+  const BC = {od:'#4285F4',jins:'#C0392B',megane:'#E85D00',klassic:'#9B59B6'};
+  const QA = [-Math.PI*0.75,-Math.PI*0.25,Math.PI*0.75,Math.PI*0.25];
+  const golden = Math.PI*(3-Math.sqrt(5));
+  function spiral(cx,cy,n,sp){const p=[];for(let i=0;i<n;i++){const r=sp*Math.sqrt(i+0.5),t=i*golden+0.25*Math.PI;p.push([cx+r*Math.cos(t),cy+r*Math.sin(t)])}return p}
+
+  // Shape drawing functions — each draws a shape centered at (x,y)
+  function drawShape(svg, brand, x, y, size) {
+    const color = BC[brand];
+    const s = size;
+    if (brand === 'od') {
+      // Circle
+      svg.append('circle').attr('cx',x).attr('cy',y).attr('r',s).attr('fill',color).attr('opacity',0.9);
+    } else if (brand === 'jins') {
+      // Rounded square
+      svg.append('rect').attr('x',x-s).attr('y',y-s).attr('width',s*2).attr('height',s*2).attr('rx',s*0.3).attr('fill',color).attr('opacity',0.9);
+    } else if (brand === 'megane') {
+      // Triangle (pointing up)
+      const h = s * 1.15;
+      svg.append('polygon').attr('points',`${x},${y-h} ${x+s},${y+s*0.7} ${x-s},${y+s*0.7}`).attr('fill',color).attr('opacity',0.9);
+    } else if (brand === 'klassic') {
+      // 5-pointed star
+      const pts = [];
+      for (let i=0;i<10;i++){
+        const r = i%2===0 ? s*1.1 : s*0.45;
+        const a = Math.PI/2 + i*Math.PI/5;
+        pts.push(`${x-r*Math.cos(a)},${y-r*Math.sin(a)}`);
+      }
+      svg.append('polygon').attr('points',pts.join(' ')).attr('fill',color).attr('opacity',0.9);
+    }
+  }
+
+  const URLS=['https://cdn.jsdelivr.net/npm/taiwan-atlas/counties-10t.json','https://unpkg.com/taiwan-atlas/counties-10t.json'];
+  async function load(){for(const u of URLS){try{const r=await fetch(u);if(r.ok)return r.json()}catch(e){}}throw Error('fail')}
+  load().then(topo=>{
+    const W=340,H=520;
+    const svg=d3.select('#slide7map').attr('viewBox',`0 0 ${W} ${H}`);
+    const allCounties=topojson.feature(topo,topo.objects.counties);
+    const skip=new Set(['金門縣','連江縣']);
+    const counties={type:'FeatureCollection',features:allCounties.features.filter(f=>!skip.has(f.properties.COUNTYNAME))};
+    const proj=d3.geoMercator().fitExtent([[15,15],[W-15,H-15]],counties);
+    const pth=d3.geoPath(proj);
+    // County fills
+    svg.selectAll('path').data(counties.features).join('path').attr('d',pth)
+      .attr('fill','#f0ede8').attr('stroke','#bbb').attr('stroke-width',0.6);
+    // County labels (subtle)
+    const shortN={'臺北市':'北','新北市':'新北','基隆市':'基','桃園市':'桃','新竹市':'竹','新竹縣':'竹縣','苗栗縣':'苗','臺中市':'中','彰化縣':'彰','南投縣':'投','雲林縣':'雲','嘉義市':'嘉','嘉義縣':'嘉縣','臺南市':'南','高雄市':'高','屏東縣':'屏','宜蘭縣':'宜','花蓮縣':'花','臺東縣':'東','澎湖縣':'澎'};
+    counties.features.forEach(f=>{
+      const c=pth.centroid(f);if(!c[0])return;
+      svg.append('text').attr('x',c[0]).attr('y',c[1]).attr('text-anchor','middle').attr('fill','rgba(0,0,0,0.15)').attr('font-size','8').attr('font-family','Noto Sans TC,sans-serif').text(shortN[f.properties.COUNTYNAME]||'');
+    });
+    // Dots with distinct shapes per brand
+    const bk=['od','jins','megane','klassic'];
+    const dotSize = 2.8;
+    counties.features.forEach(f=>{
+      const nm=f.properties.COUNTYNAME,d=SD[nm];if(!d)return;
+      const c=pth.centroid(f);if(!c[0])return;
+      const tot=bk.reduce((s,b)=>s+d[b],0);if(!tot)return;
+      const sp=tot>20?6.5:tot>8?7.5:8.5, sh=tot>20?13:tot>8?10:6;
+      bk.forEach((b,i)=>{if(!d[b])return;
+        const qx=c[0]+Math.cos(QA[i])*sh, qy=c[1]+Math.sin(QA[i])*sh;
+        spiral(qx,qy,d[b],sp).forEach(([px,py])=>{
+          drawShape(svg, b, px, py, dotSize);
+        });
+      });
+    });
+  }).catch(()=>{
+    document.getElementById('slide7map').innerHTML='<text x="50%" y="50%" text-anchor="middle" fill="#999" font-size="14">地圖載入中…請確認網路連線</text>';
+  });
+})();
+</script>
+
+<!-- ===== SLIDE 8: 特殊活動 / 行銷事件 ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:70%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <h2>特殊活動 & 行銷事件</h2>
+  <p class="subtitle" style="margin-bottom:24px">除促銷外，值得關注的品牌動態</p>
+  <div class="split-equal">
+    <div>
+      <div class="event-card">
+        <div><div class="ev-tag">門市活動</div></div>
+        <div class="ev-body">
+          <div class="ev-title">Jins — Uni-Girls 一日店長</div>
+          <div class="ev-desc">邀請 CT AMAZE 啦啦隊成員（瑟七、侯芳）擔任桃園門市一日店長，搭配 WBC 世界棒球經典賽宣傳</div>
+          <div class="ev-date">日期：近期 ｜ 門市：桃園</div>
+        </div>
+      </div>
+      <div class="event-card">
+        <div><div class="ev-tag" style="background:#22a36b">ESG</div></div>
+        <div class="ev-body">
+          <div class="ev-title">Jins — 廢鏡新思計畫</div>
+          <div class="ev-desc">3/1-5/31 回收任何品牌舊眼鏡+追蹤IG，送$300折價券。ESG+獲客策略結合，回收競品眼鏡轉換自家客戶。</div>
+          <div class="ev-date">3/1 — 5/31</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="gold-card">
+        <h4>為什麼這些值得關注？</h4>
+        <p>品牌活動（名人合作、IP 聯名、異業結盟）反映競爭對手的行銷策略方向，可作為 OD 企劃靈感來源</p>
+      </div>
+      <div class="info-card">
+        <h4>追蹤類型</h4>
+        <p>門市活動（一日店長、開幕活動）、IP/品牌聯名、異業合作、公益活動、社群話題操作</p>
+      </div>
+      <div class="warn-card">
+        <h4>建議</h4>
+        <p>Jins 結合運動賽事 + 名人效應的行銷手法值得參考，OD 可評估類似合作機會</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: 建議行動 ===== -->
+<div class="slide light">
+  <div class="top-bar"><div class="top-bar-fill" style="width:85%"></div></div>
+  <div class="logo">OWNDAYS</div>
+  <h2>本週建議行動</h2>
+  <p class="subtitle" style="margin-bottom:24px">基於競爭動態的應對建議</p>
+  <div style="display:flex;gap:24px">
+    <div style="flex:1">
+      <div class="warn-card">
+        <h4>1. 南部市場白熱化 — 密切關注</h4>
+        <p>Jins台南MITSUI 3/17 + 眼鏡市場南紡3/25 同期開店，台南市場競爭急速升溫。追蹤OD台南門市業績變化。</p>
+      </div>
+      <div class="info-card">
+        <h4>2. 因應Jins週末第2支75折</h4>
+        <p>3/20-3/29 週末限定，可能吸引家庭/情侶客。OD可強調套餐整體CP值或推出週末特別活動。</p>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="gold-card">
+        <h4>3. 評估回收獲客策略</h4>
+        <p>Jins「廢鏡新思」回收競品眼鏡送$300券，是ESG+獲客的創新手法。OD可評估類似計畫的可行性。</p>
+      </div>
+      <div class="ok-card">
+        <h4>4. Klassic門市異動追蹤</h4>
+        <p>Klassic本週統計17間（較前次-1），需確認是否有門市關閉。持續監控中高端市場動態。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== END: 固定結尾頁 ===== -->
+<div class="slide dark" data-section="end">
+  <div style="text-align:center">
+    <div class="eyebrow" style="color:#4285F4">COMPETITOR INTELLIGENCE</div>
+    <h1 style="font-size:64px">歷史週報到此結束</h1>
+    <p style="opacity:0.4;margin-top:16px;font-size:24px">每週一自動更新 · 往前翻 = 最新，往後翻 = 歷史</p>
+  </div>
+</div>
+
+</div>
+
+<div class="nav">
+  <button onclick="prev()">←</button>
+  <span class="slide-counter" id="ctr">1/10</span>
+  <button onclick="next()">→</button>
+</div>
+<div class="progress-bar" id="prog"></div>
+
+<script>
+let cur=0;
+const slides=document.querySelectorAll('.slide'),total=slides.length;
+function show(n){
+  slides[cur].classList.remove('active');cur=(n+total)%total;
+  slides[cur].classList.add('active');
+  document.getElementById('ctr').textContent=`${cur+1}/${total}`;
+  document.getElementById('prog').style.width=`${((cur+1)/total)*100}%`;
+  const tb=slides[cur].querySelector('.top-bar-fill');
+  if(tb)tb.style.width=`${((cur+1)/total)*100}%`;
+}
+function next(){show(cur+1)}function prev(){show(cur-1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')prev();
+});show(0);
+</script>
+</body>
+</html>
