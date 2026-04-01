@@ -87,32 +87,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
     <div class="sub">更新日：2026/03/30 — 點擊品牌卡片可切換顯示</div>
   </div>
 
-  <div class="totals-grid">
-    <div class="total-card" data-brand="od" onclick="toggleBrand('od')">
-      <div class="tc-stripe" style="background:#4285F4"></div>
-      <div class="tc-num" style="color:#4285F4">78</div>
-      <div class="tc-label">OWNDAYS</div>
-      <div class="tc-badge" style="background:rgba(66,133,244,0.15);color:#4285F4">34.7%</div>
-    </div>
-    <div class="total-card" data-brand="jins" onclick="toggleBrand('jins')">
-      <div class="tc-stripe" style="background:#E53935"></div>
-      <div class="tc-num" style="color:#E53935">94</div>
-      <div class="tc-label">Jins</div>
-      <div class="tc-badge" style="background:rgba(229,57,53,0.15);color:#E53935">41.8%</div>
-    </div>
-    <div class="total-card" data-brand="megane" onclick="toggleBrand('megane')">
-      <div class="tc-stripe" style="background:#F4A623"></div>
-      <div class="tc-num" style="color:#F4A623">35</div>
-      <div class="tc-label">眼鏡市場</div>
-      <div class="tc-badge" style="background:rgba(244,166,35,0.15);color:#F4A623">15.6%</div>
-    </div>
-    <div class="total-card" data-brand="klassic" onclick="toggleBrand('klassic')">
-      <div class="tc-stripe" style="background:#AB47BC"></div>
-      <div class="tc-num" style="color:#AB47BC">18</div>
-      <div class="tc-label">Klassic</div>
-      <div class="tc-badge" style="background:rgba(171,71,188,0.15);color:#AB47BC">8.0%</div>
-    </div>
-  </div>
+  <div class="totals-grid" id="totalsGrid"></div>
 
   <div class="legend-note">● 每一個點 = 一間門市</div>
 
@@ -142,43 +117,55 @@ const BRANDS = {
   klassic: { color: '#AB47BC', label: 'Klassic' }
 };
 
-// ── Store data per county (COUNTYNAME → counts) ──
-// Keys must match the TopoJSON COUNTYNAME property
-// Updated: 2026-03-30 (W15) — 門市數不變：OD 78, Jins 90+RIM 4=94, 眼鏡 35, KC 17
-const STORE_DATA = {
-  '臺北市':   { od: 19, jins: 21, megane: 6,  klassic: 6 },
-  '新北市':   { od: 17, jins: 19, megane: 5,  klassic: 0 },
-  '基隆市':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '桃園市':   { od: 9,  jins: 8,  megane: 4,  klassic: 1 },
-  '新竹市':   { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
-  '新竹縣':   { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
-  '苗栗縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '臺中市':   { od: 7,  jins: 13, megane: 7,  klassic: 2 },
-  '彰化縣':   { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
-  '南投縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
-  '雲林縣':   { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
-  '嘉義市':   { od: 1,  jins: 2,  megane: 0,  klassic: 0 },
-  '嘉義縣':   { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '臺南市':   { od: 3,  jins: 7,  megane: 3,  klassic: 3 },
-  '高雄市':   { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
-  '屏東縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '宜蘭縣':   { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
-  '花蓮縣':   { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '臺東縣':   { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '澎湖縣':   { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '金門縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
-  '連江縣':   { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
+// ── Store data — use NORMALIZED keys (臺→台) ──
+// Updated: 2026-03-30 (W15) — OD 78, Jins 90+RIM 4=94, 眼鏡 35, KC 17 = 224
+const STORE_DATA_RAW = {
+  '台北市': { od: 19, jins: 21, megane: 6,  klassic: 6 },
+  '新北市': { od: 17, jins: 19, megane: 5,  klassic: 0 },
+  '基隆市': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '桃園市': { od: 9,  jins: 8,  megane: 4,  klassic: 1 },
+  '新竹市': { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
+  '新竹縣': { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
+  '苗栗縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '台中市': { od: 7,  jins: 13, megane: 7,  klassic: 2 },
+  '彰化縣': { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
+  '南投縣': { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
+  '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
+  '嘉義市': { od: 1,  jins: 2,  megane: 0,  klassic: 0 },
+  '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
+  '台南市': { od: 3,  jins: 7,  megane: 3,  klassic: 3 },
+  '高雄市': { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
+  '屏東縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '宜蘭縣': { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
+  '花蓮縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '台東縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
+  '澎湖縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
 };
 
+// Normalize: 臺→台, strip whitespace — used to match TopoJSON COUNTYNAME
+function norm(s) { return s.replace(/臺/g,'台').replace(/\s/g,''); }
+
+// Build lookup: normalized name → data
+const STORE_DATA = {};
+Object.entries(STORE_DATA_RAW).forEach(([k,v]) => { STORE_DATA[norm(k)] = v; });
+
+// Resolve data for a TopoJSON county name
+function getStoreData(countyName) {
+  return STORE_DATA[norm(countyName)];
+}
+
 // Display name mapping (shorter names for sidebar)
-const SHORT_NAME = {
-  '臺北市':'台北市','新北市':'新北市','基隆市':'基隆','桃園市':'桃園',
-  '新竹市':'新竹市','新竹縣':'新竹縣','苗栗縣':'苗栗','臺中市':'台中',
+const SHORT_NAME_RAW = {
+  '台北市':'台北市','新北市':'新北市','基隆市':'基隆','桃園市':'桃園',
+  '新竹市':'新竹市','新竹縣':'新竹縣','苗栗縣':'苗栗','台中市':'台中',
   '彰化縣':'彰化','南投縣':'南投','雲林縣':'雲林','嘉義市':'嘉義市',
-  '嘉義縣':'嘉義縣','臺南市':'台南','高雄市':'高雄','屏東縣':'屏東',
-  '宜蘭縣':'宜蘭','花蓮縣':'花蓮','臺東縣':'台東','澎湖縣':'澎湖',
+  '嘉義縣':'嘉義縣','台南市':'台南','高雄市':'高雄','屏東縣':'屏東',
+  '宜蘭縣':'宜蘭','花蓮縣':'花蓮','台東縣':'台東','澎湖縣':'澎湖',
   '金門縣':'金門','連江縣':'連江'
 };
+const SHORT_NAME = {};
+Object.entries(SHORT_NAME_RAW).forEach(([k,v]) => { SHORT_NAME[norm(k)] = v; });
+function getShortName(countyName) { return SHORT_NAME[norm(countyName)] || countyName; }
 
 const activeFilter = { od: true, jins: true, megane: true, klassic: true };
 const DOT_R = 2.8;
@@ -237,7 +224,7 @@ loadTopo().then(topo => {
   // Extract counties GeoJSON — exclude 金門/連江 to focus on main island + 澎湖
   const allCounties = topojson.feature(topo, topo.objects.counties);
   const skip = new Set(['金門縣','連江縣']);
-  const counties = {type:'FeatureCollection', features: allCounties.features.filter(f => !skip.has(f.properties.COUNTYNAME))};
+  const counties = {type:'FeatureCollection', features: allCounties.features.filter(f => !skip.has(norm(f.properties.COUNTYNAME)))};
 
   // Projection: fit Taiwan main island into the map area
   const padding = 30;
@@ -281,7 +268,7 @@ loadTopo().then(topo => {
         .attr('class', 'county-label')
         .attr('x', centroid[0])
         .attr('y', centroid[1])
-        .text(SHORT_NAME[name] || name);
+        .text(getShortName(name));
     }
   });
 
@@ -291,7 +278,7 @@ loadTopo().then(topo => {
 
   counties.features.forEach(f => {
     const name = f.properties.COUNTYNAME;
-    const data = STORE_DATA[name];
+    const data = getStoreData(name);
     if (!data) return;
 
     const centroid = path.centroid(f);
@@ -342,10 +329,10 @@ loadTopo().then(topo => {
 // ── Tooltip ──
 function showTooltip(event, countyName) {
   const tt = document.getElementById('tooltip');
-  const data = STORE_DATA[countyName];
+  const data = getStoreData(countyName);
   if (!data) return;
 
-  const displayName = SHORT_NAME[countyName] || countyName;
+  const displayName = getShortName(countyName);
   let html = `<div class="tt-city">${displayName}</div>`;
   const brandKeys = ['od', 'jins', 'megane', 'klassic'];
   let total = 0;
@@ -412,7 +399,7 @@ function renderTable() {
   const mergeMap = { '新竹市':'新竹', '新竹縣':'新竹', '嘉義市':'嘉義', '嘉義縣':'嘉義' };
 
   Object.entries(STORE_DATA).forEach(([county, data]) => {
-    const key = mergeMap[county] || (SHORT_NAME[county] || county);
+    const key = mergeMap[county] || getShortName(county);
     if (!merged[key]) merged[key] = { od:0, jins:0, megane:0, klassic:0 };
     brandKeys.forEach(b => merged[key][b] += data[b]);
   });
@@ -454,6 +441,35 @@ function renderTable() {
 }
 
 renderTable();
+
+// ── Sidebar totals grid (dynamic) ──
+(function renderTotals() {
+  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
+  const totals = { od:0, jins:0, megane:0, klassic:0 };
+  Object.values(STORE_DATA).forEach(d => {
+    brandKeys.forEach(b => totals[b] += d[b]);
+  });
+  // Add Jins RIM stores (not per-county) = 4
+  const jinsDisplay = totals.jins + 4;
+  const grand = totals.od + jinsDisplay + totals.megane + totals.klassic;
+
+  const cards = [
+    { brand:'od',      num: totals.od,      badge:'#1', badgeBg:'rgba(66,133,244,0.15)', badgeColor:'#4285F4' },
+    { brand:'jins',    num: jinsDisplay,     badge:'#2', badgeBg:'rgba(229,57,53,0.15)',  badgeColor:'#E53935' },
+    { brand:'megane',  num: totals.megane,   badge:'#3', badgeBg:'rgba(244,166,35,0.15)', badgeColor:'#F4A623' },
+    { brand:'klassic', num: totals.klassic,  badge:'#4', badgeBg:'rgba(171,71,188,0.15)', badgeColor:'#AB47BC' }
+  ];
+
+  const grid = document.getElementById('totalsGrid');
+  grid.innerHTML = cards.map(c => `
+    <div class="total-card" data-brand="${c.brand}" onclick="toggleBrand('${c.brand}')">
+      <div class="tc-stripe" style="background:${BRANDS[c.brand].color}"></div>
+      <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</div>
+      <div class="tc-label">${BRANDS[c.brand].label}</div>
+      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
+    </div>
+  `).join('');
+})();
 
 // ── Responsive resize ──
 window.addEventListener('resize', () => {
