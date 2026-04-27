@@ -468,4 +468,14 @@ renderTable();
       <div class="tc-label">${BRANDS[c.brand].label}</div>
       <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
     </div>
-  `
+  `).join('');
+})();
+
+// ── Responsive resize ──
+window.addEventListener('resize', () => {
+  // Reload to re-fit projection
+  location.reload();
+});
+</script>
+</body>
+</html>
