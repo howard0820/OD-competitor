@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/04/13 — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/04/27 (W19) — Chrome 實地抓取（JINS +2：楊梅+台南 RIM 4/30 開幕）— 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,12 +118,12 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-04-20 (W18) — OD 78, Jins 94+RIM 4=98, 眼鏡 35, KC 20 = 231 (±0 vs W17)
+// Updated: 2026-04-27 (W19) — Chrome live scrape. OD 78, Jins 95+RIM 5=100, 眼鏡 35, KC 20 = 233 (+2 vs W18: JINS 楊梅梅獅店4/30開幕@桃園 + RIM FOCUS時尚流行館店4/30開幕@台南)
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
   '新北市': { od: 17, jins: 19, megane: 5,  klassic: 0 },
   '基隆市': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '桃園市': { od: 9,  jins: 8,  megane: 4,  klassic: 1 },
+  '桃園市': { od: 9,  jins: 9,  megane: 4,  klassic: 1 },
   '新竹市': { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
   '新竹縣': { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
   '苗栗縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
@@ -133,7 +133,7 @@ const STORE_DATA_RAW = {
   '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
   '嘉義市': { od: 1,  jins: 2,  megane: 0,  klassic: 0 },
   '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '台南市': { od: 3,  jins: 7,  megane: 3,  klassic: 3 },
+  '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 3 },
   '高雄市': { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
   '屏東縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
   '宜蘭縣': { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
@@ -468,14 +468,4 @@ renderTable();
       <div class="tc-label">${BRANDS[c.brand].label}</div>
       <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
     </div>
-  `).join('');
-})();
-
-// ── Responsive resize ──
-window.addEventListener('resize', () => {
-  // Reload to re-fit projection
-  location.reload();
-});
-</script>
-</body>
-</html>
+  `
