@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/05/04 (W20) — Chrome 實地抓取（JINS 北60+中17+南21+東2=100、眼鏡市場 35、Klassic 20，±0 vs W19）；母親節最後一週（JINS 5/10、眼鏡市場 5/11 收）— 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/05/11 (W21) — Chrome 實地抓取（JINS 北60+中17+南21+東2=100、眼鏡市場 35、Klassic 20，±0 vs W20）；母親節收官（JINS 5/10、眼鏡市場 5/11 收）— 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,8 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-05-04 (W20) — Chrome live scrape. OD 78, Jins 95+RIM 5=100 (北60/中17/南21/東2), 眼鏡 35, KC 20 = 233 (±0 vs W19). Focus: Mother's Day final week (Jins 5/10, Megane 5/11) + W20 monitoring of JINS 4/30 dual openings (楊梅梅獅桃園+RIM FOCUS台南) + Klassic AKILA new product line
+// Updated: 2026-05-11 (W21) — Chrome live scrape. OD 78, Jins 95+RIM 5=100 (北60/中17/南21/東2), 眼鏡 35, KC 20 = 233 (±0 vs W20). Focus: Mother's Day campaign closed (Jins 5/10, Megane 5/11) + JINS 1.76 ultra-thin lens suspended + Klassic 輕行者 foldable sunglasses new line ($1,980+)
+// Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
   '新北市': { od: 17, jins: 19, megane: 5,  klassic: 0 },
@@ -127,7 +128,7 @@ const STORE_DATA_RAW = {
   '新竹市': { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
   '新竹縣': { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
   '苗栗縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '台中市': { od: 7,  jins: 15, megane: 7,  klassic: 4 },
+  '台中市': { od: 7,  jins: 14, megane: 7,  klassic: 4 },
   '彰化縣': { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
   '南投縣': { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
   '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
