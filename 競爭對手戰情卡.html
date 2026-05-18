@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>競爭對手戰情卡 — OWNDAYS Competitive Battlecards</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC','Inter',sans-serif;background:#f4f5f7;color:#1a1a2e;min-height:100vh;line-height:1.5}
+
+/* ── Top bar ── */
+.topbar{background:#0d0d14;color:#fff;padding:24px 40px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:22px;font-weight:800;letter-spacing:-0.02em}
+.topbar .subtitle{font-size:12px;opacity:0.55;margin-top:4px;letter-spacing:0.04em}
+.topbar .meta{font-size:12px;opacity:0.5;text-align:right}
+
+/* ── Tabs ── */
+.tabs{background:#fff;display:flex;border-bottom:1px solid #e2e2e8;padding:0 40px;box-shadow:0 1px 4px rgba(0,0,0,0.03)}
+.tab{padding:18px 32px;font-size:16px;font-weight:700;cursor:pointer;color:#999;border-bottom:3px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:10px;letter-spacing:0.02em}
+.tab:hover{color:#333}
+.tab.active{color:#1a1a2e;border-bottom-color:currentColor}
+.tab.jins.active{color:#E4002B;border-bottom-color:#E4002B}
+.tab.megane.active{color:#F58220;border-bottom-color:#F58220}
+.tab.klassic.active{color:#6B3FA0;border-bottom-color:#6B3FA0}
+.tab .tab-dot{width:10px;height:10px;border-radius:50%}
+.tab.jins .tab-dot{background:#E4002B}
+.tab.megane .tab-dot{background:#F58220}
+.tab.klassic .tab-dot{background:#6B3FA0}
+.tab .tab-meta{font-size:11px;font-weight:500;opacity:0.55;margin-left:6px}
+
+/* ── Container ── */
+.container{max-width:1400px;margin:0 auto;padding:32px 40px 80px}
+
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── Header ── */
+.brand-hero{padding:28px 32px;border-radius:14px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden}
+.brand-hero.jins{background:linear-gradient(135deg,#E4002B,#a8001f)}
+.brand-hero.megane{background:linear-gradient(135deg,#F58220,#cc5e00)}
+.brand-hero.klassic{background:linear-gradient(135deg,#6B3FA0,#4a2c70)}
+.brand-hero h2{font-size:28px;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px}
+.brand-hero .hero-meta{font-size:13px;opacity:0.8}
+.brand-hero .hero-intent{font-size:16px;margin-top:14px;font-weight:500;line-height:1.55;background:rgba(255,255,255,0.12);padding:12px 16px;border-radius:8px;border-left:3px solid rgba(255,255,255,0.55)}
+.brand-hero .hero-stats{display:flex;gap:32px;margin-top:18px;flex-wrap:wrap}
+.brand-hero .stat{font-size:12px;opacity:0.85}
+.brand-hero .stat strong{font-size:24px;font-weight:800;display:block;line-height:1}
+
+/* ── Grid ── */
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin-bottom:18px}
+.card{background:#fff;border-radius:12px;padding:22px 24px;box-shadow:0 1px 3px rgba(0,0,0,0.04);border:1px solid #e8e8ee;position:relative}
+.card.stripe-jins{border-left:4px solid #E4002B}
+.card.stripe-megane{border-left:4px solid #F58220}
+.card.stripe-klassic{border-left:4px solid #6B3FA0}
+.card h3{font-size:14px;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card h3 .ico{width:22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:#fff;background:#333}
+.card .card-body{font-size:14px;color:#1a1a2e}
+.card.col-12{grid-column:span 12}
+.card.col-8{grid-column:span 8}
+.card.col-6{grid-column:span 6}
+.card.col-4{grid-column:span 4}
+.card.col-3{grid-column:span 3}
+
+/* ── Tables ── */
+.mini-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.mini-table th{text-align:left;padding:8px 10px;background:#f7f7fa;font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:0.06em;border-bottom:1px solid #e8e8ee}
+.mini-table td{padding:9px 10px;border-bottom:1px solid #f0f0f5}
+.mini-table tr:last-child td{border-bottom:none}
+.mini-table .num{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+
+/* ── Pills ── */
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;margin-right:5px;margin-bottom:4px}
+.pill.red{background:#FEE;color:#C0392B}
+.pill.orange{background:#FFF3E0;color:#E85D00}
+.pill.blue{background:#E8F0FE;color:#1967D2}
+.pill.green{background:#E8F5E9;color:#2E7D32}
+.pill.gray{background:#f0f0f5;color:#666}
+.pill.purple{background:#F3E5F5;color:#6B3FA0}
+
+/* ── Threat radar (CSS-only bar style) ── */
+.threat-row{display:flex;align-items:center;gap:14px;padding:6px 0}
+.threat-label{font-size:13px;width:90px;color:#444;font-weight:500}
+.threat-bar{flex:1;height:8px;background:#f0f0f5;border-radius:6px;overflow:hidden}
+.threat-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#F58220,#C0392B)}
+.threat-fill.low{background:linear-gradient(90deg,#90C695,#2E7D32)}
+.threat-fill.med{background:linear-gradient(90deg,#FFB74D,#E85D00)}
+.threat-fill.high{background:linear-gradient(90deg,#F58220,#C0392B)}
+.threat-score{font-size:14px;font-weight:700;width:38px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ── Pricing tier ── */
+.tier{display:flex;align-items:center;gap:12px;padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px}
+.tier-name{font-size:12px;font-weight:700;width:80px;color:#444}
+.tier-price{font-size:14px;font-weight:800;width:120px;color:#1a1a2e;font-variant-numeric:tabular-nums}
+.tier-desc{font-size:12px;color:#666;flex:1}
+
+/* ── Hypothesis log ── */
+.hypo{padding:12px 14px;background:#fafafd;border-radius:8px;margin-bottom:8px;border-left:3px solid #ccc}
+.hypo.confirmed{border-left-color:#2E7D32}
+.hypo.tracking{border-left-color:#E85D00}
+.hypo.discon{border-left-color:#C0392B}
+.hypo-stmt{font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:4px}
+.hypo-meta{font-size:11px;color:#888;display:flex;gap:12px}
+.hypo-meta b{color:#444}
+
+/* ── Sentiment ── */
+.sent-bars{display:flex;height:24px;border-radius:12px;overflow:hidden;margin-bottom:12px;font-size:11px;font-weight:700;color:#fff}
+.sent-pos{background:#2E7D32;display:flex;align-items:center;justify-content:center}
+.sent-neu{background:#9E9E9E;display:flex;align-items:center;justify-content:center}
+.sent-neg{background:#C0392B;display:flex;align-items:center;justify-content:center}
+
+.theme-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f0f0f5;font-size:13px}
+.theme-row:last-child{border-bottom:none}
+.theme-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-right:8px}
+.theme-tag.pos{background:#E8F5E9;color:#2E7D32}
+.theme-tag.neg{background:#FEE;color:#C0392B}
+.theme-tag.neu{background:#f0f0f5;color:#666}
+
+/* ── Quote ── */
+.quote{padding:14px 18px;background:#fff8e8;border-left:3px solid #E85D00;border-radius:8px;font-size:13px;font-style:italic;color:#1a1a2e;margin-top:10px}
+.quote .qcite{font-size:11px;color:#888;font-style:normal;margin-top:6px;display:block}
+
+/* ── Channels ── */
+.chan-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:#fafafd;border-radius:6px;margin-bottom:5px;font-size:13px}
+.chan-num{font-variant-numeric:tabular-nums;font-weight:700}
+
+/* ── Source links ── */
+.src-list{font-size:12px;line-height:1.7}
+.src-list a{color:#4285F4;text-decoration:none}
+.src-list a:hover{text-decoration:underline}
+
+/* ── Misc ── */
+.section-title{font-size:13px;font-weight:700;color:#888;letter-spacing:0.08em;text-transform:uppercase;margin:8px 0 10px}
+.kv{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px solid #f0f0f5}
+.kv:last-child{border-bottom:none}
+.kv-k{color:#666;font-weight:500}
+.kv-v{font-weight:600;font-variant-numeric:tabular-nums}
+.foot{text-align:center;font-size:11px;color:#999;padding:20px 0;letter-spacing:0.06em}
+
+/* ── Mobile ── */
+@media(max-width:900px){
+  .card.col-8,.card.col-6,.card.col-4,.card.col-3{grid-column:span 12}
+  .container{padding:20px}
+  .topbar{padding:18px 20px}
+  .tabs{padding:0 20px;overflow-x:auto}
+  .tab{padding:14px 18px;font-size:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ TOP BAR ════════════ -->
+<div class="topbar">
+  <div>
+    <h1>競爭對手戰情卡 · Competitive Battlecards</h1>
+    <div class="subtitle">OWNDAYS TAIWAN · COMPETITIVE INTELLIGENCE · 戰略+多源情報+輿情</div>
+  </div>
+  <div class="meta">
+    <div>最後更新：2026/05/18 (W22)</div>
+    <div style="margin-top:4px">每週小 diff · 季度大重整</div>
+  </div>
+</div>
+
+<!-- ════════════ TABS ════════════ -->
+<div class="tabs" id="tabs">
+  <div class="tab jins active" data-tab="jins">
+    <span class="tab-dot"></span>
+    JINS <span class="tab-meta">100 店 · 威脅 8.5/10</span>
+  </div>
+  <div class="tab megane" data-tab="megane">
+    <span class="tab-dot"></span>
+    眼鏡市場 <span class="tab-meta">35 店 · 威脅 5.5/10</span>
+  </div>
+  <div class="tab klassic" data-tab="klassic">
+    <span class="tab-dot"></span>
+    KlassiC. <span class="tab-meta">20 店 · 威脅 3.8/10</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ════════════════════════════════════════ JINS PANEL ════════════════════════════════════════ -->
+<div class="panel active" id="panel-jins">
+
+  <!-- HERO -->
+  <div class="brand-hero jins">
+    <h2>JINS Taiwan · 睛姿股份有限公司</h2>
+    <div class="hero-meta">日系眼鏡領導品牌 · 2015 入台 · 統一編號 24975282 · 總經理 邱明琪</div>
+    <div class="hero-intent">
+      <strong>戰略意圖（W22 公開確認）：</strong>
+      分眾化雙軌品牌（RIM BY JINS 鎖年輕＋大人系店鋪鎖成熟），下個十年定位「深耕在地永續」。
+      自 2025 起平均 18 天開一店，已是在台最快達成百店規模的日系品牌。
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>100</strong>全台門市（95+RIM 5）</div>
+      <div class="stat"><strong>18 天</strong>每間新店速度</div>
+      <div class="stat"><strong>250 萬</strong>累積服務人次</div>
+      <div class="stat"><strong>10 年</strong>在台年資</div>
+      <div class="stat"><strong>NT$58K</strong>驗光師薪資上看</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 威脅矩陣 -->
+    <div class="card col-4 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">⚡</span>對 OD 威脅維度</h3>
+      <div class="threat-row"><div class="threat-label">客流威脅</div><div class="threat-bar"><div class="threat-fill high" style="width:88%"></div></div><div class="threat-score">8.8</div></div>
+      <div class="threat-row"><div class="threat-label">品牌力</div><div class="threat-bar"><div class="threat-fill high" style="width:90%"></div></div><div class="threat-score">9.0</div></div>
+      <div class="threat-row"><div class="threat-label">價格戰</div><div class="threat-bar"><div class="threat-fill high" style="width:78%"></div></div><div class="threat-score">7.8</div></div>
+      <div class="threat-row"><div class="threat-label">人才搶奪</div><div class="threat-bar"><div class="threat-fill high" style="width:85%"></div></div><div class="threat-score">8.5</div></div>
+      <div class="threat-row"><div class="threat-label">通路覆蓋</div><div class="threat-bar"><div class="threat-fill high" style="width:92%"></div></div><div class="threat-score">9.2</div></div>
+      <div class="threat-row"><div class="threat-label">內容行銷</div><div class="threat-bar"><div class="threat-fill high" style="width:80%"></div></div><div class="threat-score">8.0</div></div>
+      <div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f5">
+        <div style="font-size:11px;color:#888">綜合威脅指數</div>
+        <div style="font-size:28px;font-weight:800;color:#C0392B">8.5 / 10</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">vs W21 +0.5（百店里程碑＋大促）</div>
+      </div>
+    </div>
+
+    <!-- 展店節奏 -->
+    <div class="card col-4 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">📍</span>展店節奏</h3>
+      <div class="kv"><span class="kv-k">JINS 主品牌</span><span class="kv-v">95 間</span></div>
+      <div class="kv"><span class="kv-k">RIM BY JINS</span><span class="kv-v">5 間</span></div>
+      <div class="kv"><span class="kv-k">2026 已開新店</span><span class="kv-v">5 間（東湖/樹林/南港中信/漢神洲際/楊梅/RIM FOCUS）</span></div>
+      <div class="kv"><span class="kv-k">展店速度</span><span class="kv-v">2025 起 18 天/店</span></div>
+      <div class="kv"><span class="kv-k">過去 10 年平均</span><span class="kv-v">1.2 個月/店</span></div>
+      <div class="kv"><span class="kv-k">RIM 北部分布</span><span class="kv-v">3（LaLaport南港/誠品南西/京站）</span></div>
+      <div class="kv"><span class="kv-k">RIM 中南分布</span><span class="kv-v">2（LaLaport台中/台南FOCUS）</span></div>
+      <div class="kv"><span class="kv-k">最高密度區</span><span class="kv-v">台北 23 / 新北 19 / 台中 15</span></div>
+    </div>
+
+    <!-- 社群＆通路 -->
+    <div class="card col-4 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">📱</span>社群＆數位通路</h3>
+      <div class="chan-row"><span>Facebook</span><span class="chan-num">256K likes</span></div>
+      <div class="chan-row"><span>Instagram @jinstaiwan</span><span class="chan-num">65K · 3,012 posts</span></div>
+      <div class="chan-row"><span>YouTube</span><span class="chan-num">活躍</span></div>
+      <div class="chan-row"><span>LINE 官方</span><span class="chan-num">@jinstaiwan</span></div>
+      <div class="chan-row"><span>EC 平台</span><span class="chan-num">官網 + 京站 + 蝦皮</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#FEE;border-radius:8px;font-size:12px">
+        <strong style="color:#C0392B">i-Buzz 數據：</strong> 9 個快時尚眼鏡品牌中，JINS 為線上搜尋量與 FB 發文互動熱度雙冠王。OWNDAYS 粉絲多但互動表現相對較差。
+      </div>
+    </div>
+
+    <!-- 定價架構 -->
+    <div class="card col-8 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">💰</span>定價架構（含 RIM 副品牌）</h3>
+      <div class="tier"><div class="tier-name pill red">RIM 入門</div><div class="tier-price">NT$1,980 起</div><div class="tier-desc">RIM BY JINS 副品牌．年輕潮流．多風格獨家配件．2026 W22 8 折後實價 ≈ $1,584</div></div>
+      <div class="tier"><div class="tier-name pill orange">Airframe</div><div class="tier-price">NT$2,980</div><div class="tier-desc">輕感舒壓系列．全球熱銷近 3 千萬支．W17 升級鎢金屬重心平衡技術．8 折後 ≈ $2,384</div></div>
+      <div class="tier"><div class="tier-name pill blue">主流款</div><div class="tier-price">NT$3,980</div><div class="tier-desc">標準入門價（含基本鏡片）．大宗銷售價格帶．8 折後 ≈ $3,184</div></div>
+      <div class="tier"><div class="tier-name pill purple">聯名／高階</div><div class="tier-price">NT$3,980–8,000</div><div class="tier-desc">吉伊卡哇聯名、Heatherwick Studio、Kids and Junior 等 IP 系列．通常排除大促</div></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f5">
+        <div class="section-title">機能加價（與 OD 套餐制差異關鍵）</div>
+        <div class="kv"><span class="kv-k">日本製鏡片</span><span class="kv-v">+NT$2,000</span></div>
+        <div class="kv"><span class="kv-k">抗藍光鏡片</span><span class="kv-v">+NT$1,000</span></div>
+        <div class="kv"><span class="kv-k">調光鏡片</span><span class="kv-v">+NT$2,000-3,000</span></div>
+        <div class="kv"><span class="kv-k">漸進多焦點</span><span class="kv-v">+NT$3,000-5,000（W19 後升級至 8 折）</span></div>
+        <div class="kv"><span class="kv-k">1.76 極薄鏡片</span><span class="kv-v" style="color:#C0392B">NT$15,000（W21 暫停販售）</span></div>
+      </div>
+    </div>
+
+    <!-- 戰略假設追蹤 -->
+    <div class="card col-4 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">🎯</span>戰略假設追蹤</h3>
+      <div class="hypo confirmed">
+        <div class="hypo-stmt">[W18] JINS 100 店 2026Q2 達成</div>
+        <div class="hypo-meta"><b>✅ 已驗證</b> <span>W22 達成（提前 1 月）</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W18] JINS 2026 突破 120 店</div>
+        <div class="hypo-meta"><b>📊 信心 70%</b> <span>↑（上修 from 60%）</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W22] RIM 副品牌 2026 突破 10 店</div>
+        <div class="hypo-meta"><b>📊 信心 65%</b> <span>新提（W22）</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W22] 「大人系店鋪」獨立空間 2026Q4 落地</div>
+        <div class="hypo-meta"><b>📊 信心 40%</b> <span>戰略意圖明示但未見實體</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W21] 1.76 鏡片 6 個月內復售</div>
+        <div class="hypo-meta"><b>📊 信心 50%</b> <span>JINS 未明示時程</span></div>
+      </div>
+    </div>
+
+    <!-- 促銷節奏 -->
+    <div class="card col-12 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">📅</span>促銷節奏 Pattern（過去 10 週＋未來預測）</h3>
+      <table class="mini-table">
+        <thead>
+          <tr><th>檔期</th><th>類型</th><th>主案</th><th>時間</th><th>強度</th><th>OD 對應建議</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>W13-W14</td><td>春季鏡片</td><td>日製多焦9折/藍光85折/調光8折</td><td>2/26-3/15</td><td><span class="pill orange">中</span></td><td>已執行</td></tr>
+          <tr><td>W15</td><td>EC 限定</td><td>春季新品賞 88-9折＋滿$3800折$200</td><td>3/16-3/31</td><td><span class="pill blue">低</span></td><td>已執行</td></tr>
+          <tr><td>W16-W21</td><td>母親節</td><td>滿$10K折$1K＋漸進 8 折＋贈傘</td><td>4/16-5/10</td><td><span class="pill red">高</span></td><td>已執行（OD 5/12 才上）</td></tr>
+          <tr style="background:#FEE"><td><strong>W22-W27</strong></td><td><strong>SUMMER SALE</strong></td><td><strong>指定眼鏡 8 折／9 折（藍/綠圓標）</strong></td><td><strong>5/14-6/30（6.5 週）</strong></td><td><span class="pill red">高</span></td><td><strong>本週進行中 — SKU 實價對標</strong></td></tr>
+          <tr style="background:#fff8e8"><td>W28-W32（預測）</td><td>父親節</td><td>預期「滿額折＋日製漸進」復刻母親節組合</td><td>~7/15-8/15</td><td><span class="pill orange">中-高</span></td><td>OD 父親節方案最遲 7/1 前發布</td></tr>
+          <tr style="background:#fff8e8"><td>W33-W36（預測）</td><td>開學季</td><td>預期 RIM 副品牌主打＋學生折扣</td><td>~8/20-9/20</td><td><span class="pill orange">中</span></td><td>OD 學生方案準備</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px;padding:12px 16px;background:#FFF3E0;border-radius:8px;font-size:13px">
+        <strong>🎯 節奏觀察：</strong> JINS 已從「單檔期」進入「無縫接檔」模式 — 母親節 5/10 結束 → 4 天後 SUMMER SALE 啟動 → 之後預期父親節銜接。
+        <strong>對 OD 啟示：</strong> 不能再單純對標單一檔期，必須準備「整夏 + 整秋」連續戰役 playbook。
+      </div>
+    </div>
+
+    <!-- 敘事主軸 + 客群 -->
+    <div class="card col-6 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">📖</span>內容敘事主軸（連續 6 週分析）</h3>
+      <div style="margin-bottom:10px"><span class="pill purple">W17</span> 腮紅鏡片首推</div>
+      <div style="margin-bottom:10px"><span class="pill purple">W18</span> 知性時尚系列</div>
+      <div style="margin-bottom:10px"><span class="pill purple">W19</span> 母親節「滿萬折千＋漸進 8 折」</div>
+      <div style="margin-bottom:10px"><span class="pill purple">W20</span> 2026 鏡片趨勢｜日製彩色鏡片與膚色搭配</div>
+      <div style="margin-bottom:10px"><span class="pill purple">W21</span> 1.76 暫停＋彩色鏡片延續</div>
+      <div style="margin-bottom:10px"><span class="pill red">W22</span> 百店里程碑＋SUMMER SALE＋腮紅鏡片二次發酵</div>
+      <div class="quote">
+        「下一個十年定位：深耕台灣、在地永續。針對喜愛潮流穿搭的年輕世代推出姊妹牌 RIM BY JINS；針對成熟世代推出大人系店鋪。」
+        <span class="qcite">— JINS 台灣總經理 邱明琪，W22 百店記者會</span>
+      </div>
+      <div style="margin-top:10px;padding:10px 12px;background:#FFF3E0;border-radius:6px;font-size:12px">
+        <strong>主軸演化結論：</strong>「鏡片美妝化（情感、配色）」是 JINS 的主旋律，而非單純機能（漸進、極薄）。鎖定 25-40 都會女性。
+      </div>
+    </div>
+
+    <div class="card col-6 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">👥</span>核心客群分析</h3>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">A. 都會通勤族（主力 60%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">25-40 歲、月薪 35-70K、台北/新北/台中、注重「速度＋透明定價＋日系設計」</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">B. 年輕潮流（RIM 鎖定 20%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">18-28 歲、學生/職場新鮮人、$1,980 起入門、追求多風格穿搭、IP 聯名敏感</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">C. 成熟世代（大人系新切 15%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">40-60 歲、高客單、店裝/商品/服務模式調整、漸進鏡片需求高</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px">
+        <strong style="font-size:13px">D. 高度數客群（受 1.76 暫停影響 5%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">-8.00 以上、過去靠 1.76 解決外觀問題，現選擇縮窄 → <strong style="color:#C0392B">OD 切入機會</strong></div>
+      </div>
+    </div>
+
+    <!-- 🆕 社群輿情 -->
+    <div class="card col-12 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">💬</span>社群輿情分析（Dcard ＋ PTT ＋ Mobile01）</h3>
+      <div class="section-title">過去 6 個月情緒分布（n≈80 主要 thread）</div>
+      <div class="sent-bars">
+        <div class="sent-pos" style="width:32%">正面 32%</div>
+        <div class="sent-neu" style="width:30%">中性 30%</div>
+        <div class="sent-neg" style="width:38%">負面 38%</div>
+      </div>
+
+      <div class="grid" style="margin-top:8px">
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#2E7D32">✅ 正面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>價格透明</span><span class="pill green">26 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>取件快速（30 分）</span><span class="pill green">24 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>日系設計感</span><span class="pill green">18 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>無壓力購物環境</span><span class="pill green">17 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>半年無條件保固</span><span class="pill green">12 提及</span></div>
+        </div>
+
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#C0392B">⚠️ 負面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>店員專業度不穩（瞳距/驗光）</span><span class="pill red">31 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>鏡片掉膜（1-2 年內）</span><span class="pill red">23 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>戴後不適/暈眩</span><span class="pill red">19 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>台日價差 7-12 倍</span><span class="pill red">17 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>追加機能 +$2K 偏高</span><span class="pill red">14 提及</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:12px 16px;background:#FFF3E0;border-radius:8px;font-size:13px">
+        <strong>🎯 輿情洞察：</strong>JINS 雖品牌力強（社群曝光大），但消費者口碑分歧明顯。
+        <strong style="color:#C0392B">負面 38% &gt; 正面 32%</strong> — 主要痛點集中在「<strong>店員專業度</strong>」與「<strong>產品耐用性</strong>」。
+        這是 OD 可放大的差異化點：強調驗光師資歷透明、強調 OD 售後服務（含調整、更換鼻墊、配鏡終身服務）。
+      </div>
+
+      <div class="section-title" style="margin-top:14px">代表性留言摘錄</div>
+      <div class="quote" style="background:#E8F5E9;border-left-color:#2E7D32">
+        「JINS 驗光相當仔細，整個程序花了約 20 分鐘，達到 90 分以上水準。價格透明、取件快速，對高度數者預算省很多。」
+        <span class="qcite">— Mobile01 正面開箱（多數 thread 共識）</span>
+      </div>
+      <div class="quote" style="background:#FEE;border-left-color:#C0392B">
+        「在台灣 JINS 配 1.76 賣 $15,000，日本 JINS 同款只賣日幣 11,000（≈$2,310），價差近 7 倍。」
+        <span class="qcite">— Dcard/PTT/Gossiping 跨板熱議（W11-W14 連續延燒，W21 1.76 暫停後再次重提）</span>
+      </div>
+    </div>
+
+    <!-- 廣告投放 -->
+    <div class="card col-6 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">📢</span>廣告投放訊號（Meta Ad Library 觀察）</h3>
+      <div class="kv"><span class="kv-k">FB 廣告活躍版本</span><span class="kv-v">高（W22 新增 SUMMER SALE 創意）</span></div>
+      <div class="kv"><span class="kv-k">主要 CTA</span><span class="kv-v">「立即試戴」、「最新優惠」</span></div>
+      <div class="kv"><span class="kv-k">創意主軸</span><span class="kv-v">腮紅鏡片＋藝人代言（鼓鼓/蕭秉治）</span></div>
+      <div class="kv"><span class="kv-k">投放族群</span><span class="kv-v">18-44 都會、女性偏多</span></div>
+      <div class="kv"><span class="kv-k">SEM 競價字</span><span class="kv-v">「JINS 眼鏡」「漸進鏡片」「腮紅鏡片」「日系眼鏡」</span></div>
+      <div style="margin-top:10px;padding:10px 12px;background:#FEE;border-radius:6px;font-size:12px">
+        <strong>OD SEM/SEO 建議：</strong> W22-W27 期間加碼防守「日系眼鏡」「平價眼鏡」「眼鏡推薦」競價字，避免被 JINS 百店紅利+大促雙重曝光擠壓。
+      </div>
+    </div>
+
+    <!-- 弱點分析 -->
+    <div class="card col-6 stripe-jins">
+      <h3><span class="ico" style="background:#E4002B">🎯</span>OD 可利用弱點</h3>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#C0392B">1. 1.76 極薄鏡片暫停（W21-）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">高度數客群轉移機會。OD 1.74 套餐含＋「同價、更薄視感」敘事可承接</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#C0392B">2. 台日鏡片價差爭議（W11-，未平息）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">「品牌信任」傷害仍在。OD 不直接攻擊，但可強調定價結構透明</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#C0392B">3. 店員專業度不穩定（38% 負評主因）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">OD 強化驗光師資歷展示、客訴回應 SOP、保固清晰可成差異化</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#C0392B">4. 機能加價結構不透明</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">加抗藍光+漸進+日製 = 框價＋$5-10K．OD 套餐一價全包是真實優勢</div>
+      </div>
+      <div>
+        <strong style="font-size:13px;color:#C0392B">5. 8 折＝折框不折鏡片</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">W22 SUMMER SALE 8 折是框價折扣，鏡片/機能仍須加價．實付差距遠小於宣傳折扣</div>
+      </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="card col-12">
+      <h3><span class="ico">🔗</span>多源情報來源</h3>
+      <div class="src-list">
+        <strong>官方/公開公告：</strong>
+        <a href="http://www.jins.com/tw/news/news-6a02eb93f00d1" target="_blank">百店記者會新聞稿 5/12</a> ｜
+        <a href="http://www.jins.com/tw/news/news-6a04355a0841c" target="_blank">SUMMER SALE 5/13</a> ｜
+        <a href="http://www.jins.com/tw/news/news-6a06972156308" target="_blank">腮紅鏡片 5/15</a> ｜
+        <a href="https://www.jins.com/tw/stores" target="_blank">門市一覽</a><br>
+        <strong>媒體報導：</strong>
+        <a href="https://udn.com/news/story/7270/9490851" target="_blank">聯合新聞網</a> ｜
+        <a href="https://www.setn.com/News.aspx?NewsID=1835467" target="_blank">三立新聞網</a> ｜
+        <a href="https://www.stufftaiwan.com/2026/05/11/jins%E5%8F%B0%E7%81%A3%E5%8D%81%E9%80%B1%E5%B9%B4%E9%81%94%E6%88%90%E7%99%BE%E5%BA%97%E9%87%8C%E7%A8%8B%E7%A2%91%EF%BC%81%E4%B8%8B%E4%B8%80%E5%80%8B%E5%8D%81%E5%B9%B4%E5%B1%95%E6%9C%9B%EF%BC%9A/" target="_blank">Stuff Taiwan</a> ｜
+        <a href="https://cnews.com.tw/204260508a03/" target="_blank">匯流新聞網</a> ｜
+        <a href="https://n.yam.com/Article/20260508289883" target="_blank">蕃新聞</a> ｜
+        <a href="https://www.twdreamlife.com/jins-the-100th-store/" target="_blank">夢想誌</a><br>
+        <strong>社群／論壇（輿情來源）：</strong>
+        <a href="https://www.facebook.com/jinstaiwan/" target="_blank">FB 256K</a> ｜
+        <a href="https://www.instagram.com/jinstaiwan/" target="_blank">IG 65K</a> ｜
+        <a href="https://www.dcard.tw/topics/Jins" target="_blank">Dcard JINS topic</a> ｜
+        <a href="https://www.ptt.cc/bbs/optical/M.1728739492.A.CD2.html" target="_blank">PTT JINS vs 眼鏡市場</a> ｜
+        <a href="https://www.mobile01.com/topicdetail.php?f=595&t=6722201" target="_blank">Mobile01 三大品牌比較</a><br>
+        <strong>招募／組織：</strong>
+        <a href="https://www.104.com.tw/company/1a2x6bj9xh" target="_blank">104 公司頁</a> ｜
+        <a href="https://salary.tw/c/zv9p" target="_blank">比薪水</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ MEGANE PANEL ════════════════════════════════════════ -->
+<div class="panel" id="panel-megane">
+
+  <div class="brand-hero megane">
+    <h2>眼鏡市場 Taiwan · 台灣頂點眼鏡市場股份有限公司</h2>
+    <div class="hero-meta">日本市佔率第一眼鏡連鎖 · 2024 入台（含開幕年）· MEGANEICHIBA TAIWAN CO.,LTD.</div>
+    <div class="hero-intent">
+      <strong>戰略意圖（推斷）：</strong>
+      日本品質＋量販平實，以「3 大貼心服務」（含調整、保固、清潔）建立中壯年家庭客群信任。
+      檔期密集型（3 週/檔），偏向「常態折扣＋週年祭」模式而非大爆檔。
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>35</strong>全台門市</div>
+      <div class="stat"><strong>2 年</strong>在台年資（最快）</div>
+      <div class="stat"><strong>~3 週</strong>每個新檔期</div>
+      <div class="stat"><strong>NT$50K</strong>證照人員薪資</div>
+      <div class="stat"><strong>$10K</strong>外縣市租屋補貼</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 威脅矩陣 -->
+    <div class="card col-4 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">⚡</span>對 OD 威脅維度</h3>
+      <div class="threat-row"><div class="threat-label">客流威脅</div><div class="threat-bar"><div class="threat-fill med" style="width:60%"></div></div><div class="threat-score">6.0</div></div>
+      <div class="threat-row"><div class="threat-label">品牌力</div><div class="threat-bar"><div class="threat-fill med" style="width:48%"></div></div><div class="threat-score">4.8</div></div>
+      <div class="threat-row"><div class="threat-label">價格戰</div><div class="threat-bar"><div class="threat-fill high" style="width:75%"></div></div><div class="threat-score">7.5</div></div>
+      <div class="threat-row"><div class="threat-label">人才搶奪</div><div class="threat-bar"><div class="threat-fill med" style="width:65%"></div></div><div class="threat-score">6.5</div></div>
+      <div class="threat-row"><div class="threat-label">通路覆蓋</div><div class="threat-bar"><div class="threat-fill med" style="width:42%"></div></div><div class="threat-score">4.2</div></div>
+      <div class="threat-row"><div class="threat-label">內容行銷</div><div class="threat-bar"><div class="threat-fill med" style="width:50%"></div></div><div class="threat-score">5.0</div></div>
+      <div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f5">
+        <div style="font-size:11px;color:#888">綜合威脅指數</div>
+        <div style="font-size:28px;font-weight:800;color:#E85D00">5.5 / 10</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">vs W21 +0.3（5/15 兩店一週年祭）</div>
+      </div>
+    </div>
+
+    <!-- 展店節奏 -->
+    <div class="card col-4 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">📍</span>展店節奏</h3>
+      <div class="kv"><span class="kv-k">全台門市</span><span class="kv-v">35 間</span></div>
+      <div class="kv"><span class="kv-k">2026 新開（已知）</span><span class="kv-v">1 間（南紡購物中心 3/25）</span></div>
+      <div class="kv"><span class="kv-k">入台速度</span><span class="kv-v">2 年達 35 店 = 業界最快</span></div>
+      <div class="kv"><span class="kv-k">北部</span><span class="kv-v">14（北6/新北5/桃4/竹3）</span></div>
+      <div class="kv"><span class="kv-k">中部</span><span class="kv-v">8（台中7/彰1）</span></div>
+      <div class="kv"><span class="kv-k">南部</span><span class="kv-v">8（南3/高5）</span></div>
+      <div class="kv"><span class="kv-k">東部</span><span class="kv-v">1（宜蘭1）</span></div>
+      <div class="kv"><span class="kv-k">中部三線城市</span><span class="kv-v" style="color:#E85D00">尚無（戰略缺口）</span></div>
+    </div>
+
+    <!-- 社群＆通路 -->
+    <div class="card col-4 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">📱</span>社群＆數位通路</h3>
+      <div class="chan-row"><span>Facebook Taiwan</span><span class="chan-num">34.8K likes</span></div>
+      <div class="chan-row"><span>Instagram @meganeichiba.tw</span><span class="chan-num">14K · 483 posts</span></div>
+      <div class="chan-row"><span>YouTube Taiwan</span><span class="chan-num">活躍（新節目影片）</span></div>
+      <div class="chan-row"><span>EC 平台</span><span class="chan-num">官網有度數試戴推廣</span></div>
+      <div class="chan-row"><span>日本本部 IG</span><span class="chan-num">60K（國際參考）</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#FFF3E0;border-radius:8px;font-size:12px">
+        <strong style="color:#E85D00">社群弱勢：</strong> FB 粉絲僅 JINS 的 1/7、IG 僅 1/4.6。i-Buzz 指出眼鏡市場「因 FB 創建較晚，粉絲基數較低」。但發文密度＋互動率與 JINS 相當。
+      </div>
+    </div>
+
+    <!-- 定價架構 -->
+    <div class="card col-8 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">💰</span>定價架構（線性加機能制）</h3>
+      <div class="tier"><div class="tier-name pill orange">基本配</div><div class="tier-price">NT$2,000 起</div><div class="tier-desc">含框＋鏡片．日本品質．基本標配（與 JINS 入門相當）</div></div>
+      <div class="tier"><div class="tier-name pill blue">主流款</div><div class="tier-price">NT$3,000 起</div><div class="tier-desc">配鏡到好．含基本鏡片．大宗銷售價格帶</div></div>
+      <div class="tier"><div class="tier-name pill purple">夏季墨鏡</div><div class="tier-price">NT$3,000 起</div><div class="tier-desc">指定鏡框＋有度數鏡片．4/24 起持續中</div></div>
+      <div class="tier"><div class="tier-name pill gray">CRAPT CHANGE</div><div class="tier-price">未公開</div><div class="tier-desc">新系列「一秒切換風格」．兩面可戴設計（功能差異化）</div></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f5">
+        <div class="section-title">機能加價（比 JINS 友善）</div>
+        <div class="kv"><span class="kv-k">機能單項加價</span><span class="kv-v">+NT$1,000（標準化）</span></div>
+        <div class="kv"><span class="kv-k">日本製極耐刮鏡片</span><span class="kv-v">中區門市曾推折$500</span></div>
+        <div class="kv"><span class="kv-k">YOSISTAMP 聯名贈品</span><span class="kv-v">滿$5,000 加贈毛巾（W18-W21）</span></div>
+        <div style="margin-top:10px;padding:10px 12px;background:#FFF3E0;border-radius:6px;font-size:12px">
+          <strong>vs JINS 差異：</strong>JINS 機能加價 $1,000-3,000 浮動；眼鏡市場相對「每項 +$1,000」標準化。
+          PTT/Dcard 一致認為「眼鏡市場機能加價較友善」是主要 CP 值優勢。
+        </div>
+      </div>
+    </div>
+
+    <!-- 戰略假設追蹤 -->
+    <div class="card col-4 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">🎯</span>戰略假設追蹤</h3>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W19] 2026Q3 進中部三線城市</div>
+        <div class="hypo-meta"><b>📊 信心 40%</b> <span>W22 無新動作</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W22] 5/29 家樂福彰化店一週年將擴大檔期</div>
+        <div class="hypo-meta"><b>📊 信心 70%</b> <span>5/15 兩店週年祭可能延伸</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W19] 夏季墨鏡攻勢將擴大為夏季主檔</div>
+        <div class="hypo-meta"><b>📊 信心 65%</b> <span>4/24-W22 持續，預期 5/25 後加碼</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W22] 2026 突破 45 店</div>
+        <div class="hypo-meta"><b>📊 信心 55%</b> <span>新提（W22）</span></div>
+      </div>
+      <div class="hypo confirmed">
+        <div class="hypo-stmt">[W18] 「展店一週年=週年祭」公關節奏</div>
+        <div class="hypo-meta"><b>✅ 已驗證</b> <span>W22 環球板橋+家樂福彰化重複套路</span></div>
+      </div>
+    </div>
+
+    <!-- 促銷節奏 -->
+    <div class="card col-12 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">📅</span>促銷節奏 Pattern</h3>
+      <table class="mini-table">
+        <thead>
+          <tr><th>檔期</th><th>類型</th><th>主案</th><th>時間</th><th>強度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>W13</td><td>週年慶</td><td>6 周年慶滿$6,000 折$666</td><td>3/2-3/29</td><td><span class="pill orange">中</span></td></tr>
+          <tr><td>W14</td><td>單店開幕</td><td>南紡購物中心店滿$3K 折$300/$5K 折$500</td><td>3/25 起</td><td><span class="pill blue">低</span></td></tr>
+          <tr><td>W15-W16</td><td>區域限定</td><td>中區購物節滿$6K 折$666＋日本製鏡片折$500</td><td>4/1 起</td><td><span class="pill orange">中-高（中部）</span></td></tr>
+          <tr><td>W16-W21</td><td>母親節</td><td>滿$5K 折$500＋YOSISTAMP 聯名毛巾</td><td>4/14-5/11</td><td><span class="pill red">高</span></td></tr>
+          <tr><td>W18-W22</td><td>夏季墨鏡</td><td>有度數太陽眼鏡 $3,000 起</td><td>4/24-進行中</td><td><span class="pill orange">中</span></td></tr>
+          <tr style="background:#FFF3E0"><td><strong>W22-（本週）</strong></td><td><strong>週年祭</strong></td><td><strong>環球板橋＋家樂福彰化店一週年祭</strong></td><td><strong>5/15 起</strong></td><td><span class="pill orange">中</span></td></tr>
+          <tr style="background:#fff8e8"><td>W23（預測）</td><td>單店週年</td><td>家樂福彰化 5/29 開幕一週年（去年模式）</td><td>~5/29-6/8</td><td><span class="pill orange">中</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 敘事＋客群 -->
+    <div class="card col-6 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">📖</span>內容敘事主軸</h3>
+      <div style="margin-bottom:10px"><span class="pill orange">主軸 A</span> 日本品質．日系連鎖．「JAPAN QUALITY」</div>
+      <div style="margin-bottom:10px"><span class="pill orange">主軸 B</span> 配鏡 3 大貼心服務（含調整、保固、清潔）</div>
+      <div style="margin-bottom:10px"><span class="pill orange">主軸 C</span> 驗光認真細心．配鏡到好．不加價</div>
+      <div style="margin-bottom:10px"><span class="pill orange">主軸 D</span> 適合家庭、上班族通勤、學生</div>
+      <div style="margin-bottom:10px"><span class="pill orange">W22 新增</span> 5/15 兩店週年祭 + 夏季墨鏡持續</div>
+      <div style="margin-top:10px;padding:10px 12px;background:#FFF3E0;border-radius:6px;font-size:12px">
+        <strong>主軸演化結論：</strong>敘事「保守、實在、量販平實」，無如 JINS 那樣的話題操作。粉絲基數小但忠誠度高。
+      </div>
+    </div>
+
+    <div class="card col-6 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">👥</span>核心客群分析</h3>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">A. 中壯年家庭（主力 50%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">35-55 歲、注重 CP 值、家庭主婦/上班族、優先選擇貼心服務</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">B. 預算敏感族（30%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">學生/上班族新鮮人、選擇「配到好」概念、$3,000-5,000 預算</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">C. 高度數客群（15%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">PTT/Dcard 共識：「眼鏡市場機能加價較友善」對高度數預算友好</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px">
+        <strong style="font-size:13px">D. 夏季墨鏡客（季節 5%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">4/24- 推「有度數 $3,000 起」攻擊一鏡兩用市場</div>
+      </div>
+    </div>
+
+    <!-- 社群輿情 -->
+    <div class="card col-12 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">💬</span>社群輿情分析（Dcard ＋ PTT ＋ Mobile01）</h3>
+      <div class="section-title">過去 6 個月情緒分布（n≈40 主要 thread）</div>
+      <div class="sent-bars">
+        <div class="sent-pos" style="width:55%">正面 55%</div>
+        <div class="sent-neu" style="width:30%">中性 30%</div>
+        <div class="sent-neg" style="width:15%">負面 15%</div>
+      </div>
+
+      <div class="grid" style="margin-top:8px">
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#2E7D32">✅ 正面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>驗光認真細心</span><span class="pill green">22 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>價格親民／CP 值高</span><span class="pill green">18 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>機能加價友善（每項+$1K）</span><span class="pill green">15 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>鏡框輕、配戴舒適</span><span class="pill green">13 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>提供鼻墊調整／替換</span><span class="pill green">10 提及</span></div>
+        </div>
+
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#C0392B">⚠️ 負面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>實體質感與照片落差</span><span class="pill red">8 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>東區/中山店等候時間長</span><span class="pill red">6 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>款式選擇較少</span><span class="pill red">5 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>配鏡後度數適應問題</span><span class="pill red">5 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>缺乏潮流／設計感</span><span class="pill red">4 提及</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:12px 16px;background:#E8F5E9;border-radius:8px;font-size:13px">
+        <strong>🎯 輿情洞察：</strong>眼鏡市場的口碑顯著優於 JINS（正面 55% vs JINS 32%）。
+        消費者把它定位為「<strong>實在、認真、價格合理</strong>」— 沒有 JINS 的爭議聲量，但也缺少 JINS 的話題性。
+        <strong style="color:#E85D00">對 OD 啟示：</strong>眼鏡市場是「沈默殺手」型威脅 — 主管問可能感覺不到，但實際業績被慢慢吸走，要靠數據與門市客流變化警覺。
+      </div>
+
+      <div class="quote" style="background:#E8F5E9;border-left-color:#2E7D32">
+        「眼鏡市場對驗光的態度比 JINS 和 OWNDAYS 都認真，會反覆確認度數，溫柔勸說客人不要使用半年前的度數。」
+        <span class="qcite">— Dcard 穿搭板（高 like 留言共識）</span>
+      </div>
+    </div>
+
+    <!-- 廣告投放 -->
+    <div class="card col-6 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">📢</span>廣告投放訊號</h3>
+      <div class="kv"><span class="kv-k">FB 廣告活躍版本</span><span class="kv-v">中（W22 兩店週年祭新版本）</span></div>
+      <div class="kv"><span class="kv-k">主要 CTA</span><span class="kv-v">「來店配鏡」、「優惠期限」</span></div>
+      <div class="kv"><span class="kv-k">創意主軸</span><span class="kv-v">日本品質．配鏡服務．家庭客群</span></div>
+      <div class="kv"><span class="kv-k">投放族群</span><span class="kv-v">25-55 都會＋家庭</span></div>
+      <div class="kv"><span class="kv-k">SEM 競價字</span><span class="kv-v">「眼鏡市場」「日本眼鏡」「眼鏡推薦」</span></div>
+    </div>
+
+    <!-- 弱點 -->
+    <div class="card col-6 stripe-megane">
+      <h3><span class="ico" style="background:#F58220">🎯</span>OD 可利用弱點</h3>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#E85D00">1. 款式選擇較少（潮流敏感族流失）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">PTT/Dcard 一致認為「款式不夠多元」．OD 多元品項可訴求</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#E85D00">2. 通路覆蓋低（35 店，僅 OD 45%）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">中部三線、東部、外島都缺．OD 78 店通路優勢明顯</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#E85D00">3. 社群影響力小（FB 34K vs JINS 256K）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">年輕族群接觸不到、品牌話題性弱．OD 內容行銷有機會</div>
+      </div>
+      <div>
+        <strong style="font-size:13px;color:#E85D00">4. 缺乏品牌情感連結</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">敘事保守「日本品質」，缺乏 JINS 的鏡片美妝化／IP 聯名話題</div>
+      </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="card col-12">
+      <h3><span class="ico">🔗</span>多源情報來源</h3>
+      <div class="src-list">
+        <strong>官方：</strong>
+        <a href="https://www.meganeichiba.com.tw/" target="_blank">官網</a> ｜
+        <a href="https://www.meganeichiba.com.tw/news" target="_blank">最新消息</a> ｜
+        <a href="https://www.meganeichiba.com.tw/location" target="_blank">門市一覽</a><br>
+        <strong>社群／論壇：</strong>
+        <a href="https://www.facebook.com/meganeichiba.tw/" target="_blank">FB 34.8K</a> ｜
+        <a href="https://www.instagram.com/meganeichiba.tw/" target="_blank">IG 14K</a> ｜
+        <a href="https://www.dcard.tw/f/talk/p/242304876" target="_blank">Dcard 服務體驗</a> ｜
+        <a href="https://www.dcard.tw/f/dressup/p/256239993" target="_blank">Dcard 高度近視體驗</a> ｜
+        <a href="https://www.ptt.cc/bbs/optical/M.1728739492.A.CD2.html" target="_blank">PTT JINS vs 眼鏡市場</a><br>
+        <strong>招募：</strong>
+        <a href="https://www.104.com.tw/job/6qxm2" target="_blank">104 大台北驗光師</a> ｜
+        <a href="https://www.1111.com.tw/corp/73141391" target="_blank">1111 公司頁</a><br>
+        <strong>產業分析：</strong>
+        <a href="https://www.i-buzz.com.tw/article/article?atype=brandranking&id=117" target="_blank">i-Buzz 品牌競爭分析</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════ KLASSIC PANEL ════════════════════════════════════════ -->
+<div class="panel" id="panel-klassic">
+
+  <div class="brand-hero klassic">
+    <h2>KlassiC. · 用形狀闡述生活的態度</h2>
+    <div class="hero-meta">台灣設計師眼鏡品牌 · 亞洲臉型 3 點式設計 · 副牌 SON&SUN ／ Klassroom ／ AKILA 台灣總代理</div>
+    <div class="hero-intent">
+      <strong>戰略意圖（W20-W22 演化）：</strong>
+      設計師眼鏡＋自有品牌＋代理品牌三軌定位．近期向下擴張價格帶（W21 輕行者 $1,980、W22 X mEltEd potato $3,680），刻意避開純價格戰、走差異化路線。
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong>20</strong>全台門市</div>
+      <div class="stat"><strong>3 軌</strong>品牌定位</div>
+      <div class="stat"><strong>$1,980</strong>最新入門款</div>
+      <div class="stat"><strong>$8,680</strong>AKILA 上限</div>
+      <div class="stat"><strong>96K</strong>IG @klassicglobal</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- 威脅矩陣 -->
+    <div class="card col-4 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">⚡</span>對 OD 威脅維度</h3>
+      <div class="threat-row"><div class="threat-label">客流威脅</div><div class="threat-bar"><div class="threat-fill low" style="width:35%"></div></div><div class="threat-score">3.5</div></div>
+      <div class="threat-row"><div class="threat-label">品牌力</div><div class="threat-bar"><div class="threat-fill med" style="width:55%"></div></div><div class="threat-score">5.5</div></div>
+      <div class="threat-row"><div class="threat-label">價格戰</div><div class="threat-bar"><div class="threat-fill med" style="width:45%"></div></div><div class="threat-score">4.5</div></div>
+      <div class="threat-row"><div class="threat-label">人才搶奪</div><div class="threat-bar"><div class="threat-fill low" style="width:25%"></div></div><div class="threat-score">2.5</div></div>
+      <div class="threat-row"><div class="threat-label">通路覆蓋</div><div class="threat-bar"><div class="threat-fill low" style="width:28%"></div></div><div class="threat-score">2.8</div></div>
+      <div class="threat-row"><div class="threat-label">內容行銷</div><div class="threat-bar"><div class="threat-fill med" style="width:60%"></div></div><div class="threat-score">6.0</div></div>
+      <div style="text-align:center;margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f5">
+        <div style="font-size:11px;color:#888">綜合威脅指數</div>
+        <div style="font-size:28px;font-weight:800;color:#6B3FA0">3.8 / 10</div>
+        <div style="font-size:11px;color:#888;margin-top:2px">vs W21 +0.3（X mEltEd potato 新品）</div>
+      </div>
+    </div>
+
+    <!-- 展店節奏 -->
+    <div class="card col-4 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">📍</span>展店節奏</h3>
+      <div class="kv"><span class="kv-k">主品牌 KlassiC.</span><span class="kv-v">~16 間</span></div>
+      <div class="kv"><span class="kv-k">副牌 SON&SUN</span><span class="kv-v">~3 間</span></div>
+      <div class="kv"><span class="kv-k">Klassroom</span><span class="kv-v">~1 間</span></div>
+      <div class="kv"><span class="kv-k">2026 新開（已知）</span><span class="kv-v">3 間（W16-W17 敦南/西門誠品/文心秀泰）</span></div>
+      <div class="kv"><span class="kv-k">北部</span><span class="kv-v">9（台北8/桃1）</span></div>
+      <div class="kv"><span class="kv-k">中部</span><span class="kv-v">4（台中4）</span></div>
+      <div class="kv"><span class="kv-k">南部</span><span class="kv-v">6（南3/高3）</span></div>
+      <div class="kv"><span class="kv-k">展店狀態</span><span class="kv-v" style="color:#6B3FA0">2026Q1 衝刺 → W22 進入消化</span></div>
+    </div>
+
+    <!-- 社群＆通路 -->
+    <div class="card col-4 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">📱</span>社群＆數位通路</h3>
+      <div class="chan-row"><span>IG @klassicglobal</span><span class="chan-num">96K（全球）</span></div>
+      <div class="chan-row"><span>Facebook</span><span class="chan-num">活躍</span></div>
+      <div class="chan-row"><span>蝦皮</span><span class="chan-num">@klassic.eyewear</span></div>
+      <div class="chan-row"><span>momo</span><span class="chan-num">官方店面</span></div>
+      <div class="chan-row"><span>官網 EC</span><span class="chan-num">klassiceyewear.com（強）</span></div>
+      <div class="chan-row"><span>YouTube</span><span class="chan-num">活躍</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:#F3E5F5;border-radius:8px;font-size:12px">
+        <strong style="color:#6B3FA0">社群強項：</strong> IG 粉絲為三家中最多（含國際）．設計、藝術家聯名、開箱內容質感高．Vacanza Accessory／陳語安等 KOL 合作積極。
+      </div>
+    </div>
+
+    <!-- 定價架構 -->
+    <div class="card col-8 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">💰</span>三層次定價架構（戰略獨特）</h3>
+      <div class="tier"><div class="tier-name pill purple">入門款</div><div class="tier-price">NT$1,980</div><div class="tier-desc">🆕 輕行者摺疊墨鏡系列（F006/F007/FM003/FM004），W21 上架．對標 JINS RIM $1,980 起與眼鏡市場 $3,000 起</div></div>
+      <div class="tier"><div class="tier-name pill purple">中段聯名</div><div class="tier-price">NT$2,580–3,980</div><div class="tier-desc">🆕 KlassiC. x mEltEd potato 0 度抗藍光無框眼鏡（W22 上架 $3,680）．經典板料系列、niceynook 副牌</div></div>
+      <div class="tier"><div class="tier-name pill purple">主力款</div><div class="tier-price">NT$3,980–5,500</div><div class="tier-desc">自有設計師系列．配到好（含鏡片）．主流客單</div></div>
+      <div class="tier"><div class="tier-name pill purple">高端代理</div><div class="tier-price">NT$6,580–8,680</div><div class="tier-desc">🆕 AKILA 系列（W20 上架）．洛杉磯設計師眼鏡．LO-FI、ICON、MIRA、TRIVIA 系列</div></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f5">
+        <div class="section-title">2026Q1-Q2 定價漂移軌跡</div>
+        <div style="padding:10px 12px;background:#F3E5F5;border-radius:6px;font-size:12px;line-height:1.7">
+          <strong>W17 之前：</strong>主要在 $3,680-5,500 中段（自有設計師款）<br>
+          <strong>W20：</strong>+AKILA 高端代理（$6,580+），向上擴張<br>
+          <strong>W21：</strong>+輕行者 $1,980，向下擴張（最大策略轉折！）<br>
+          <strong>W22：</strong>+X mEltEd potato 聯名 $3,680，補中段<br>
+          <strong>戰略意義：</strong>從「單點中段」變成「三層次全價格帶」，已具備與 OD 全價格帶競爭的基礎
+        </div>
+      </div>
+    </div>
+
+    <!-- 戰略假設追蹤 -->
+    <div class="card col-4 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">🎯</span>戰略假設追蹤</h3>
+      <div class="hypo confirmed">
+        <div class="hypo-stmt">[W19] Klassic 採「自有+代理」雙軌策略</div>
+        <div class="hypo-meta"><b>✅ 已驗證</b> <span>W20 AKILA + W22 mEltEd potato 雙軌成形</span></div>
+      </div>
+      <div class="hypo confirmed">
+        <div class="hypo-stmt">[W21] 向下擴張入門款價格帶</div>
+        <div class="hypo-meta"><b>✅ 已驗證</b> <span>輕行者 $1,980 + W22 X mEltEd potato $3,680</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W22] 6 月推 AKILA 上市優惠</div>
+        <div class="hypo-meta"><b>📊 信心 60%</b> <span>新提（W22）</span></div>
+      </div>
+      <div class="hypo tracking">
+        <div class="hypo-stmt">[W20] 自有 EC 旗艦店升級</div>
+        <div class="hypo-meta"><b>📊 信心 30%</b> <span>仍以 momo+蝦皮為主</span></div>
+      </div>
+      <div class="hypo discon">
+        <div class="hypo-stmt">[W18] Klassic 將跟進母親節主案</div>
+        <div class="hypo-meta"><b>❌ 不驗證</b> <span>4/30 春日優惠後刻意空窗</span></div>
+      </div>
+    </div>
+
+    <!-- 促銷節奏 -->
+    <div class="card col-12 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">📅</span>促銷節奏 Pattern</h3>
+      <table class="mini-table">
+        <thead>
+          <tr><th>檔期</th><th>類型</th><th>主案</th><th>時間</th><th>強度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>W13-W15</td><td>常態促銷</td><td>滿$5,500 折$500＋niceynook 9 折</td><td>3/1-3/31</td><td><span class="pill blue">低</span></td></tr>
+          <tr><td>W17-W18</td><td>春日 SALE</td><td>光學眼鏡折$300＋滿額折</td><td>4/1-4/30</td><td><span class="pill orange">中</span></td></tr>
+          <tr><td>W19-W20</td><td>新品上市</td><td>AKILA 系列上架（無折扣，純新品策略）</td><td>5 月上架</td><td><span class="pill blue">低</span></td></tr>
+          <tr><td>W21</td><td>新品上市</td><td>輕行者摺疊墨鏡 $1,980 起</td><td>5 月上架</td><td><span class="pill blue">低</span></td></tr>
+          <tr style="background:#F3E5F5"><td><strong>W22</strong></td><td><strong>新品上市</strong></td><td><strong>X mEltEd potato 抗藍光無框 $3,680</strong></td><td><strong>5 月上架</strong></td><td><span class="pill blue">低</span></td></tr>
+          <tr style="background:#fff8e8"><td>W23-W25（預測）</td><td>AKILA 推廣</td><td>預期推 AKILA 上市優惠（與品牌方分潤）</td><td>6 月可能</td><td><span class="pill orange">中</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px;padding:12px 16px;background:#F3E5F5;border-radius:8px;font-size:13px">
+        <strong>🎯 節奏觀察：</strong>Klassic 是三家中<strong>最不打折</strong>的品牌 — 母親節空窗、新品上架不降價、純差異化策略。
+        對 OD 的意義：Klassic 不會跟著 JINS 進入價格戰泥淖，而是用「設計＋聯名＋代理」三軌差異化．OD 應同時準備兩種對手：價格戰型（JINS/眼鏡市場）+ 差異化型（Klassic）。
+      </div>
+    </div>
+
+    <!-- 敘事＋客群 -->
+    <div class="card col-6 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">📖</span>內容敘事主軸</h3>
+      <div style="margin-bottom:10px"><span class="pill purple">主軸 A</span> 用形狀闡述生活的態度</div>
+      <div style="margin-bottom:10px"><span class="pill purple">主軸 B</span> 亞洲臉型專屬 3 點式設計（萬筆臉型資料）</div>
+      <div style="margin-bottom:10px"><span class="pill purple">主軸 C</span> 台灣設計師品牌 × 國際代理</div>
+      <div style="margin-bottom:10px"><span class="pill purple">主軸 D</span> 藝術 × 設計 × 聯名（Vacanza/mEltEd potato）</div>
+      <div style="margin-bottom:10px"><span class="pill purple">主軸 E</span> 永續環保（不提供紙袋、送帆布袋）</div>
+      <div style="margin-bottom:10px"><span class="pill purple">W22 新增</span> 街頭潮流（AKILA）＋抗藍光功能（mEltEd potato）</div>
+      <div class="quote" style="background:#F3E5F5;border-left-color:#6B3FA0">
+        「Klassic 累積了上萬筆臉型資料才設計出最符合亞洲臉型的鏡框。鏡框很修飾臉型，顏色設計也比其他家更多選擇。」
+        <span class="qcite">— Dcard 穿搭板（高 like 留言）</span>
+      </div>
+    </div>
+
+    <div class="card col-6 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">👥</span>核心客群分析</h3>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">A. 設計師品味族（主力 40%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">25-40 歲、注重設計感、台北/台中、IG 重度使用者</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">B. 年輕潮流（30%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">18-30 歲、KOL 影響大、AKILA／mEltEd potato 鎖定族群</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px;margin-bottom:8px">
+        <strong style="font-size:13px">C. 中高端輕奢族（20%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">$5,500-8,680 願付族群、追求設計師聯名稀缺感</div>
+      </div>
+      <div style="padding:10px 12px;background:#fafafd;border-radius:8px">
+        <strong style="font-size:13px">D. 折疊墨鏡功能族（W21 新切 10%）</strong>
+        <div style="font-size:12px;color:#666;margin-top:4px">輕行者 $1,980 對標旅遊/通勤輕量需求</div>
+      </div>
+    </div>
+
+    <!-- 社群輿情 -->
+    <div class="card col-12 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">💬</span>社群輿情分析（Dcard ＋ PTT ＋ Mobile01）</h3>
+      <div class="section-title">過去 6 個月情緒分布（n≈30 主要 thread）</div>
+      <div class="sent-bars">
+        <div class="sent-pos" style="width:45%">正面 45%</div>
+        <div class="sent-neu" style="width:25%">中性 25%</div>
+        <div class="sent-neg" style="width:30%">負面 30%</div>
+      </div>
+
+      <div class="grid" style="margin-top:8px">
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#2E7D32">✅ 正面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>設計感／修飾臉型</span><span class="pill green">18 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>店鋪裝置藝術設計</span><span class="pill green">12 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>送藝術家帆布袋（環保）</span><span class="pill green">10 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>顏色選擇多元</span><span class="pill green">9 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag pos">推</span>配鏡速度快、服務親切</span><span class="pill green">8 提及</span></div>
+        </div>
+
+        <div class="col-6" style="grid-column:span 6">
+          <div class="section-title" style="color:#C0392B">⚠️ 負面討論熱詞 Top 5</div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>鏡片脫落（含安全議題）</span><span class="pill red">11 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>價格標示不透明（框/鏡分開）</span><span class="pill red">9 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>鏡腳夾太緊／耳後痛</span><span class="pill red">7 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>金屬框鼻墊生鏽</span><span class="pill red">5 提及</span></div>
+          <div class="theme-row"><span><span class="theme-tag neg">噓</span>掉漆／品質落差</span><span class="pill red">5 提及</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;padding:12px 16px;background:#FEE;border-radius:8px;font-size:13px">
+        <strong>🎯 輿情洞察：</strong>Klassic 設計感獲認可，但<strong style="color:#C0392B">「鏡片脫落」安全議題</strong>是品牌最大未解風險點（Dcard 有「上高速公路鏡片無預警掉下來」貼文）。
+        對 OD 的意義：Klassic 不是價格戰威脅，而是<strong>「設計＋故事＋體驗」型</strong>競爭對手．OD 可學習其「店鋪裝置藝術＋帆布袋＋藝術聯名」的體驗設計手法。
+      </div>
+
+      <div class="quote" style="background:#FEE;border-left-color:#C0392B">
+        「使用半年後鏡片頻繁掉下來，修過多次後在高速公路上鏡片無預警掉下來。」
+        <span class="qcite">— Dcard 閒聊板（高關注 thread）</span>
+      </div>
+    </div>
+
+    <!-- 廣告投放 -->
+    <div class="card col-6 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">📢</span>廣告投放訊號</h3>
+      <div class="kv"><span class="kv-k">FB 廣告活躍版本</span><span class="kv-v">中（聯名新品創意密集）</span></div>
+      <div class="kv"><span class="kv-k">主要 CTA</span><span class="kv-v">「立即購買」、「線上配鏡」、「來店試戴」</span></div>
+      <div class="kv"><span class="kv-k">創意主軸</span><span class="kv-v">設計師眼鏡．藝術家聯名．KOL 開箱</span></div>
+      <div class="kv"><span class="kv-k">投放族群</span><span class="kv-v">20-35 都會、設計師、KOL 粉絲</span></div>
+      <div class="kv"><span class="kv-k">SEM 競價字</span><span class="kv-v">「Klassic 眼鏡」「亞洲臉型」「設計師眼鏡」「AKILA」</span></div>
+    </div>
+
+    <!-- 弱點 -->
+    <div class="card col-6 stripe-klassic">
+      <h3><span class="ico" style="background:#6B3FA0">🎯</span>OD 可利用弱點</h3>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#6B3FA0">1. 鏡片脫落安全議題（未解）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">Dcard 多 thread 抱怨．OD 強化「鏡片固定 SOP＋免費調整」差異化</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#6B3FA0">2. 價格標示不透明</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">框/鏡分開計價遭抱怨．OD 套餐制是真實優勢</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#6B3FA0">3. 通路覆蓋低（20 店 = OD 26%）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">桃竹苗、雲嘉、東部、外島都缺．OD 通路優勢明顯</div>
+      </div>
+      <div style="margin-bottom:10px">
+        <strong style="font-size:13px;color:#6B3FA0">4. 客群偏窄（潮流＋設計族）</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">家庭/中壯年/兒童市場接觸不到．OD 全客群覆蓋優勢</div>
+      </div>
+      <div>
+        <strong style="font-size:13px;color:#6B3FA0">5. 高端代理 AKILA 仍小眾</strong>
+        <div style="font-size:12px;color:#555;margin-top:3px">$6,580-8,680 客群有限．Klassic 中段（$3,680）才是主戰場</div>
+      </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="card col-12">
+      <h3><span class="ico">🔗</span>多源情報來源</h3>
+      <div class="src-list">
+        <strong>官方：</strong>
+        <a href="https://www.klassicglobal.com/" target="_blank">官網</a> ｜
+        <a href="https://www.klassicglobal.com/pages/stores" target="_blank">門市資訊</a> ｜
+        <a href="https://www.klassicglobal.com/categories/akila" target="_blank">AKILA 系列</a> ｜
+        <a href="https://www.klassicglobal.com/pages/klassiceyewear-folding-sunglasses" target="_blank">輕行者摺疊墨鏡</a><br>
+        <strong>社群／論壇：</strong>
+        <a href="https://www.instagram.com/klassicglobal/" target="_blank">IG 96K（全球）</a> ｜
+        <a href="https://www.instagram.com/klassiceyewear/" target="_blank">IG Taiwan</a> ｜
+        <a href="https://zh-tw.facebook.com/klassic888/" target="_blank">FB</a> ｜
+        <a href="https://www.dcard.tw/f/dressup/p/254295331" target="_blank">Dcard 穿搭板</a> ｜
+        <a href="https://www.dcard.tw/f/talk/p/236507745" target="_blank">Dcard 抱怨 thread</a> ｜
+        <a href="https://www.ptt.cc/bbs/optical/M.1692601917.A.BEC.html" target="_blank">PTT 折疊太陽眼鏡</a><br>
+        <strong>EC 通路：</strong>
+        <a href="https://shopee.tw/klassic.eyewear" target="_blank">蝦皮</a> ｜
+        <a href="https://www.momoshop.com.tw/search/KlassiC." target="_blank">momo</a><br>
+        <strong>媒體報導：</strong>
+        <a href="https://www.kiks.com.tw/post/%E5%AE%9A%E7%BE%A9%E7%95%B6%E4%BB%A3%E7%BE%8E%E5%BC%8F%E6%96%B0%E9%A2%A8%E6%A0%BC%EF%BC%81klassic-%E6%8B%BF%E4%B8%8B%E6%B4%9B%E6%9D%89%E7%A3%AF%E7%8D%A8%E7%AB%8B%E7%9C%BC%E9%8F%A1%E5%93%81%E7%89%8C-akila-%E5%8F%B0%E7%81%A3%E5%8D%80%E7%B8%BD%E4%BB%A3%E7%90%86" target="_blank">KIKS Klassic 拿下 AKILA 代理</a> ｜
+        <a href="https://www.wepeople.club/%E7%BE%8E%E5%BC%8F%E8%A1%97%E9%A0%AD%E8%88%87%E6%B0%B8%E7%BA%8C%E5%B7%A5%E8%97%9D%E7%9A%84%E5%AE%8C%E7%BE%8E%E7%B5%90%E5%90%88%EF%BC%81akila%E6%94%9Clo-fi%E3%80%81icon%E4%BA%BA%E6%B0%A3%E7%B3%BB/" target="_blank">WEPEOPLE AKILA 進台灣</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<div class="foot">
+  OWNDAYS TAIWAN · OPS · Competitor Battlecards · 每週小更新（diff in 競爭對手週報.html）／ 季度大重整<br>
+  資料來源：官方公告、媒體報導、Dcard/PTT/Mobile01 輿情、Facebook/Instagram 社群、104/1111 招募
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(t => {
+  t.addEventListener('click', () => {
+    const target = t.dataset.tab;
+    tabs.forEach(x => x.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-' + target).classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+</script>
+
+</body>
+</html>
