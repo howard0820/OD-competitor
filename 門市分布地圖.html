@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/05/11 (W21) — Chrome 實地抓取（JINS 北60+中17+南21+東2=100、眼鏡市場 35、Klassic 20，±0 vs W20）；母親節收官（JINS 5/10、眼鏡市場 5/11 收）— 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/05/18 (W22) — 沿用 W21 計數＋JINS 5/8 百店記者會公告交叉確認（JINS 95+RIM 5=100、眼鏡市場 35、Klassic 20，±0 vs W21）；JINS 百店里程碑+分眾新戰略發布、JINS SUMMER SALE 5/14-6/30 指定眼鏡 8 折／9 折大促接檔母親節 — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,7 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-05-11 (W21) — Chrome live scrape. OD 78, Jins 95+RIM 5=100 (北60/中17/南21/東2), 眼鏡 35, KC 20 = 233 (±0 vs W20). Focus: Mother's Day campaign closed (Jins 5/10, Megane 5/11) + JINS 1.76 ultra-thin lens suspended + Klassic 輕行者 foldable sunglasses new line ($1,980+)
+// Updated: 2026-05-18 (W22) — Counts carried from W21 + JINS 5/8 100-store milestone press release cross-check. OD 78, Jins 95+RIM 5=100, 眼鏡 35, KC 20 = 233 (±0 vs W21). Focus: JINS 100-store milestone + segmentation strategy (RIM + 大人系店鋪) + 5/14-6/30 SUMMER SALE 8% off designated frames + Klassic x mEltEd potato new arrival ($3,680) + 眼鏡市場 5/15 two-store anniversary fest (環球板橋+家樂福彰化). Chrome scheduled scraping not connected this week — restore next Monday.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
@@ -472,18 +472,6 @@ renderTable();
   `).join('');
 })();
 
-// ── Responsive resize ──
-window.addEventListener('resize', () => {
-  // Reload to re-fit projection
-  location.reload();
-});
-</script>
-</body>
-</html>
-).join('');
-})();
-
-// ── Responsive resize ──
 window.addEventListener('resize', () => {
   // Reload to re-fit projection
   location.reload();
