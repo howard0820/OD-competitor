@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/05/18 (W22) — 沿用 W21 計數＋JINS 5/8 百店記者會公告交叉確認（JINS 95+RIM 5=100、眼鏡市場 35、Klassic 20，±0 vs W21）；JINS 百店里程碑+分眾新戰略發布、JINS SUMMER SALE 5/14-6/30 指定眼鏡 8 折／9 折大促接檔母親節 — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/05/25 (W23) — JINS 95+RIM 5=100（±0）、眼鏡市場 36（+1，大全聯嘉義店 5/29 開幕／嘉義首店）、Klassic 20（±0），全台合計 234；JINS RIM 台南FOCUS 22色彩色鏡片強推（5/21）+ SUMMER SALE 8折續燒（5/14-6/30 第2週）；Klassic archi 微建築系列 + x DAN DA DAN 聯名 — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,7 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-05-18 (W22) — Counts carried from W21 + JINS 5/8 100-store milestone press release cross-check. OD 78, Jins 95+RIM 5=100, 眼鏡 35, KC 20 = 233 (±0 vs W21). Focus: JINS 100-store milestone + segmentation strategy (RIM + 大人系店鋪) + 5/14-6/30 SUMMER SALE 8% off designated frames + Klassic x mEltEd potato new arrival ($3,680) + 眼鏡市場 5/15 two-store anniversary fest (環球板橋+家樂福彰化). Chrome scheduled scraping not connected this week — restore next Monday.
+// Updated: 2026-05-25 (W23) — OD 78, Jins 95+RIM 5=100, 眼鏡 36 (+1: 大全聯嘉義店 opens 5/29, megane's first Chiayi store), KC 20 = 234 (+1 vs W22). Focus: 眼鏡市場 expands south to Chiayi (大全聯嘉義店 5/29) + JINS RIM Tainan FOCUS 22-color lens push (5/21, "replaced O-brand competitor location") + JINS SUMMER SALE 8% off week 2 (5/14-6/30) + Klassic archi micro-architecture series + x DAN DA DAN collab. Chrome scheduled scraping not connected this week — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
@@ -132,7 +132,7 @@ const STORE_DATA_RAW = {
   '彰化縣': { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
   '南投縣': { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
   '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
-  '嘉義市': { od: 1,  jins: 2,  megane: 0,  klassic: 0 },
+  '嘉義市': { od: 1,  jins: 2,  megane: 1,  klassic: 0 },
   '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
   '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 3 },
   '高雄市': { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
@@ -450,8 +450,8 @@ renderTable();
   Object.values(STORE_DATA).forEach(d => {
     brandKeys.forEach(b => totals[b] += d[b]);
   });
-  // Add Jins RIM stores (not per-county) = 4
-  const jinsDisplay = totals.jins + 4;
+  // Add Jins RIM stores (not per-county) = 5 (台北3 + 台中1 + 台南1)
+  const jinsDisplay = totals.jins + 5;
   const grand = totals.od + jinsDisplay + totals.megane + totals.klassic;
 
   const cards = [
