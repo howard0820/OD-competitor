@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/05/25 (W23) — JINS 95+RIM 5=100（±0）、眼鏡市場 36（+1，大全聯嘉義店 5/29 開幕／嘉義首店）、Klassic 20（±0），全台合計 234；JINS RIM 台南FOCUS 22色彩色鏡片強推（5/21）+ SUMMER SALE 8折續燒（5/14-6/30 第2週）；Klassic archi 微建築系列 + x DAN DA DAN 聯名 — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/01 (W24) — JINS 95+RIM 5=100（±0）、眼鏡市場 36（±0）、Klassic 20（±0），全台合計 236；OWNDAYS 校正 78→80（補列新店家樂福店、潮州車站店）、競爭三品牌零異動；JINS 618年中慶(5/29)+買2支現折$666(5/29-31)+夏促8折第3週(5/14-6/30)、永和比漾店6/1改裝移櫃5F；眼鏡市場 SUMMER SALE 第二副折300(5/27)；Klassic「我獨自升級 Solo Leveling」大型IP聯名上架；⚠️ JINS 1.76極薄鏡片暫停販售與保固(5/11) — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,11 +118,11 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-05-25 (W23) — OD 78, Jins 95+RIM 5=100, 眼鏡 36 (+1: 大全聯嘉義店 opens 5/29, megane's first Chiayi store), KC 20 = 234 (+1 vs W22). Focus: 眼鏡市場 expands south to Chiayi (大全聯嘉義店 5/29) + JINS RIM Tainan FOCUS 22-color lens push (5/21, "replaced O-brand competitor location") + JINS SUMMER SALE 8% off week 2 (5/14-6/30) + Klassic archi micro-architecture series + x DAN DA DAN collab. Chrome scheduled scraping not connected this week — used web_fetch + WebSearch public sources.
+// Updated: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
-  '新北市': { od: 17, jins: 19, megane: 5,  klassic: 0 },
+  '新北市': { od: 18, jins: 19, megane: 5,  klassic: 0 },
   '基隆市': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
   '桃園市': { od: 9,  jins: 9,  megane: 4,  klassic: 1 },
   '新竹市': { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
@@ -136,7 +136,7 @@ const STORE_DATA_RAW = {
   '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
   '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 3 },
   '高雄市': { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
-  '屏東縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
+  '屏東縣': { od: 2,  jins: 1,  megane: 0,  klassic: 0 },
   '宜蘭縣': { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
   '花蓮縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
   '台東縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
