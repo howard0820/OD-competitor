@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/06 (W24 週四更新) — JINS 95+RIM 5=100（±0）、眼鏡市場 36（±0）、Klassic 20（±0），全台合計 236；OWNDAYS 校正 78→80（補列新店家樂福店、潮州車站店）、競爭三品牌門市零異動；6/6 週四更新：眼鏡市場年中慶(太陽眼鏡最高5折)、JINS台北市民現折$300、Klassic Solo Leveling滿額贈盲卡包；JINS 618年中慶(5/29)+買2支現折$666(5/29-31)+夏促8折第3週(5/14-6/30)、永和比漾店6/1改裝移櫃5F；眼鏡市場 SUMMER SALE 第二副折300(5/27)；Klassic「我獨自升級 Solo Leveling」大型IP聯名上架；⚠️ JINS 1.76極薄鏡片暫停販售與保固(5/11) — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/08 (W25) — 🔥 JINS 高雄大遠百店 6/11 盛大開幕（高雄 9→10，JINS 96+RIM 5=101，+1）；⚠️ Klassic 官網門市頁 20→19（台南 3→2，疑似關店待確認）；眼鏡市場 36（±0），全台合計 236（OWNDAYS 80 基準）；JINS 夏季攻勢：Barbie 聯名墨鏡＋堀米雄斗高機能運動系列雙新品、週末限定買2支現折$666、618年中慶與 SUMMER SALE 8折（至6/30）持續、台北市民現折$300（6月）；眼鏡市場年中慶太陽眼鏡最高5折持續；Klassic Solo Leveling 滿額贈盲卡包＋摺疊墨鏡2件85折持續 — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,8 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
+// Updated: 2026-06-08 (W25) — JINS 高雄大遠百店 opens 6/11 (Kaohsiung jins 9->10; JINS 96 + RIM 5 = 101, first new store after the 5/8 100-store milestone). Klassic official store page now lists 19 (Tainan 3->2, suspected closure, store name TBC). 眼鏡市場 36 flat. Totals: OD 80 + JINS 101 + 眼鏡 36 + KC 19 = 236. Chrome live scrape incl. JINS store API per-county counts.
+// Prev: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
@@ -134,8 +135,8 @@ const STORE_DATA_RAW = {
   '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
   '嘉義市': { od: 1,  jins: 2,  megane: 1,  klassic: 0 },
   '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 3 },
-  '高雄市': { od: 9,  jins: 9,  megane: 5,  klassic: 3 },
+  '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 2 },
+  '高雄市': { od: 9,  jins: 10, megane: 5,  klassic: 3 },
   '屏東縣': { od: 2,  jins: 1,  megane: 0,  klassic: 0 },
   '宜蘭縣': { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
   '花蓮縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
@@ -465,17 +466,4 @@ renderTable();
   grid.innerHTML = cards.map(c => `
     <div class="total-card" data-brand="${c.brand}" onclick="toggleBrand('${c.brand}')">
       <div class="tc-stripe" style="background:${BRANDS[c.brand].color}"></div>
-      <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</div>
-      <div class="tc-label">${BRANDS[c.brand].label}</div>
-      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
-    </div>
-  `).join('');
-})();
-
-window.addEventListener('resize', () => {
-  // Reload to re-fit projection
-  location.reload();
-});
-</script>
-</body>
-</html>
+      <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</
