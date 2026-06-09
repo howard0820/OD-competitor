@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/08 (W25) — 🔥 JINS 高雄大遠百店 6/11 盛大開幕（高雄 9→10，JINS 96+RIM 5=101，+1）；⚠️ Klassic 門市 20→19（台南新光三越中山店撤櫃，台南 3→2，剩小北門+新天地；經 klassicglobal.com/pages/stores 與 skm.com.tw/brand/3219 交叉確認）；眼鏡市場 36（±0），全台合計 236（OWNDAYS 80 基準）；JINS 夏季攻勢：Barbie 聯名墨鏡＋堀米雄斗高機能運動系列雙新品、週末限定買2支現折$666、618年中慶與 SUMMER SALE 8折（至6/30）持續、台北市民現折$300（6月）；眼鏡市場年中慶太陽眼鏡最高5折持續；Klassic Solo Leveling 滿額贈盲卡包＋摺疊墨鏡2件85折持續 — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/08 (W25) — 🔥 JINS 高雄大遠百店 6/11 盛大開幕（高雄 9→10，JINS 96+RIM 5=101，+1）；⚠️ Klassic 門市 20→19（台南新光三越中山店撤櫃，台南 3→2，剩小北門+新天地；經 klassicglobal.com/pages/stores 與 skm.com.tw/brand/3219 交叉確認）；眼鏡市場 36（±0），全台合計 236（OWNDAYS 80 基準）；JINS 夏季攻勢：Barbie 聯名墨鏡＋堀米雄斗運動系列、週末買2支現折$666(6/5-6/7、6/12-6/14、6/19-6/21)、台北市民現折$300(6/1-30)、618年中慶與 SUMMER SALE 8折(至6/30)持續；眼鏡市場 vs 6/1 無新動態(年中慶太陽眼鏡最高5折持續)；Klassic SALE 加碼(LOVA/BELLA 9折+DAN DA DAN 周邊組合+輕行者摺疊墨鏡擴款) — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,7 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-06-08 (W25) — JINS 高雄大遠百店 opens 6/11 (Kaohsiung jins 9->10; JINS 96 + RIM 5 = 101, first new store after the 5/8 100-store milestone). Klassic official store page now lists 19 (Tainan 3->2: KlassiC. 台南新光三越中山店 closed/withdrawn, confirmed by both klassicglobal.com/pages/stores and skm.com.tw/brand/3219 which now shows only 台南新天地+小北門). 眼鏡市場 36 flat. Totals: OD 80 + JINS 101 + 眼鏡 36 + KC 19 = 236. Chrome live scrape incl. JINS store API per-county counts.
+// Updated: 2026-06-08 (W25) — JINS 高雄大遠百店 opens 6/11 (Kaohsiung 9->10; JINS 96+RIM 5=101). Klassic 20->19: KlassiC. 台南新光三越中山店 closed/withdrawn (confirmed by klassicglobal.com/pages/stores + skm.com.tw/brand/3219, Tainan now only 新天地+小北門). 眼鏡市場 36 flat (no new action vs 6/1). Totals: OD 80 + JINS 101 + 眼鏡 36 + KC 19 = 236.
 // Prev: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
@@ -463,4 +463,20 @@ renderTable();
   ];
 
   const grid = document.getElementById('totalsGrid');
-  grid.innerHTML = cards.map(c =>
+  grid.innerHTML = cards.map(c => `
+    <div class="total-card" data-brand="${c.brand}" onclick="toggleBrand('${c.brand}')">
+      <div class="tc-stripe" style="background:${BRANDS[c.brand].color}"></div>
+      <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</div>
+      <div class="tc-label">${BRANDS[c.brand].label}</div>
+      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
+    </div>
+  `).join('');
+})();
+
+window.addEventListener('resize', () => {
+  // Reload to re-fit projection
+  location.reload();
+});
+</script>
+</body>
+</html>
