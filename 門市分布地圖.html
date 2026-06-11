@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/08 (W25) — 🔥 JINS 高雄大遠百店 6/11 盛大開幕（高雄 9→10，JINS 96+RIM 5=101，+1）；⚠️ Klassic 門市 20→19（台南新光三越中山店撤櫃，台南 3→2，剩小北門+新天地；經 klassicglobal.com/pages/stores 與 skm.com.tw/brand/3219 交叉確認）；眼鏡市場 36（±0），全台合計 236（OWNDAYS 80 基準）；JINS 夏季攻勢：Barbie 聯名墨鏡＋堀米雄斗運動系列、週末買2支現折$666(6/5-6/7、6/12-6/14、6/19-6/21)、台北市民現折$300(6/1-30)、618年中慶與 SUMMER SALE 8折(至6/30)持續；眼鏡市場 vs 6/1 無新動態(年中慶太陽眼鏡最高5折持續)；Klassic SALE 加碼(LOVA/BELLA 9折+DAN DA DAN 周邊組合+輕行者摺疊墨鏡擴款) — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/11 (W25 週四更新) — 門市數全數 ±0（OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 36／Klassic 19，全台合計 236，Chrome 實抓＋JINS 門市 API 確認）；🔥 JINS 高雄大遠百店今日 6/11 正式開幕（高雄第10間），開幕疊加 SUMMER SALE 8折＋週末買2支現折$666(6/12-6/14)；🆕 RIM FOCUS 時尚流行館店(台南) 6/10 起開幕慶「限定款鏡框配到好 $980 元起」（數量有限）；眼鏡市場 vs 6/8 無新動態（年中慶太陽眼鏡最高5折持續）；Klassic 無新動態（Solo Leveling 聯名＋SALE 三項加碼持續） — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,7 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-06-08 (W25) — JINS 高雄大遠百店 opens 6/11 (Kaohsiung 9->10; JINS 96+RIM 5=101). Klassic 20->19: KlassiC. 台南新光三越中山店 closed/withdrawn (confirmed by klassicglobal.com/pages/stores + skm.com.tw/brand/3219, Tainan now only 新天地+小北門). 眼鏡市場 36 flat (no new action vs 6/1). Totals: OD 80 + JINS 101 + 眼鏡 36 + KC 19 = 236.
+// Updated: 2026-06-11 (W25 Thursday) — all counts unchanged vs 6/8. JINS 高雄大遠百店 officially opened today 6/11 (already counted). RIM FOCUS Tainan grand-opening promo $980起 (6/10). Totals: OD 80 + JINS 101 + 眼鏡 36 + KC 19 = 236.
 // Prev: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
