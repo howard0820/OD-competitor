@@ -10,60 +10,43 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e8ec;display:flex;min-height:100vh;overflow:hidden}
 
-/* ── Sidebar ── */
-.sidebar{width:380px;padding:32px 26px 20px;background:linear-gradient(180deg,#141420 0%,#0f0f18 100%);overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column}
+/* Sidebar */
+.sidebar{width:432px;padding:28px 22px 18px;background:linear-gradient(180deg,#141420 0%,#0f0f18 100%);overflow-y:auto;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column}
 .sidebar::-webkit-scrollbar{width:4px}
 .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
-
 .brand-header{margin-bottom:6px}
-.brand-header h1{font-size:20px;font-weight:800;letter-spacing:-0.02em;color:#fff}
-.brand-header .sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:0.02em}
-
-/* Brand totals */
-.totals-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0}
-.total-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden;transition:background 0.2s;cursor:pointer}
+.brand-header h1{font-size:19px;font-weight:800;letter-spacing:-0.02em;color:#fff}
+.brand-header .sub{font-size:10.5px;color:rgba(255,255,255,0.35);margin-top:4px;letter-spacing:0.02em;line-height:1.5}
+.totals-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:14px 0}
+.total-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:9px 12px;position:relative;overflow:hidden;transition:background 0.2s;cursor:pointer}
 .total-card:hover{background:rgba(255,255,255,0.06)}
 .total-card.dimmed{opacity:0.2}
-.total-card .tc-stripe{position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0}
-.total-card .tc-num{font-size:28px;font-weight:900;letter-spacing:-0.03em;line-height:1}
-.total-card .tc-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:3px;font-weight:500}
-.total-card .tc-badge{position:absolute;top:12px;right:12px;font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;opacity:0.7}
-
-/* Legend note */
-.legend-note{font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:14px;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px dashed rgba(255,255,255,0.06);text-align:center}
-
-/* City table */
+.total-card .tc-stripe{position:absolute;top:0;left:0;right:0;height:3px;border-radius:9px 9px 0 0}
+.total-card .tc-num{font-size:23px;font-weight:900;letter-spacing:-0.03em;line-height:1}
+.total-card .tc-label{font-size:10px;color:rgba(255,255,255,0.45);margin-top:3px;font-weight:500}
+.total-card .tc-badge{position:absolute;top:9px;right:10px;font-size:9px;padding:2px 6px;border-radius:20px;font-weight:600;opacity:0.75}
+.legend-note{font-size:10px;color:rgba(255,255,255,0.25);margin-bottom:12px;padding:7px 12px;background:rgba(255,255,255,0.02);border-radius:6px;border:1px dashed rgba(255,255,255,0.06);text-align:center}
 .table-wrap{flex:1;overflow-y:auto}
-.city-table{width:100%;border-collapse:collapse;font-size:12px}
+.city-table{width:100%;border-collapse:collapse;font-size:11px}
 .city-table thead{position:sticky;top:0;background:#141420;z-index:1}
-.city-table th{text-align:center;padding:7px 4px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);font-weight:600}
+.city-table th{text-align:center;padding:6px 2px;border-bottom:1px solid rgba(255,255,255,0.08);font-size:8.5px;letter-spacing:0.02em;color:rgba(255,255,255,0.3);font-weight:600}
 .city-table th:first-child{text-align:left}
-.city-table td{padding:6px 4px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:center;font-variant-numeric:tabular-nums;font-size:12px}
+.city-table td{padding:5px 2px;border-bottom:1px solid rgba(255,255,255,0.03);text-align:center;font-variant-numeric:tabular-nums;font-size:11px}
 .city-table td:first-child{text-align:left}
-.city-table .city-name{color:#E8A87C;font-weight:600;font-size:11px}
-.city-table .total-row td{border-top:1px solid rgba(255,255,255,0.12);font-weight:700;padding-top:10px}
+.city-table .city-name{color:#E8A87C;font-weight:600;font-size:10.5px}
+.city-table .total-row td{border-top:1px solid rgba(255,255,255,0.12);font-weight:700;padding-top:9px}
 .city-table .zero{opacity:0.15}
 .city-table tr:hover td{background:rgba(255,255,255,0.02)}
 .city-table tr.highlight td{background:rgba(255,255,255,0.06)}
-
-/* ── Map area ── */
 .map-area{flex:1;display:flex;align-items:center;justify-content:center;position:relative;background:radial-gradient(ellipse at 55% 45%,#1a1a2e 0%,#0f0f14 70%)}
-
-/* County paths */
 .county{fill:rgba(255,255,255,0.025);stroke:rgba(255,255,255,0.15);stroke-width:0.5;transition:fill 0.2s}
 .county:hover{fill:rgba(255,255,255,0.08);stroke:rgba(255,255,255,0.3)}
 .county.highlighted{fill:rgba(255,255,255,0.1);stroke:rgba(255,255,255,0.4);stroke-width:1}
-
-/* Store dots */
 .store-dot{transition:opacity 0.3s;cursor:pointer}
 .store-dot:hover{filter:brightness(1.4)}
 .store-dot.dimmed{opacity:0.03!important}
-
-/* County label */
 .county-label{fill:rgba(255,255,255,0.22);font-size:9px;font-family:'Noto Sans TC',sans-serif;font-weight:400;pointer-events:none;text-anchor:middle}
-
-/* Tooltip */
-.tooltip{position:fixed;background:rgba(20,20,32,0.96);backdrop-filter:blur(12px);color:#fff;padding:14px 18px;border-radius:12px;font-size:12px;pointer-events:none;display:none;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);min-width:170px;max-width:260px}
+.tooltip{position:fixed;background:rgba(20,20,32,0.96);backdrop-filter:blur(12px);color:#fff;padding:14px 18px;border-radius:12px;font-size:12px;pointer-events:none;display:none;z-index:100;box-shadow:0 8px 32px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);min-width:180px;max-width:280px}
 .tooltip .tt-city{font-size:15px;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
 .tooltip .tt-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-size:12px}
 .tooltip .tt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -71,11 +54,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 .tooltip .tt-total{margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.4);font-weight:600}
 .tooltip .tt-dots-preview{display:flex;gap:2px;flex-wrap:wrap;margin-top:6px}
 .tooltip .tt-mini{width:6px;height:6px;border-radius:50%;opacity:0.9}
-
-/* Loading */
 .loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,0.3);font-size:14px}
-
-/* Watermark */
 .watermark{position:absolute;bottom:16px;right:24px;font-size:9px;color:rgba(255,255,255,0.1);letter-spacing:0.1em;font-weight:500}
 </style>
 </head>
@@ -84,17 +63,16 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/18 (W26 週四更新) — 門市數 ±0（OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 37／Klassic 19，全台合計 237，公開官網來源核對）；🔥 眼鏡市場屏東店今日 6/18(四) 正式開幕 — 品牌首度進駐屏東（屏東 megane 0→1，門市數 6/15 已計入），屏東原僅 OWNDAYS 2 間，今起為 OD 客流觀測關鍵窗口；⚠️ JINS 1.76 極薄鏡片「台日價差近 7 倍」爭議延燒（TVBS/Yahoo 續報，OD 借勢窗口），週末 6/19-21 買 2 支 $777 持續；Klassic 19 間無展店（618 SALE 摺疊墨鏡 2 件 85 折＋IP 聯名滿額贈持續） — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/18 (W26 週四) — 本次新增 4 大本土傳統連鎖：寶島眼鏡 358／小林眼鏡 239／仁愛眼鏡(Howard) 107／德恩堂(得恩堂 GRACE) 69，皆於 6/18 直接自各品牌官方門市查詢系統逐縣市清點（formosa-optical.com.tw／kobayashi.com.tw／theeye.tw／grace.com.tw）。連同日系與本土新銳：OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 37／Klassic 19。八品牌全台合計 1,010 間。傳統連鎖規模遠大於日系（寶島≈OD 的 4.5 倍），離島金門/連江門市僅列入表格、地圖不繪點。— 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
-
   <div class="legend-note">● 每一個點 = 一間門市</div>
 
   <div class="table-wrap">
     <table class="city-table">
       <thead>
-        <tr><th style="text-align:left">縣市</th><th style="color:#4285F4">OD</th><th style="color:#E53935">Jins</th><th style="color:#F4A623">眼鏡</th><th style="color:#AB47BC">KC</th><th>合計</th></tr>
+        <tr><th style="text-align:left">縣市</th><th style="color:#4285F4">OD</th><th style="color:#E53935">Jins</th><th style="color:#F4A623">眼鏡</th><th style="color:#AB47BC">KC</th><th style="color:#43A047">寶島</th><th style="color:#00BCD4">小林</th><th style="color:#EC407A">仁愛</th><th style="color:#8D6E63">德恩</th><th>合計</th></tr>
       </thead>
       <tbody id="tableBody"></tbody>
     </table>
@@ -109,54 +87,55 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 </div>
 
 <script>
-// ── Brand config ──
 const BRANDS = {
-  od:      { color: '#4285F4', label: 'OWNDAYS' },
-  jins:    { color: '#E53935', label: 'Jins' },
-  megane:  { color: '#F4A623', label: '眼鏡市場' },
-  klassic: { color: '#AB47BC', label: 'Klassic' }
+  od:        { color: '#4285F4', label: 'OWNDAYS' },
+  jins:      { color: '#E53935', label: 'Jins' },
+  megane:    { color: '#F4A623', label: '眼鏡市場' },
+  klassic:   { color: '#AB47BC', label: 'Klassic' },
+  baodao:    { color: '#43A047', label: '寶島眼鏡' },
+  kobayashi: { color: '#00BCD4', label: '小林眼鏡' },
+  renai:     { color: '#EC407A', label: '仁愛眼鏡' },
+  grace:     { color: '#8D6E63', label: '德恩堂' }
 };
+const BRAND_KEYS = ['od','jins','megane','klassic','baodao','kobayashi','renai','grace'];
 
-// ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-06-18 (W26 Thursday) — Store count ±0. 眼鏡市場 屏東店 officially opens today 6/18 (already counted on 6/15), first-ever megane store in Pingtung (OD had 2 there). JINS 1.76 lens TW/JP price-gap (~7x) controversy escalating (TVBS/Yahoo) = OD leverage; buy-2 -$777 weekend promo 6/19-21 continues. Klassic 19 stores, 618 SALE continues. Totals: OD 80 + JINS 101 + 眼鏡 37 + KC 19 = 237.
-// Prev: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
-// Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
+// Updated 2026-06-18 (W26). NEW: 4 traditional chains counted from official store-locators on 2026-06-18:
+//   寶島 Formosa=358 (formosa-optical.com.tw backend API)
+//   小林 Kobayashi=239 (kobayashi.com.tw/map.php; cross-checked vs 239 map markers)
+//   仁愛 Howard=107 (theeye.tw/shoplist.php, Chrome-rendered, 107 cards)
+//   德恩堂/得恩堂 GRACE=69 (grace.com.tw/store, Chrome-rendered, 69 stores)
+// Existing: OD 80, JINS 96(+5 RIM)=101, 眼鏡 37, Klassic 19. 8-brand grand total = 1,010.
+// Jins column = JINS-only (RIM 5 added in totals card only). 金門 in table only (not drawn on map).
 const STORE_DATA_RAW = {
-  '台北市': { od: 19, jins: 23, megane: 6,  klassic: 8 },
-  '新北市': { od: 18, jins: 19, megane: 5,  klassic: 0 },
-  '基隆市': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '桃園市': { od: 9,  jins: 9,  megane: 4,  klassic: 1 },
-  '新竹市': { od: 2,  jins: 3,  megane: 2,  klassic: 1 },
-  '新竹縣': { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
-  '苗栗縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '台中市': { od: 7,  jins: 14, megane: 7,  klassic: 4 },
-  '彰化縣': { od: 1,  jins: 0,  megane: 1,  klassic: 0 },
-  '南投縣': { od: 0,  jins: 0,  megane: 0,  klassic: 0 },
-  '雲林縣': { od: 0,  jins: 2,  megane: 0,  klassic: 0 },
-  '嘉義市': { od: 1,  jins: 2,  megane: 1,  klassic: 0 },
-  '嘉義縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '台南市': { od: 3,  jins: 8,  megane: 3,  klassic: 2 },
-  '高雄市': { od: 9,  jins: 10, megane: 5,  klassic: 3 },
-  '屏東縣': { od: 2,  jins: 1,  megane: 1,  klassic: 0 },
-  '宜蘭縣': { od: 1,  jins: 1,  megane: 1,  klassic: 0 },
-  '花蓮縣': { od: 1,  jins: 1,  megane: 0,  klassic: 0 },
-  '台東縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
-  '澎湖縣': { od: 1,  jins: 0,  megane: 0,  klassic: 0 },
+  '台北市': { od: 19, jins: 23, megane: 6, klassic: 8, baodao: 57, kobayashi: 22, renai: 6,  grace: 14 },
+  '新北市': { od: 18, jins: 19, megane: 5, klassic: 0, baodao: 63, kobayashi: 35, renai: 8,  grace: 7  },
+  '基隆市': { od: 1,  jins: 1,  megane: 0, klassic: 0, baodao: 5,  kobayashi: 3,  renai: 1,  grace: 1  },
+  '桃園市': { od: 9,  jins: 9,  megane: 4, klassic: 1, baodao: 31, kobayashi: 22, renai: 6,  grace: 5  },
+  '新竹市': { od: 2,  jins: 3,  megane: 2, klassic: 1, baodao: 9,  kobayashi: 6,  renai: 3,  grace: 2  },
+  '新竹縣': { od: 2,  jins: 1,  megane: 1, klassic: 0, baodao: 9,  kobayashi: 8,  renai: 2,  grace: 0  },
+  '苗栗縣': { od: 1,  jins: 1,  megane: 0, klassic: 0, baodao: 5,  kobayashi: 4,  renai: 3,  grace: 1  },
+  '台中市': { od: 7,  jins: 14, megane: 7, klassic: 4, baodao: 54, kobayashi: 37, renai: 24, grace: 3  },
+  '彰化縣': { od: 1,  jins: 0,  megane: 1, klassic: 0, baodao: 12, kobayashi: 7,  renai: 6,  grace: 1  },
+  '南投縣': { od: 0,  jins: 0,  megane: 0, klassic: 0, baodao: 6,  kobayashi: 3,  renai: 1,  grace: 1  },
+  '雲林縣': { od: 0,  jins: 2,  megane: 0, klassic: 0, baodao: 7,  kobayashi: 4,  renai: 7,  grace: 0  },
+  '嘉義市': { od: 1,  jins: 2,  megane: 1, klassic: 0, baodao: 8,  kobayashi: 2,  renai: 4,  grace: 0  },
+  '嘉義縣': { od: 1,  jins: 0,  megane: 0, klassic: 0, baodao: 3,  kobayashi: 2,  renai: 2,  grace: 0  },
+  '台南市': { od: 3,  jins: 8,  megane: 3, klassic: 2, baodao: 25, kobayashi: 21, renai: 19, grace: 8  },
+  '高雄市': { od: 9,  jins: 10, megane: 5, klassic: 3, baodao: 41, kobayashi: 46, renai: 8,  grace: 24 },
+  '屏東縣': { od: 2,  jins: 1,  megane: 1, klassic: 0, baodao: 9,  kobayashi: 8,  renai: 2,  grace: 2  },
+  '宜蘭縣': { od: 1,  jins: 1,  megane: 1, klassic: 0, baodao: 6,  kobayashi: 2,  renai: 1,  grace: 0  },
+  '花蓮縣': { od: 1,  jins: 1,  megane: 0, klassic: 0, baodao: 3,  kobayashi: 3,  renai: 3,  grace: 0  },
+  '台東縣': { od: 1,  jins: 0,  megane: 0, klassic: 0, baodao: 2,  kobayashi: 1,  renai: 1,  grace: 0  },
+  '澎湖縣': { od: 1,  jins: 0,  megane: 0, klassic: 0, baodao: 1,  kobayashi: 1,  renai: 0,  grace: 0  },
+  '金門縣': { od: 0,  jins: 0,  megane: 0, klassic: 0, baodao: 2,  kobayashi: 2,  renai: 0,  grace: 0  },
+  '連江縣': { od: 0,  jins: 0,  megane: 0, klassic: 0, baodao: 0,  kobayashi: 0,  renai: 0,  grace: 0  },
 };
 
-// Normalize: 臺→台, strip whitespace — used to match TopoJSON COUNTYNAME
 function norm(s) { return s.replace(/臺/g,'台').replace(/\s/g,''); }
-
-// Build lookup: normalized name → data
 const STORE_DATA = {};
 Object.entries(STORE_DATA_RAW).forEach(([k,v]) => { STORE_DATA[norm(k)] = v; });
+function getStoreData(countyName) { return STORE_DATA[norm(countyName)]; }
 
-// Resolve data for a TopoJSON county name
-function getStoreData(countyName) {
-  return STORE_DATA[norm(countyName)];
-}
-
-// Display name mapping (shorter names for sidebar)
 const SHORT_NAME_RAW = {
   '台北市':'台北市','新北市':'新北市','基隆市':'基隆','桃園市':'桃園',
   '新竹市':'新竹市','新竹縣':'新竹縣','苗栗縣':'苗栗','台中市':'台中',
@@ -169,87 +148,97 @@ const SHORT_NAME = {};
 Object.entries(SHORT_NAME_RAW).forEach(([k,v]) => { SHORT_NAME[norm(k)] = v; });
 function getShortName(countyName) { return SHORT_NAME[norm(countyName)] || countyName; }
 
-const activeFilter = { od: true, jins: true, megane: true, klassic: true };
-const DOT_R = 2.8;
+const activeFilter = {};
+BRAND_KEYS.forEach(b => activeFilter[b] = true);
+const DOT_R = 2.4;
 
-// ── Toggle brand ──
 function toggleBrand(brand) {
   activeFilter[brand] = !activeFilter[brand];
-  document.querySelector(`.total-card[data-brand="${brand}"]`).classList.toggle('dimmed');
-  document.querySelectorAll(`.store-dot[data-brand="${brand}"]`).forEach(d => {
+  document.querySelector('.total-card[data-brand="'+brand+'"]').classList.toggle('dimmed');
+  document.querySelectorAll('.store-dot[data-brand="'+brand+'"]').forEach(d => {
     d.classList.toggle('dimmed');
-    d.setAttribute('opacity', activeFilter[brand] ? '0.88' : '0.03');
+    d.setAttribute('opacity', activeFilter[brand] ? '0.85' : '0.03');
   });
 }
 
-// ── Sunflower spiral for individual dots ──
 function spiralPositions(cx, cy, count, spacing) {
   const pts = [];
   const golden = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < count; i++) {
     const r = spacing * Math.sqrt(i + 0.5);
-    const theta = i * golden + Math.PI * 0.25; // slight rotation
+    const theta = i * golden + Math.PI * 0.25;
     pts.push([cx + r * Math.cos(theta), cy + r * Math.sin(theta)]);
   }
   return pts;
 }
 
-// ── Build map ──
 const mapArea = document.querySelector('.map-area');
 const W = mapArea.clientWidth;
 const H = mapArea.clientHeight;
+const svg = d3.select('#mapSvg').attr('width', W).attr('height', H);
 
-const svg = d3.select('#mapSvg')
-  .attr('width', W)
-  .attr('height', H);
-
-// Load TopoJSON from CDN — tries multiple sources
 const TOPO_URLS = [
   'https://cdn.jsdelivr.net/npm/taiwan-atlas/counties-10t.json',
   'https://unpkg.com/taiwan-atlas/counties-10t.json',
   'https://cdn.jsdelivr.net/gh/dkaoster/taiwan-atlas@master/counties-10t.json'
 ];
-
 async function loadTopo() {
   for (const url of TOPO_URLS) {
-    try {
-      const resp = await fetch(url);
-      if (resp.ok) return await resp.json();
-    } catch(e) { continue; }
+    try { const resp = await fetch(url); if (resp.ok) return await resp.json(); }
+    catch(e) { continue; }
   }
   throw new Error('無法載入地圖資料');
 }
 
+function drawDot(gDots, brand, x, y, color) {
+  const s = DOT_R;
+  let el;
+  if (brand === 'od') {
+    el = gDots.append('circle').attr('cx',x).attr('cy',y).attr('r',s).attr('fill',color);
+  } else if (brand === 'jins') {
+    el = gDots.append('rect').attr('x',x-s).attr('y',y-s).attr('width',s*2).attr('height',s*2).attr('rx',s*0.3).attr('fill',color);
+  } else if (brand === 'megane') {
+    const h = s*1.15;
+    el = gDots.append('polygon').attr('points',x+','+(y-h)+' '+(x+s)+','+(y+s*0.7)+' '+(x-s)+','+(y+s*0.7)).attr('fill',color);
+  } else if (brand === 'klassic') {
+    const pts=[];for(let i=0;i<10;i++){const r=i%2===0?s*1.1:s*0.45;const a=Math.PI/2+i*Math.PI/5;pts.push((x-r*Math.cos(a))+','+(y-r*Math.sin(a)));}
+    el = gDots.append('polygon').attr('points',pts.join(' ')).attr('fill',color);
+  } else if (brand === 'baodao') {
+    el = gDots.append('polygon').attr('points',x+','+(y-s*1.25)+' '+(x+s*1.05)+','+y+' '+x+','+(y+s*1.25)+' '+(x-s*1.05)+','+y).attr('fill',color);
+  } else if (brand === 'kobayashi') {
+    const t=s*0.4, L=s*1.15;
+    const p=[[-t,-L],[t,-L],[t,-t],[L,-t],[L,t],[t,t],[t,L],[-t,L],[-t,t],[-L,t],[-L,-t],[-t,-t]]
+      .map(c=>(x+c[0])+','+(y+c[1])).join(' ');
+    el = gDots.append('polygon').attr('points',p).attr('fill',color);
+  } else if (brand === 'renai') {
+    const pts=[];for(let i=0;i<6;i++){const a=Math.PI/6+i*Math.PI/3;pts.push((x+s*1.1*Math.cos(a))+','+(y+s*1.1*Math.sin(a)));}
+    el = gDots.append('polygon').attr('points',pts.join(' ')).attr('fill',color);
+  } else {
+    const pts=[];for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;pts.push((x+s*1.15*Math.cos(a))+','+(y+s*1.15*Math.sin(a)));}
+    el = gDots.append('polygon').attr('points',pts.join(' ')).attr('fill',color);
+  }
+  return el;
+}
+
 loadTopo().then(topo => {
   document.getElementById('loading').style.display = 'none';
-
-  // Extract counties GeoJSON — exclude 金門/連江 to focus on main island + 澎湖
   const allCounties = topojson.feature(topo, topo.objects.counties);
   const skip = new Set(['金門縣','連江縣']);
   const counties = {type:'FeatureCollection', features: allCounties.features.filter(f => !skip.has(norm(f.properties.COUNTYNAME)))};
-
-  // Projection: fit Taiwan main island into the map area
   const padding = 30;
-  const projection = d3.geoMercator()
-    .fitExtent([[padding, padding], [W - padding, H - padding]], counties);
+  const projection = d3.geoMercator().fitExtent([[padding, padding], [W - padding, H - padding]], counties);
   const path = d3.geoPath(projection);
-
-  // Layer groups
   const gCounties = svg.append('g').attr('class', 'counties-layer');
   const gLabels = svg.append('g').attr('class', 'labels-layer');
   const gDots = svg.append('g').attr('class', 'dots-layer');
 
-  // Draw county boundaries
   gCounties.selectAll('path')
-    .data(counties.features)
-    .join('path')
-    .attr('d', path)
-    .attr('class', 'county')
+    .data(counties.features).join('path')
+    .attr('d', path).attr('class', 'county')
     .attr('data-name', d => d.properties.COUNTYNAME)
     .on('mouseenter', function(event, d) {
       d3.select(this).classed('highlighted', true);
       showTooltip(event, d.properties.COUNTYNAME);
-      // Highlight table row
       document.querySelectorAll('.city-table tr').forEach(tr => {
         if (tr.dataset.county === d.properties.COUNTYNAME) tr.classList.add('highlight');
       });
@@ -260,110 +249,66 @@ loadTopo().then(topo => {
       document.querySelectorAll('.city-table tr.highlight').forEach(tr => tr.classList.remove('highlight'));
     });
 
-  // County labels
   counties.features.forEach(f => {
     const name = f.properties.COUNTYNAME;
     const centroid = path.centroid(f);
     if (centroid[0] && centroid[1]) {
-      // Skip label for very small counties or adjust position
-      gLabels.append('text')
-        .attr('class', 'county-label')
-        .attr('x', centroid[0])
-        .attr('y', centroid[1])
-        .text(getShortName(name));
+      gLabels.append('text').attr('class', 'county-label')
+        .attr('x', centroid[0]).attr('y', centroid[1]).text(getShortName(name));
     }
   });
 
-  // Place store dots per county
-  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
-  const quadAngles = [-Math.PI*0.75, -Math.PI*0.25, Math.PI*0.75, Math.PI*0.25];
+  const quadAngles = [];
+  for (let i = 0; i < 8; i++) quadAngles.push(-Math.PI/2 + i * Math.PI/4);
 
   counties.features.forEach(f => {
     const name = f.properties.COUNTYNAME;
     const data = getStoreData(name);
     if (!data) return;
-
     const centroid = path.centroid(f);
     if (!centroid[0] || !centroid[1]) return;
-
-    const totalAll = brandKeys.reduce((s, b) => s + data[b], 0);
+    const totalAll = BRAND_KEYS.reduce((s, b) => s + data[b], 0);
     if (totalAll === 0) return;
-
-    // Spacing and shift based on density
-    const dotSpacing = totalAll > 20 ? 7.5 : totalAll > 8 ? 8.5 : 9.5;
-    const shiftDist = totalAll > 20 ? 16 : totalAll > 8 ? 12 : 8;
-
-    brandKeys.forEach((brand, bi) => {
+    const dotSpacing = totalAll > 100 ? 4 : totalAll > 50 ? 5 : totalAll > 20 ? 6.5 : 9;
+    const shiftDist  = totalAll > 100 ? 25 : totalAll > 50 ? 20 : totalAll > 20 ? 14 : 9;
+    BRAND_KEYS.forEach((brand, bi) => {
       const count = data[brand];
       if (count === 0) return;
-
       const qx = centroid[0] + Math.cos(quadAngles[bi]) * shiftDist;
       const qy = centroid[1] + Math.sin(quadAngles[bi]) * shiftDist;
       const positions = spiralPositions(qx, qy, count, dotSpacing);
-
-      positions.forEach(([x, y]) => {
-        const color = BRANDS[brand].color;
-        const s = DOT_R;
-        let el;
-        if (brand === 'od') {
-          el = gDots.append('circle').attr('cx',x).attr('cy',y).attr('r',s).attr('fill',color);
-        } else if (brand === 'jins') {
-          el = gDots.append('rect').attr('x',x-s).attr('y',y-s).attr('width',s*2).attr('height',s*2).attr('rx',s*0.3).attr('fill',color);
-        } else if (brand === 'megane') {
-          const h = s*1.15;
-          el = gDots.append('polygon').attr('points',`${x},${y-h} ${x+s},${y+s*0.7} ${x-s},${y+s*0.7}`).attr('fill',color);
-        } else {
-          // Klassic: star
-          const pts=[];for(let i=0;i<10;i++){const r=i%2===0?s*1.1:s*0.45;const a=Math.PI/2+i*Math.PI/5;pts.push(`${x-r*Math.cos(a)},${y-r*Math.sin(a)}`);}
-          el = gDots.append('polygon').attr('points',pts.join(' ')).attr('fill',color);
-        }
-        el.attr('class','store-dot').attr('data-brand',brand).attr('data-county',name).attr('opacity',0.88)
+      positions.forEach(pos => {
+        const el = drawDot(gDots, brand, pos[0], pos[1], BRANDS[brand].color);
+        el.attr('class','store-dot').attr('data-brand',brand).attr('data-county',name).attr('opacity',0.85)
           .on('mouseenter',(event)=>showTooltip(event,name)).on('mouseleave',hideTooltip);
       });
     });
   });
-
 }).catch(err => {
   document.getElementById('loading').textContent = '地圖載入失敗：' + err.message + '。請確認網路連線。';
   console.error(err);
 });
 
-// ── Tooltip ──
 function showTooltip(event, countyName) {
   const tt = document.getElementById('tooltip');
   const data = getStoreData(countyName);
   if (!data) return;
-
   const displayName = getShortName(countyName);
-  let html = `<div class="tt-city">${displayName}</div>`;
-  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
+  let html = '<div class="tt-city">'+displayName+'</div>';
   let total = 0;
-
-  brandKeys.forEach(b => {
+  BRAND_KEYS.forEach(b => {
     total += data[b];
     if (data[b] > 0) {
-      html += `<div class="tt-row">
-        <div class="tt-dot" style="background:${BRANDS[b].color}"></div>
-        <span>${BRANDS[b].label}</span>
-        <span class="tt-count">${data[b]} 間</span>
-      </div>`;
+      html += '<div class="tt-row"><div class="tt-dot" style="background:'+BRANDS[b].color+'"></div><span>'+BRANDS[b].label+'</span><span class="tt-count">'+data[b]+' 間</span></div>';
     }
   });
-
   if (total > 0) {
-    html += `<div class="tt-total">合計 ${total} 間門市</div>`;
-    // Mini dot preview
-    html += `<div class="tt-dots-preview">`;
-    brandKeys.forEach(b => {
-      for (let i = 0; i < data[b]; i++) {
-        html += `<div class="tt-mini" style="background:${BRANDS[b].color}"></div>`;
-      }
-    });
-    html += `</div>`;
+    html += '<div class="tt-total">合計 '+total+' 間門市</div><div class="tt-dots-preview">';
+    BRAND_KEYS.forEach(b => { for (let i = 0; i < data[b]; i++) { html += '<div class="tt-mini" style="background:'+BRANDS[b].color+'"></div>'; } });
+    html += '</div>';
   } else {
-    html += `<div class="tt-total" style="opacity:0.3">尚無門市進駐</div>`;
+    html += '<div class="tt-total" style="opacity:0.3">尚無門市進駐</div>';
   }
-
   tt.innerHTML = html;
   tt.style.display = 'block';
   positionTooltip(event);
@@ -373,110 +318,69 @@ function positionTooltip(event) {
   const tt = document.getElementById('tooltip');
   let x = event.clientX + 18;
   let y = event.clientY - 14;
-  // Keep tooltip in viewport
-  const rect = tt.getBoundingClientRect();
-  if (x + 260 > window.innerWidth) x = event.clientX - 270;
-  if (y + 200 > window.innerHeight) y = event.clientY - 200;
+  if (x + 280 > window.innerWidth) x = event.clientX - 290;
+  if (y + 260 > window.innerHeight) y = Math.max(10, event.clientY - 260);
   tt.style.left = x + 'px';
   tt.style.top = y + 'px';
 }
-
-function hideTooltip() {
-  document.getElementById('tooltip').style.display = 'none';
-}
-
+function hideTooltip() { document.getElementById('tooltip').style.display = 'none'; }
 document.addEventListener('mousemove', (e) => {
   const tt = document.getElementById('tooltip');
   if (tt.style.display === 'block') positionTooltip(e);
 });
 
-// ── City table (sidebar) ──
 function renderTable() {
   const tbody = document.getElementById('tableBody');
-  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
-  const brandColors = { od:'#4285F4', jins:'#E53935', megane:'#F4A623', klassic:'#AB47BC' };
-
-  // Merge 新竹市+新竹縣, 嘉義市+嘉義縣 for display
   const merged = {};
   const mergeMap = { '新竹市':'新竹', '新竹縣':'新竹', '嘉義市':'嘉義', '嘉義縣':'嘉義' };
-
   Object.entries(STORE_DATA).forEach(([county, data]) => {
     const key = mergeMap[county] || getShortName(county);
-    if (!merged[key]) merged[key] = { od:0, jins:0, megane:0, klassic:0 };
-    brandKeys.forEach(b => merged[key][b] += data[b]);
+    if (!merged[key]) { merged[key] = {}; BRAND_KEYS.forEach(b => merged[key][b] = 0); }
+    BRAND_KEYS.forEach(b => merged[key][b] += data[b]);
   });
-
-  // Sort by total descending
   const sorted = Object.entries(merged)
-    .map(([name, data]) => ({ name, ...data, total: data.od + data.jins + data.megane + data.klassic }))
-    .filter(r => r.total > 0)
-    .sort((a, b) => b.total - a.total);
-
+    .map(([name, data]) => Object.assign({ name: name, total: BRAND_KEYS.reduce((s,b)=>s+data[b],0) }, data))
+    .filter(r => r.total > 0).sort((a, b) => b.total - a.total);
   let html = '';
-  let totals = { od:0, jins:0, megane:0, klassic:0 };
-
+  const totals = {}; BRAND_KEYS.forEach(b => totals[b] = 0);
   sorted.forEach(row => {
-    const fmt = (n, color) => n === 0
-      ? '<span class="zero">—</span>'
-      : `<span style="color:${color};font-weight:600">${n}</span>`;
-    html += `<tr data-county="${row.name}">
-      <td class="city-name">${row.name}</td>
-      <td>${fmt(row.od, brandColors.od)}</td>
-      <td>${fmt(row.jins, brandColors.jins)}</td>
-      <td>${fmt(row.megane, brandColors.megane)}</td>
-      <td>${fmt(row.klassic, brandColors.klassic)}</td>
-      <td style="font-weight:700;color:rgba(255,255,255,0.6)">${row.total}</td>
-    </tr>`;
-    brandKeys.forEach(b => totals[b] += row[b]);
+    const fmt = (n, color) => n === 0 ? '<span class="zero">—</span>' : '<span style="color:'+color+';font-weight:600">'+n+'</span>';
+    html += '<tr data-county="'+row.name+'"><td class="city-name">'+row.name+'</td>' +
+      BRAND_KEYS.map(b => '<td>'+fmt(row[b], BRANDS[b].color)+'</td>').join('') +
+      '<td style="font-weight:700;color:rgba(255,255,255,0.6)">'+row.total+'</td></tr>';
+    BRAND_KEYS.forEach(b => totals[b] += row[b]);
   });
-
-  const grandTotal = brandKeys.reduce((s, b) => s + totals[b], 0);
-  html += `<tr class="total-row">
-    <td style="color:rgba(255,255,255,0.5)">合計</td>
-    <td style="color:${brandColors.od};font-weight:800">${totals.od}</td>
-    <td style="color:${brandColors.jins};font-weight:800">${totals.jins}</td>
-    <td style="color:${brandColors.megane};font-weight:800">${totals.megane}</td>
-    <td style="color:${brandColors.klassic};font-weight:800">${totals.klassic}</td>
-    <td style="color:#fff;font-weight:800">${grandTotal}</td>
-  </tr>`;
+  const grandTotal = BRAND_KEYS.reduce((s, b) => s + totals[b], 0);
+  html += '<tr class="total-row"><td style="color:rgba(255,255,255,0.5)">合計</td>' +
+    BRAND_KEYS.map(b => '<td style="color:'+BRANDS[b].color+';font-weight:800">'+totals[b]+'</td>').join('') +
+    '<td style="color:#fff;font-weight:800">'+grandTotal+'</td></tr>';
   tbody.innerHTML = html;
 }
-
 renderTable();
 
-// ── Sidebar totals grid (dynamic) ──
 (function renderTotals() {
-  const brandKeys = ['od', 'jins', 'megane', 'klassic'];
-  const totals = { od:0, jins:0, megane:0, klassic:0 };
-  Object.values(STORE_DATA).forEach(d => {
-    brandKeys.forEach(b => totals[b] += d[b]);
-  });
-  // Add Jins RIM stores (not per-county) = 5 (台北3 + 台中1 + 台南1)
-  const jinsDisplay = totals.jins + 5;
-  const grand = totals.od + jinsDisplay + totals.megane + totals.klassic;
-
-  const cards = [
-    { brand:'od',      num: totals.od,      badge:'#1', badgeBg:'rgba(66,133,244,0.15)', badgeColor:'#4285F4' },
-    { brand:'jins',    num: jinsDisplay,     badge:'#2', badgeBg:'rgba(229,57,53,0.15)',  badgeColor:'#E53935' },
-    { brand:'megane',  num: totals.megane,   badge:'#3', badgeBg:'rgba(244,166,35,0.15)', badgeColor:'#F4A623' },
-    { brand:'klassic', num: totals.klassic,  badge:'#4', badgeBg:'rgba(171,71,188,0.15)', badgeColor:'#AB47BC' }
-  ];
-
+  const totals = {}; BRAND_KEYS.forEach(b => totals[b] = 0);
+  Object.values(STORE_DATA).forEach(d => { BRAND_KEYS.forEach(b => totals[b] += d[b]); });
+  const displayNum = Object.assign({}, totals);
+  displayNum.jins = totals.jins + 5;
+  const ranked = BRAND_KEYS.slice().sort((a,b) => displayNum[b] - displayNum[a]);
+  const rankOf = {}; ranked.forEach((b,i) => rankOf[b] = i+1);
+  function hexToRgba(hex, a) {
+    const n = parseInt(hex.slice(1),16);
+    return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')';
+  }
   const grid = document.getElementById('totalsGrid');
-  grid.innerHTML = cards.map(c => `
-    <div class="total-card" data-brand="${c.brand}" onclick="toggleBrand('${c.brand}')">
-      <div class="tc-stripe" style="background:${BRANDS[c.brand].color}"></div>
-      <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</div>
-      <div class="tc-label">${BRANDS[c.brand].label}</div>
-      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
-    </div>
-  `).join('');
+  grid.innerHTML = BRAND_KEYS.map(b => {
+    const c = BRANDS[b].color;
+    return '<div class="total-card" data-brand="'+b+'" onclick="toggleBrand(\''+b+'\')">' +
+      '<div class="tc-stripe" style="background:'+c+'"></div>' +
+      '<div class="tc-num" style="color:'+c+'">'+displayNum[b]+'</div>' +
+      '<div class="tc-label">'+BRANDS[b].label+'</div>' +
+      '<div class="tc-badge" style="background:'+hexToRgba(c,0.15)+';color:'+c+'">#'+rankOf[b]+'</div></div>';
+  }).join('');
 })();
 
-window.addEventListener('resize', () => {
-  // Reload to re-fit projection
-  location.reload();
-});
+window.addEventListener('resize', () => { location.reload(); });
 </script>
 </body>
 </html>
