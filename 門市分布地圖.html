@@ -84,7 +84,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/15 (W26 週一更新) — 眼鏡市場 +1（OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 37／Klassic 19，全台合計 237，Chrome 實抓＋官網逐店核對）；🔥 眼鏡市場屏東店 6/18(四) 開幕 — 首度進駐屏東（屏東 megane 0→1），屏東原僅 OWNDAYS 2 間；🆕 JINS 週末買 2 支眼鏡或墨鏡現折 $777（6/11 公告，由前波 $666 加碼）；Klassic 19 間無展店（輕行者摺疊墨鏡 2 件 85 折＋我獨自升級/DAN DA DAN 滿額贈持續） — 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/06/18 (W26 週四更新) — 門市數 ±0（OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 37／Klassic 19，全台合計 237，公開官網來源核對）；🔥 眼鏡市場屏東店今日 6/18(四) 正式開幕 — 品牌首度進駐屏東（屏東 megane 0→1，門市數 6/15 已計入），屏東原僅 OWNDAYS 2 間，今起為 OD 客流觀測關鍵窗口；⚠️ JINS 1.76 極薄鏡片「台日價差近 7 倍」爭議延燒（TVBS/Yahoo 續報，OD 借勢窗口），週末 6/19-21 買 2 支 $777 持續；Klassic 19 間無展店（618 SALE 摺疊墨鏡 2 件 85 折＋IP 聯名滿額贈持續） — 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -118,7 +118,7 @@ const BRANDS = {
 };
 
 // ── Store data — use NORMALIZED keys (臺→台) ──
-// Updated: 2026-06-15 (W26 Monday) — 眼鏡市場 +1: 屏東店 6/18 opens (listed on location page, news announced 6/12), megane 屏東 0->1, first-ever megane store in Pingtung (OD had 2 there). JINS buy-2 -$777 weekend promo (6/11, up from $666). Klassic 19 verified store-by-store. Totals: OD 80 + JINS 101 + 眼鏡 37 + KC 19 = 237.
+// Updated: 2026-06-18 (W26 Thursday) — Store count ±0. 眼鏡市場 屏東店 officially opens today 6/18 (already counted on 6/15), first-ever megane store in Pingtung (OD had 2 there). JINS 1.76 lens TW/JP price-gap (~7x) controversy escalating (TVBS/Yahoo) = OD leverage; buy-2 -$777 weekend promo 6/19-21 continues. Klassic 19 stores, 618 SALE continues. Totals: OD 80 + JINS 101 + 眼鏡 37 + KC 19 = 237.
 // Prev: 2026-06-01 (W24) — OD 80 (corrected 78->80: added 新店家樂福 in New Taipei + 潮州車站 in Pingtung, previously undercounted), Jins 95+RIM 5=100, 眼鏡 36, KC 20 = 236. Competitor brands all flat vs W23 (store-expansion lull). Focus shifts to promotions + IP collabs: JINS 618 mid-year sale (5/29) + buy-2 -$666 (5/29-31) + SUMMER SALE 8% off week 3 (5/14-6/30), 永和比漾店 6/1 renovation relocation to 5F (not a new store); 眼鏡市場 2026 SUMMER SALE 2nd-pair -$300 (5/27); Klassic launches large new IP collab "Solo Leveling 我獨自升級" (frames/folding sunglasses/full merch line); ⚠️ JINS suspends 1.76 ultra-thin lens sales + warranty (5/11) — opportunity for OD to absorb high-prescription customers. Chrome scheduled scraping not connected — used web_fetch + WebSearch public sources.
 // Note: Jins column = JINS-only (RIM excluded). RIM totals: 台北市 3 (LaLaport南港/誠品南西/京站), 台中市 1 (LaLaport台中), 台南市 1 (FOCUS時尚流行館). RIM 5 stores grand total.
 const STORE_DATA_RAW = {
@@ -468,15 +468,4 @@ renderTable();
       <div class="tc-stripe" style="background:${BRANDS[c.brand].color}"></div>
       <div class="tc-num" style="color:${BRANDS[c.brand].color}">${c.num}</div>
       <div class="tc-label">${BRANDS[c.brand].label}</div>
-      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badgeColor}">${c.badge}</div>
-    </div>
-  `).join('');
-})();
-
-window.addEventListener('resize', () => {
-  // Reload to re-fit projection
-  location.reload();
-});
-</script>
-</body>
-</html>
+      <div class="tc-badge" style="background:${c.badgeBg};color:${c.badg
