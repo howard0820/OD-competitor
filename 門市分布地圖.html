@@ -63,7 +63,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/06/29 (W28 週一) — 四日系/新銳品牌門市數 ±0 無展店異動（連續第五個 ±0 安靜週；本期進入促銷轉檔期：JINS 指定眼鏡 8 折檔 6/30 到期、眼鏡市場年中慶由第一波(6/28 結束) 轉向第二波 5 大遠百 6/30–7/19，均官網一手確認）。本土傳統連鎖：寶島眼鏡 358／小林眼鏡 239／仁愛眼鏡(Howard) 107／德恩堂(得恩堂 GRACE) 69，皆於 6/18 直接自各品牌官方門市查詢系統逐縣市清點（formosa-optical.com.tw／kobayashi.com.tw／theeye.tw／grace.com.tw）。連同日系與本土新銳：OWNDAYS 80／JINS 96+RIM 5=101／眼鏡市場 37／Klassic 19。八品牌全台合計 1,010 間。傳統連鎖規模遠大於日系（寶島≈OD 的 4.5 倍），離島金門/連江門市僅列入表格、地圖不繪點。— 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/07/06 (W29 週一) — 🟣 Klassic 台中新光三越中港店開櫃（19→20、台中 4→5），與 OWNDAYS 中港店同館直面競爭（官網門市頁首見＋SKM 專櫃頁交叉確認）。✅ JINS 全 22 縣市逐店重算完成：98 JINS＋RIM 5＝103，與分布表完全一致、RIM 定案 5 家，「101 沿用基準」殘留清零。眼鏡市場宜蘭店 7/26 撤出倒數（37→36 待生效）。本土傳統連鎖：寶島眼鏡 358／小林眼鏡 239／仁愛眼鏡(Howard) 107／德恩堂(得恩堂 GRACE) 69，皆於 6/18 直接自各品牌官方門市查詢系統逐縣市清點（formosa-optical.com.tw／kobayashi.com.tw／theeye.tw／grace.com.tw）。連同日系與本土新銳：OWNDAYS 80／JINS 98+RIM 5=103／眼鏡市場 37／Klassic 20。八品牌全台合計 1,013 間。傳統連鎖規模仍遠大於日系（寶島≈OD 的 4.5 倍），離島金門/連江門市僅列入表格、地圖不繪點。— 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -99,28 +99,28 @@ const BRANDS = {
 };
 const BRAND_KEYS = ['od','jins','megane','klassic','baodao','kobayashi','renai','grace'];
 
-// Reviewed 2026-06-29 (W28 週一): all 4 JP/new brands +/-0 (no store changes vs 6/18, 5th consecutive flat week). Promo transition week (JINS 8% off ends 6/30; Megane Ichiba year-mid sale wave-1 ended 6/28, wave-2 at 5 Far Eastern dept stores 6/30-7/19, first-party confirmed). Baseline 2026-06-18 (W26). 4 traditional chains counted from official store-locators on 2026-06-18:
+// Reviewed 2026-07-06 (W29 週一): Klassic +1 台中新光三越中港店 (first seen on official store page 7/6, SKM counter page cross-checked; same mall as OWNDAYS 中港店) => Klassic 19->20, 台中 4->5. JINS full 22-city recount via Chrome = 98+RIM5=103, matches distribution exactly (RIM finalized at 5). Megane Ichiba Yilan closes 7/26 (37->36 pending). JINS new promo 7/3: photochromic lens upgrade 20% off til 8/31. Baseline 2026-06-18 (W26). 4 traditional chains counted from official store-locators on 2026-06-18:
 //   寶島 Formosa=358 (formosa-optical.com.tw backend API)
 //   小林 Kobayashi=239 (kobayashi.com.tw/map.php; cross-checked vs 239 map markers)
 //   仁愛 Howard=107 (theeye.tw/shoplist.php, Chrome-rendered, 107 cards)
 //   德恩堂/得恩堂 GRACE=69 (grace.com.tw/store, Chrome-rendered, 69 stores)
-// Existing: OD 80, JINS 96(+5 RIM)=101, 眼鏡 37, Klassic 19. 8-brand grand total = 1,010.
+// Existing: OD 80, JINS 98(+5 RIM)=103, 眼鏡 37, Klassic 20. 8-brand grand total = 1,013.
 // Jins column = JINS-only (RIM 5 added in totals card only). 金門 in table only (not drawn on map).
 const STORE_DATA_RAW = {
-  '台北市': { od: 19, jins: 23, megane: 6, klassic: 8, baodao: 57, kobayashi: 22, renai: 6,  grace: 14 },
+  '台北市': { od: 19, jins: 24, megane: 6, klassic: 8, baodao: 57, kobayashi: 22, renai: 6,  grace: 14 },
   '新北市': { od: 18, jins: 19, megane: 5, klassic: 0, baodao: 63, kobayashi: 35, renai: 8,  grace: 7  },
   '基隆市': { od: 1,  jins: 1,  megane: 0, klassic: 0, baodao: 5,  kobayashi: 3,  renai: 1,  grace: 1  },
   '桃園市': { od: 9,  jins: 9,  megane: 4, klassic: 1, baodao: 31, kobayashi: 22, renai: 6,  grace: 5  },
   '新竹市': { od: 2,  jins: 3,  megane: 2, klassic: 1, baodao: 9,  kobayashi: 6,  renai: 3,  grace: 2  },
   '新竹縣': { od: 2,  jins: 1,  megane: 1, klassic: 0, baodao: 9,  kobayashi: 8,  renai: 2,  grace: 0  },
   '苗栗縣': { od: 1,  jins: 1,  megane: 0, klassic: 0, baodao: 5,  kobayashi: 4,  renai: 3,  grace: 1  },
-  '台中市': { od: 7,  jins: 14, megane: 7, klassic: 4, baodao: 54, kobayashi: 37, renai: 24, grace: 3  },
+  '台中市': { od: 7,  jins: 14, megane: 7, klassic: 5, baodao: 54, kobayashi: 37, renai: 24, grace: 3  },
   '彰化縣': { od: 1,  jins: 0,  megane: 1, klassic: 0, baodao: 12, kobayashi: 7,  renai: 6,  grace: 1  },
   '南投縣': { od: 0,  jins: 0,  megane: 0, klassic: 0, baodao: 6,  kobayashi: 3,  renai: 1,  grace: 1  },
   '雲林縣': { od: 0,  jins: 2,  megane: 0, klassic: 0, baodao: 7,  kobayashi: 4,  renai: 7,  grace: 0  },
   '嘉義市': { od: 1,  jins: 2,  megane: 1, klassic: 0, baodao: 8,  kobayashi: 2,  renai: 4,  grace: 0  },
   '嘉義縣': { od: 1,  jins: 0,  megane: 0, klassic: 0, baodao: 3,  kobayashi: 2,  renai: 2,  grace: 0  },
-  '台南市': { od: 3,  jins: 8,  megane: 3, klassic: 2, baodao: 25, kobayashi: 21, renai: 19, grace: 8  },
+  '台南市': { od: 3,  jins: 9,  megane: 3, klassic: 2, baodao: 25, kobayashi: 21, renai: 19, grace: 8  },
   '高雄市': { od: 9,  jins: 10, megane: 5, klassic: 3, baodao: 41, kobayashi: 46, renai: 8,  grace: 24 },
   '屏東縣': { od: 2,  jins: 1,  megane: 1, klassic: 0, baodao: 9,  kobayashi: 8,  renai: 2,  grace: 2  },
   '宜蘭縣': { od: 1,  jins: 1,  megane: 1, klassic: 0, baodao: 6,  kobayashi: 2,  renai: 1,  grace: 0  },
