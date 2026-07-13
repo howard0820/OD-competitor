@@ -63,7 +63,7 @@ body{font-family:'Noto Sans TC','Inter',sans-serif;background:#0f0f14;color:#e8e
 <div class="sidebar">
   <div class="brand-header">
     <h1>全台眼鏡品牌門市分布</h1>
-    <div class="sub">更新日：2026/07/08 (W29 週三) — 🔜 JINS「RIM 桃園統領廣場店」7/9(四) 開幕：RIM 5→6、JINS 103→104（待 7/9 生效，今日仍 103）；7/8「盛夏特惠 天天第2支75折」促銷加碼（火力 3→4）。眼鏡市場 37／Klassic 20 門市 ±0。〔7/6〕🟣 Klassic 台中新光三越中港店開櫃（19→20、台中 4→5），與 OWNDAYS 中港店同館直面競爭（官網門市頁首見＋SKM 專櫃頁交叉確認）。✅ JINS 全 22 縣市逐店重算完成：98 JINS＋RIM 5＝103，與分布表完全一致、RIM 定案 5 家，「101 沿用基準」殘留清零。眼鏡市場宜蘭店 7/26 撤出倒數（37→36 待生效）。本土傳統連鎖：寶島眼鏡 358／小林眼鏡 239／仁愛眼鏡(Howard) 107／德恩堂(得恩堂 GRACE) 69，皆於 6/18 直接自各品牌官方門市查詢系統逐縣市清點（formosa-optical.com.tw／kobayashi.com.tw／theeye.tw／grace.com.tw）。連同日系與本土新銳：OWNDAYS 80／JINS 98+RIM 5=103／眼鏡市場 37／Klassic 20。八品牌全台合計 1,013 間。傳統連鎖規模仍遠大於日系（寶島≈OD 的 4.5 倍），離島金門/連江門市僅列入表格、地圖不繪點。— 點擊品牌卡片可切換顯示</div>
+    <div class="sub">更新日：2026/07/13 (W30 週一) — 🟢 安靜週：三家門市數全持平（JINS 104 含 RIM 6／眼鏡市場 37／Klassic 20），無新開店、無撤店生效；JINS 7/10、7/11 為例行「營業時間調整公告」（非新店）。⏳ 前瞻兩檔倒數：眼鏡市場「夏日大作戰 第二副折 300」7/22 收檔（倒數 9 天）、宜蘭店 7/26 BYE BYE SALE 撤店（倒數 13 天→36）。〔7/9〕✅ JINS「RIM 桃園統領廣場店」7/9(四) 如期開幕：RIM 5→6、JINS 103→104 正式生效。桃園統領商圈成多品牌眼鏡聚點（同商圈 KlassiC. 桃園統領百貨店）。〔7/8〕JINS 促銷四檔並行（第2支75折／調光8折／台北升級75折／RIM開幕慶）。〔7/6〕🟣 Klassic 台中新光三越中港店開櫃（19→20、台中 4→5），與 OWNDAYS 中港店同館直面競爭（官網門市頁首見＋SKM 專櫃頁交叉確認）。✅ JINS 全 22 縣市逐店重算完成：98 JINS＋RIM 5＝103，與分布表完全一致、RIM 定案 5 家，「101 沿用基準」殘留清零。眼鏡市場宜蘭店 7/26 撤出倒數（37→36 待生效）。本土傳統連鎖：寶島眼鏡 358／小林眼鏡 239／仁愛眼鏡(Howard) 107／德恩堂(得恩堂 GRACE) 69，皆於 6/18 直接自各品牌官方門市查詢系統逐縣市清點（formosa-optical.com.tw／kobayashi.com.tw／theeye.tw／grace.com.tw）。連同日系與本土新銳：OWNDAYS 80／JINS 98+RIM 6=104／眼鏡市場 37／Klassic 20。八品牌全台合計 1,014 間。傳統連鎖規模仍遠大於日系（寶島≈OD 的 4.5 倍），離島金門/連江門市僅列入表格、地圖不繪點。— 點擊品牌卡片可切換顯示</div>
   </div>
 
   <div class="totals-grid" id="totalsGrid"></div>
@@ -99,13 +99,13 @@ const BRANDS = {
 };
 const BRAND_KEYS = ['od','jins','megane','klassic','baodao','kobayashi','renai','grace'];
 
-// Reviewed 2026-07-08 (W29 週三): JINS RIM 桃園統領廣場店 opens 7/9 (RIM 5->6, JINS 103->104 pending; today still 103); JINS 7/8 promo '2nd pair 25% off'. Megane 37 / Klassic 20 unchanged. [7/6] Klassic +1 台中新光三越中港店 (first seen on official store page 7/6, SKM counter page cross-checked; same mall as OWNDAYS 中港店) => Klassic 19->20, 台中 4->5. JINS full 22-city recount via Chrome = 98+RIM5=103, matches distribution exactly (RIM finalized at 5). Megane Ichiba Yilan closes 7/26 (37->36 pending). JINS new promo 7/3: photochromic lens upgrade 20% off til 8/31. Baseline 2026-06-18 (W26). 4 traditional chains counted from official store-locators on 2026-06-18:
+// Reviewed 2026-07-13 (W30 週一): Quiet week, all store counts unchanged (JINS 104 incl RIM 6 / Megane 37 / Klassic 20); JINS 7/10-7/11 posts were routine hours notices, no new store. Upcoming: Megane 2nd-pair -300 ends 7/22, Yilan store closes 7/26 (37->36 pending). [7/9] JINS RIM 桃園統領廣場店 opened 7/9 as scheduled (RIM 5->6, JINS 103->104 now effective; opening gift). Taoyuan 統領 becomes multi-brand eyewear cluster (KlassiC. 桃園統領百貨店 same area). JINS 4 promos running. Megane 37 / Klassic 20 unchanged. [7/6] Klassic +1 台中新光三越中港店 (first seen on official store page 7/6, SKM counter page cross-checked; same mall as OWNDAYS 中港店) => Klassic 19->20, 台中 4->5. JINS full 22-city recount via Chrome = 98+RIM5=103, matches distribution exactly (RIM finalized at 5). Megane Ichiba Yilan closes 7/26 (37->36 pending). JINS new promo 7/3: photochromic lens upgrade 20% off til 8/31. Baseline 2026-06-18 (W26). 4 traditional chains counted from official store-locators on 2026-06-18:
 //   寶島 Formosa=358 (formosa-optical.com.tw backend API)
 //   小林 Kobayashi=239 (kobayashi.com.tw/map.php; cross-checked vs 239 map markers)
 //   仁愛 Howard=107 (theeye.tw/shoplist.php, Chrome-rendered, 107 cards)
 //   德恩堂/得恩堂 GRACE=69 (grace.com.tw/store, Chrome-rendered, 69 stores)
-// Existing: OD 80, JINS 98(+5 RIM)=103, 眼鏡 37, Klassic 20. 8-brand grand total = 1,013.
-// Jins column = JINS-only (RIM 5 added in totals card only). 金門 in table only (not drawn on map).
+// Existing: OD 80, JINS 98(+6 RIM)=104, 眼鏡 37, Klassic 20. 8-brand grand total = 1,014.
+// Jins column = JINS-only (RIM 6 added in totals card only). 金門 in table only (not drawn on map).
 const STORE_DATA_RAW = {
   '台北市': { od: 19, jins: 24, megane: 6, klassic: 8, baodao: 57, kobayashi: 22, renai: 6,  grace: 14 },
   '新北市': { od: 18, jins: 19, megane: 5, klassic: 0, baodao: 63, kobayashi: 35, renai: 8,  grace: 7  },
